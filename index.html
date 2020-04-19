@@ -1,21 +1,58 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<script src="./jquery-3.4.1.slim.min.js"></script>
-		<script type="text/javascript" src="./app.js"></script>
-	</head>
+<head>
+	<script src="./jquery-3.4.1.slim.min.js"></script>
+	<script type="text/javascript" src="./app.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- # start -->
+	<script>
+		function Login(){
+			var userNameAndPassward = [{userName:"p", passward:"p"}]
+			var userName = document.getElementById('userName').value;
+			var passward = document.getElementById('password').value;
 
-	<body>
-		<div id="score">
-			<label for="lblScore">SCORE:</label>
-			<input id="lblScore" type="text" />
-		</div>
-		<div id="time">
-			<label for="lblTime">TIME:</label>
-			<input id="lblTime" type="text" />
-		</div>
-		<div id="game">
-			<canvas id="canvas" height="600" width="600"></canvas>
-		</div>
-	</body>
+			for(i=0; i < userNameAndPassward.length; i++){
+				if(userName== userNameAndPassward[i].userName &&
+						passward == userNameAndPassward[i].passward){
+					console.log("userName: "+ userName +" Passward: "+ passward+ " login successfully");
+					return
+				}
+			}
+			alert("Wrong username or password please try again");
+			console.log("Wrong username or password please try again");
+		}
+	</script>
+	<!-- # end -->
+</head>
+<body>
+<div id="score">
+	<label for="lblScore">SCORE:</label>
+	<input id="lblScore" type="text" />
+</div>
+<div id="time">
+	<label for="lblTime">TIME:</label>
+	<input id="lblTime" type="text" />
+</div>
+<div id="game">
+	<canvas id="canvas" height="600" width="600"></canvas>
+</div>
+<!-- # start -->
+<form >
+	<div id="loginForm">
+		<h1>Login</h1>
+		<i class="fa fa-user" aria-hidden="true"></i>
+		<label for=userName></label> Username: </label>
+		<input type="text" placeholder="Enter Username" id="userName" autocomplete="off" required>
+		<br>
+		<br>
+		<i class="fa fa-lock" aria-hidden="true"></i>
+		<label for=password>Password: </label>
+		<input type="password" placeholder="Enter Password" id="password" autocomplete="off" required>
+		<br>
+		<br>
+		<button type="button" onclick="Login()">Login</button>
+	</div>
+</form>
+<!-- # end -->
+</body>
 </html>
