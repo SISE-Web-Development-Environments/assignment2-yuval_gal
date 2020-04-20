@@ -9,7 +9,10 @@ var interval;
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
-	Start();
+	if(localStorage.getItem("should_begin") == true)
+	{
+		Start();
+	}
 });
 
 function Start() {

@@ -2,6 +2,7 @@
 
 <head>
     <script src="./jquery-3.4.1.slim.min.js"></script>
+    <script>var userNameAndPassward = [{userName:"p", passward:"p"}];</script>
     <script type="text/javascript" src="./app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="main.css">
@@ -11,9 +12,10 @@
     <!-- Tab links -->
     <div class="nav">
         <button class="navbuttons" onclick="openRelevantWindow(event, 'Welcome')">Welcome</button>
-        <button class="navbuttons" onclick="openRelevantWindow(event, 'signup')">Sign Up</button>
-        <button class="navbuttons" onclick="openRelevantWindow(event, 'login')">Login</button>
-        <button class="navbuttons" onclick="openRelevantWindow(event, 'game')">Game</button>
+        <button class="navbuttons" id="signupButton" onclick="openRelevantWindow(event, 'signup')">Sign Up</button>
+        <button class="navbuttons" id="loginButton" onclick="openRelevantWindow(event, 'login')">Login</button>
+        <button class="navbuttons" id="gameButton" onclick="openRelevantWindow(event, 'game')">Game</button>
+        <button class="navbuttons" id="logoutButton" onclick="logoutUser(event)">Log out</button>
     </div>
 
     <!-- Tab content -->
@@ -22,11 +24,17 @@
         <p>This is our game, if you want to play, please signup for it.</p>
     </div>
 
-    <div id="signup" class="window_content">
-        <h3>Sign Up</h3>
-        <!-- # start -->
+    <div id="signup" class="window_content sign-up-form">
+        <img src="signupiconNobackground.png" class="signup-icon">
+        <h3>Sign Up Now</h3>
+        <form id="signup-form">
+            <input type="email" class="input-box" id="signupUsername" placeholder="Enter Username">
+            <input type="password" class="input-box passClass" id="signupPass" placeholder="Your Password">
+            <input type="password" class="input-box passClass" id="signupPassConfirm" placeholder="Confirm Password">
+<!--            <p><span><input type="checkbox"></span> I agree to the terms of services</p>-->
+            <button type="button" class="signup-btn" onclick="signUp()">Sign Up</button>
+        </form>
 
-<!--        <p>Paris is the capital of France.</p>-->
     </div>
 
     <div id="login" class="window_content">
@@ -77,25 +85,66 @@
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
             document.getElementById(cityName).style.display = "block";
-            evt.currentTarget.className += " active";
+
+            evt.currentTarget.crrTrgt.className += " active";
+
         }
     </script>
 
-    <script>
+    <script class="loginScript">
         function Login(){
-            var userNameAndPassward = [{userName:"p", passward:"p"}]
+
             var userName = document.getElementById('userName').value;
             var passward = document.getElementById('password').value;
 
             for(i=0; i < userNameAndPassward.length; i++){
-                if(userName== userNameAndPassward[i].userName &&
-                    passward == userNameAndPassward[i].passward){
+                if(userName=== userNameAndPassward[i].userName && passward === userNameAndPassward[i].passward){
+                    document.getElementById("gameButton").style.display = "block";;
+                    document.getElementById("logoutButton").style.display = "block";;
+                    document.getElementById("loginButton").style.display = "none";
+                    document.getElementById("login").style.display = "none";
+                    document.getElementById("signupButton").style.display = "none";
+
+                    pageToShow = document.getElementById("Welcome");
+                    pageToShow.style.display = "block";
+
                     console.log("userName: "+ userName +" Passward: "+ passward+ " login successfully");
                     return
                 }
             }
             alert("Wrong username or password please  try again");
             console.log("Wrong username or password please try again");
+        }
+    </script>
+
+    <script class="signUpScript">
+        function signUp(){
+            var userName = document.getElementById('signupUsername').value;
+            var password = document.getElementById('signupPass').value;
+            var confirmPassword = document.getElementById('signupPassConfirm').value;
+
+            if(password !== confirmPassword)
+            {
+                alert("Password are not the same");
+                return;
+            }
+
+
+            for(i=0; i < userNameAndPassward.length; i++){
+                if(userName=== userNameAndPassward[i].userName){
+                    alert("userName: "+ userName + " is already taken");
+                    return;
+                }
+            }
+
+            userNameAndPassward.push({"Username": userName, "Password": password});
+            console.log("User signed up successfully");
+
+            alert("You can now login.")
+
+            document.getElementById("signup-form").style.display = none;
+
+
         }
     </script>
 
