@@ -1,0 +1,98 @@
+.nav {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+.sign-up-form{
+    width: 300px;
+    box-shadow: 0 0 3px 0 rgba(0,0,0,3);
+    background: #fff;
+    padding: 20px;
+    margin: 8% auto;
+    text-align: center;
+}
+
+.sign-up-form h3{
+    color: tomato;
+    margin-bottom: 30px;
+
+}
+
+
+
+.input-box{
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px 0;
+    margin-bottom: 20px;
+    width: 100%;
+    border: 1px solid #999;
+    outline: none;
+}
+
+.passClass{
+    margin: 3px 0;
+}
+.signup-btn{
+    color: #fff;
+    background-color: #1c8abd;
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 15px;
+    margin: 10px 0;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.signup-icon{
+    width: 100px;
+    border-radius: 180px;
+    margin-top: -60px;
+
+}
+
+#gameButton{
+    display: none;
+}
+
+#loginButton{
+    display: inherit;
+}
+
+#logoutButton{
+    position: absolute;
+    right: 10px;
+    display: none;
+}
+
+/* Style the buttons that are used to open the tab content */
+.nav button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    position: relative;
+}
+
+/* Change background color of buttons on hover */
+.nav button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.nav button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.window_content {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
