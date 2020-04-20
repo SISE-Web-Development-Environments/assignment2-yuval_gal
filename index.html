@@ -1,58 +1,104 @@
-<!DOCTYPE html>
 <html>
-<head>
-	<script src="./jquery-3.4.1.slim.min.js"></script>
-	<script type="text/javascript" src="./app.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<!-- # start -->
-	<script>
-		function Login(){
-			var userNameAndPassward = [{userName:"p", passward:"p"}]
-			var userName = document.getElementById('userName').value;
-			var passward = document.getElementById('password').value;
 
-			for(i=0; i < userNameAndPassward.length; i++){
-				if(userName== userNameAndPassward[i].userName &&
-						passward == userNameAndPassward[i].passward){
-					console.log("userName: "+ userName +" Passward: "+ passward+ " login successfully");
-					return
-				}
-			}
-			alert("Wrong username or password please  try again");
-			console.log("Wrong username or password please try again");
-		}
-	</script>
-	<!-- # end -->
+<head>
+    <script src="./jquery-3.4.1.slim.min.js"></script>
+    <script type="text/javascript" src="./app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="main.css">
+
 </head>
 <body>
-<div id="score">
-	<label for="lblScore">SCORE:</label>
-	<input id="lblScore" type="text" />
-</div>
-<div id="time">
-	<label for="lblTime">TIME:</label>
-	<input id="lblTime" type="text" />
-</div>
-<div id="game">
-	<canvas id="canvas" height="600" width="600"></canvas>
-</div>
-<!-- # start -->
-<form >
-	<div id="loginForm">
-		<h1>Login</h1>
-		<i class="fa fa-user" aria-hidden="true"></i>
-		<label for=userName></label> Username: </label>
-		<input type="text" placeholder="Enter Username" id="userName" autocomplete="off" required>
-		<br>
-		<br>
-		<i class="fa fa-lock" aria-hidden="true"></i>
-		<label for=password>Password: </label>
-		<input type="password" placeholder="Enter Password" id="password" autocomplete="off" required>
-		<br>
-		<br>
-		<button type="button" onclick="Login()">Login</button>
-	</div>
-</form>
-<!-- # end -->
+    <!-- Tab links -->
+    <div class="nav">
+        <button class="navbuttons" onclick="openRelevantWindow(event, 'Welcome')">Welcome</button>
+        <button class="navbuttons" onclick="openRelevantWindow(event, 'signup')">Sign Up</button>
+        <button class="navbuttons" onclick="openRelevantWindow(event, 'login')">Login</button>
+        <button class="navbuttons" onclick="openRelevantWindow(event, 'game')">Game</button>
+    </div>
+
+    <!-- Tab content -->
+    <div id="Welcome" class="window_content">
+        <h3>Welcome to The awesome Pacman game!</h3>
+        <p>This is our game, if you want to play, please signup for it.</p>
+    </div>
+
+    <div id="signup" class="window_content">
+        <h3>Sign Up</h3>
+        <!-- # start -->
+
+<!--        <p>Paris is the capital of France.</p>-->
+    </div>
+
+    <div id="login" class="window_content">
+        <form >
+            <div id="loginForm">
+                <h1>Login</h1>
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <label for=userName></label> Username: </label>
+                <input type="text" placeholder="Enter Username" id="userName" autocomplete="off" required>
+                <br>
+                <br>
+                <i class="fa fa-lock" aria-hidden="true"></i>
+                <label for=password>Password: </label>
+                <input type="password" placeholder="Enter Password" id="password" autocomplete="off" required>
+                <br>
+                <br>
+                <button type="button" onclick="Login()">Login</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="game" class="window_content">
+        <div id="score">
+            <label for="lblScore">SCORE:</label>
+            <input id="lblScore" type="text" />
+        </div>
+
+        <div id="time">
+            <label for="lblTime">TIME:</label>
+            <input id="lblTime" type="text" />
+        </div>
+
+        <div id="actual_game">
+            <canvas id="canvas" height="600" width="600"></canvas>
+        </div>
+    </div>
+
+
+    <script>
+        function openRelevantWindow(evt, cityName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("window_content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("navbuttons");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+
+    <script>
+        function Login(){
+            var userNameAndPassward = [{userName:"p", passward:"p"}]
+            var userName = document.getElementById('userName').value;
+            var passward = document.getElementById('password').value;
+
+            for(i=0; i < userNameAndPassward.length; i++){
+                if(userName== userNameAndPassward[i].userName &&
+                    passward == userNameAndPassward[i].passward){
+                    console.log("userName: "+ userName +" Passward: "+ passward+ " login successfully");
+                    return
+                }
+            }
+            alert("Wrong username or password please  try again");
+            console.log("Wrong username or password please try again");
+        }
+    </script>
+
 </body>
+
 </html>
