@@ -6,7 +6,7 @@
     <script type="text/javascript" src="./app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="main.css">
-
+    <script src="js/form-validation.js"></script>
 </head>
 <body>
     <!-- Tab links -->
@@ -27,12 +27,15 @@
     <div id="signup" class="window_content sign-up-form">
         <img src="signupiconNobackground.png" class="signup-icon">
         <h3>Sign Up Now</h3>
-        <form id="signup-form">
-            <input type="email" class="input-box" id="signupUsername" placeholder="Enter Username">
-            <input type="password" class="input-box passClass" id="signupPass" placeholder="Your Password">
-            <input type="password" class="input-box passClass" id="signupPassConfirm" placeholder="Confirm Password">
-<!--            <p><span><input type="checkbox"></span> I agree to the terms of services</p>-->
-            <button type="button" class="signup-btn" onclick="signUp()">Sign Up</button>
+        <form id="signup-form" name="signUpForm" action="">
+            <input type="text" class="input-box" name="userName" id="signupUsername" placeholder="Enter Username" required>
+            <input type="password" class="input-box passClass" name="password" id="signupPass" placeholder="Your Password" required>
+            <input type="password" class="input-box passClass" name="checkPassword" id="signupPassConfirm" placeholder="Confirm Password" required>
+            <input type="text" class="input-box" name="fullName" id="signupFullName" placeholder="Enter Full Name" required>
+            <input type="email" class="input-box" name="email" id="signupEmail" placeholder="Enter Email" required>
+            <input type="date" class="input-box" name="bDay" id="signupBDay" placeholder="Enter BDay" required>
+            <!--            <p><span><input type="checkbox"></span> I agree to the terms of services</p>-->
+            <button type="submit" class="signup-btn" onclick="signUp()">Sign Up</button>
         </form>
 
     </div>
@@ -147,6 +150,9 @@
 
         }
     </script>
+
+
+
 
 </body>
 
