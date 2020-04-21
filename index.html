@@ -5,10 +5,9 @@
     <script type="text/javascript" src="./app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="main.css">
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.3.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
     <script src="js/form-validation.js"></script>
-    <script src="jquery.min.js"></script>
-    <script src="jquery.validate.min.js"></script>
-    
 </head>
 <body>
     <!-- Tab links -->
@@ -27,21 +26,48 @@
     </div>
 
     <div id="signup" class="window_content sign-up-form">
+        <br>
+        <br>
         <img src="signupiconNobackground.png" class="signup-icon">
         <h3>Sign Up Now</h3>
-        <form id="signup-form" name="signUpForm" method="ge" action novalidate="novalidate">
-            <input type="text" class="input-box" name="userName" id="signupUsername" placeholder="Enter Username" >
-            <input type="password" class="input-box passClass" name="password" id="signupPass" placeholder="Your Password" >
-            <input type="password" class="input-box passClass" name="checkPassword" id="signupPassConfirm" placeholder="Confirm Password" >
-            <input type="text" class="input-box" name="fullName" id="signupFullName" placeholder="Enter Full Name" >
-            <input type="email" class="input-box" name="email" id="signupEmail" placeholder="Enter Email" >
-            <input type="date" class="input-box" name="bDay" id="signupBDay" placeholder="Enter BDay" >
-            <!--            <p><span><input type="checkbox"></span> I agree to the terms of services</p>-->
-            <button type="submit" class="signup-btn" onclick="signUp()">Sign Up</button>
-        </form>
-        <script>
-            $("#signup-form").validate();
-        </script>
+        <div class="container well" style="margin-top: 50px">
+            <form id="register-form">
+                <div class="form-group-col-md-6">
+                    <input class="form-control" name="userName" placeholder="userName" type="text">
+                </div>
+                <div class="form-group col-md-12">
+                    <input class="form-control" name="email" placeholder="Email address" type="email">
+                </div>
+                <div class="form-group col-md-6">
+                    <input class="form-control passClass" name="password" id="password" placeholder="Password" type="password">
+                </div>
+                <div class="form-group col-md-6">
+                    <input class="form-control passClass" name="password2" placeholder="Re-enter password" type="password">
+                </div>
+                <div class="clearfix">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <input class="form-control" name="firstName" placeholder="First Name" type="text">
+                </div>
+                <div class="form-group col-md-6">
+                    <input class="form-control" name="secondName" placeholder="Second Name" type="text">
+                </div>
+
+                <div class="form-group col-md-12">
+                    <input class="form-control" name="bDay" placeholder="BDay" type="date">
+                </div>
+                <div>
+                    <input class="btn btn-primary" id="submit-button" type="submit" value="Sign Up">
+                </div>
+
+            </form>
+        </div>
+        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.3.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js"></script>
+        <script src="validation.js"></script>
+
     </div>
 
     <div id="login" class="window_content">

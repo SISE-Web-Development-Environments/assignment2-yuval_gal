@@ -4,7 +4,7 @@
     background-color: #f1f1f1;
 }
 
-.sign-up-form{
+.register-form{
     width: 300px;
     box-shadow: 0 0 3px 0 rgba(0,0,0,3);
     background: #fff;
@@ -13,7 +13,7 @@
     text-align: center;
 }
 
-.sign-up-form h3{
+.register-form h3{
     color: tomato;
     margin-bottom: 30px;
 
@@ -21,7 +21,7 @@
 
 
 
-.input-box{
+.form-control{
     border-radius: 20px;
     padding: 10px;
     margin: 10px 0;
@@ -34,7 +34,7 @@
 .passClass{
     margin: 3px 0;
 }
-.signup-btn{
+.btn-primary{
     color: #fff;
     background-color: #1c8abd;
     width: 100%;
