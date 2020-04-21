@@ -57,6 +57,11 @@
     display: none;
 }
 
+#settingsButton{
+    display: none;
+}
+
+
 #loginButton{
     display: inherit;
 }

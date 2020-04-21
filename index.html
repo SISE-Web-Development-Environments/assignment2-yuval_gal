@@ -17,6 +17,7 @@
         <button class="navbuttons" onclick="openRelevantWindow(event, 'Welcome')">Welcome</button>
         <button class="navbuttons" id="signupButton" onclick="openRelevantWindow(event, 'signup')">Sign Up</button>
         <button class="navbuttons" id="loginButton" onclick="openRelevantWindow(event, 'login')">Login</button>
+        <button class="navbuttons" id="settingsButton" onclick="openRelevantWindow(event, 'Settings')">Settings</button>
         <button class="navbuttons" id="gameButton" onclick="openRelevantWindow(event, 'game')">Game</button>
         <button class="navbuttons" id="logoutButton" onclick="logoutUser(event)">Log out</button>
     </div>
@@ -59,6 +60,11 @@
         </form>
     </div>
 
+    <div id="Settings" class="window_content">
+        <h3>Set Your Game Settings</h3>
+        <p>Here Will be every settings related to the game</p>
+    </div>
+
     <div id="game" class="window_content">
         <div id="score">
             <label for="lblScore">SCORE:</label>
@@ -77,19 +83,25 @@
 
 
     <script>
-        function openRelevantWindow(evt, cityName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("window_content");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
+        function openRelevantWindow(evt, navButton) {
+            var i, windowsContent, navButtons;
+            windowsContent = document.getElementsByClassName("window_content");
+            for (i = 0; i < windowsContent.length; i++) {
+                windowsContent[i].style.display = "none";
             }
-            tablinks = document.getElementsByClassName("navbuttons");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            navButtons = document.getElementsByClassName("navbuttons");
+            for (i = 0; i < navButtons.length; i++) {
+                navButtons[i].className = navButtons[i].className.replace(" active", "");
             }
-            document.getElementById(cityName).style.display = "block";
+            document.getElementById(navButton).style.display = "block";
 
-            evt.currentTarget.crrTrgt.className += " active";
+            if(navButton == "game" && localStorage.getItem("should_begin") == "false")
+            {
+                localStorage.setItem("should_begin","true");
+                Start();
+            }
+
+            // evt.currentTarget.crrTrgt.className += " active";
 
         }
     </script>
@@ -104,16 +116,16 @@
                 if(userName=== userNameAndPassward[i].userName && passward === userNameAndPassward[i].passward){
                     document.getElementById("gameButton").style.display = "block";;
                     document.getElementById("logoutButton").style.display = "block";;
+                    document.getElementById("settingsButton").style.display = "block";;
                     document.getElementById("loginButton").style.display = "none";
                     document.getElementById("login").style.display = "none";
                     document.getElementById("signupButton").style.display = "none";
 
                     document.getElementById("login").style.display = "none";
-                    pageToShow = document.getElementById("game");
+                    pageToShow = document.getElementById("Settings");
                     pageToShow.style.display = "block";
 
                     console.log("userName: "+ userName +" Passward: "+ passward+ " login successfully");
-                    localStorage.setItem("should_begin","true");
                     localStorage.setItem(userName,"true");
                     return
                 }
@@ -167,14 +179,17 @@
                     localStorage.setItem("should_begin", "false");
                     document.getElementById("gameButton").style.display = "none";;
                     document.getElementById("logoutButton").style.display = "none";;
+                    document.getElementById("settingsButton").style.display = "none";;
                     document.getElementById("loginButton").style.display = "block";
                     document.getElementById("login").style.display = "block";
                     document.getElementById("signupButton").style.display = "block";
 
                     document.getElementById("game").style.display = "none";
                     document.getElementById("login").style.display = "none";
+                    document.getElementById("Settings").style.display = "none";
                     pageToShow = document.getElementById("Welcome");
                     pageToShow.style.display = "block";
+                    Start();
                 }
             }
 
