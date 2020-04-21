@@ -72,7 +72,7 @@
 
 
 
-  
+
 	$.validator.setDefaults({
 		submitHandler: function() {
 			alert("submitted!");
