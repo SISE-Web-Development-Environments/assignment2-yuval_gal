@@ -60,7 +60,9 @@
 #loginButton{
     display: inherit;
 }
-
+#aboutButton{
+    display: inherit;
+}
 #logoutButton{
     position: absolute;
     right: 10px;
@@ -77,6 +79,14 @@
     padding: 14px 16px;
     transition: 0.3s;
     position: relative;
+}
+a {
+    color: black;
+    text-transform: inherit;
+    text-underline: none;
+    text-decoration: none;
+    padding: 8px 8px;
+    text-align: center;
 }
 
 /* Change background color of buttons on hover */
@@ -95,4 +105,26 @@
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
+}
+
+
+.modal a.close-modal[class*="icon-"] {
+    top: -10px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    color: #fff;
+    line-height: 1.25;
+    text-align: center;
+    text-decoration: none;
+    text-indent: 0;
+    background: #0888c4;
+    border: 2px solid #fff;
+    -webkit-border-radius:  26px;
+    -moz-border-radius:     26px;
+    -o-border-radius:       26px;
+    -ms-border-radius:      26px;
+    -moz-box-shadow:    1px 1px 5px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    box-shadow:         1px 1px 5px rgba(0,0,0,0.5);
 }

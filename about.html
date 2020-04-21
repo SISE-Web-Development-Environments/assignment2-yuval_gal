@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<!-- Modal HTML embedded directly into document -->
+<div id="popUpModal" class="modal">
+    <p>Modal</p>
+    <a href="#" rel="modal:close">Close</a>
+</div>
+<div class="nav">
+    <button class="navbuttons" onclick="openRelevantWindow(event, 'Welcome')">Welcome</button>
+    <button class="navbuttons" id="signupButton" onclick="openRelevantWindow(event, 'signup')">Sign Up</button>
+    <button class="navbuttons" id="loginButton" onclick="openRelevantWindow(event, 'login')">Login</button>
+    <button class="navbuttons" id="gameButton" onclick="openRelevantWindow(event, 'game')">Game</button>
+    <button class="navbuttons" id="aboutButton">
+        <a href="#popUpModal" rel="modal:open">About</a>
+    </button>
+    <button class="navbuttons" id="logoutButton" onclick="logoutUser(event)">Log out</button>
+</div>
+
+<!-- Link to open the modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
+</body>
+</html>
