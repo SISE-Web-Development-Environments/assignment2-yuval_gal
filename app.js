@@ -9,10 +9,7 @@ var interval;
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
-	if(localStorage.getItem("should_begin") == true)
-	{
-		Start();
-	}
+    Start();
 });
 
 function Start() {
@@ -135,41 +132,44 @@ function Draw() {
 }
 
 function UpdatePosition() {
-	board[shape.i][shape.j] = 0;
-	var x = GetKeyPressed();
-	if (x == 1) {
-		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
-			shape.j--;
+	if(localStorage.getItem("should_begin") == "true") {
+
+		board[shape.i][shape.j] = 0;
+		var x = GetKeyPressed();
+		if (x == 1) {
+			if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
+				shape.j--;
+			}
 		}
-	}
-	if (x == 2) {
-		if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
-			shape.j++;
+		if (x == 2) {
+			if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
+				shape.j++;
+			}
 		}
-	}
-	if (x == 3) {
-		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
-			shape.i--;
+		if (x == 3) {
+			if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
+				shape.i--;
+			}
 		}
-	}
-	if (x == 4) {
-		if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
-			shape.i++;
+		if (x == 4) {
+			if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
+				shape.i++;
+			}
 		}
-	}
-	if (board[shape.i][shape.j] == 1) {
-		score++;
-	}
-	board[shape.i][shape.j] = 2;
-	var currentTime = new Date();
-	time_elapsed = (currentTime - start_time) / 1000;
-	if (score >= 20 && time_elapsed <= 10) {
-		pac_color = "green";
-	}
-	if (score == 50) {
-		window.clearInterval(interval);
-		window.alert("Game completed");
-	} else {
-		Draw();
+		if (board[shape.i][shape.j] == 1) {
+			score++;
+		}
+		board[shape.i][shape.j] = 2;
+		var currentTime = new Date();
+		time_elapsed = (currentTime - start_time) / 1000;
+		if (score >= 20 && time_elapsed <= 10) {
+			pac_color = "green";
+		}
+		if (score == 50) {
+			window.clearInterval(interval);
+			window.alert("Game completed");
+		} else {
+			Draw();
+		}
 	}
 }
