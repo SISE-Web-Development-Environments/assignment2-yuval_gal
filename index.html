@@ -5,6 +5,15 @@
     <script>
         var userNameAndPassward = [{userName:"p", passward:"p"}];
         localStorage.setItem("should_begin",false);
+
+        function clearAllLoggedUsers() {
+            for (i=0; i<localStorage.length; i++)
+            {
+                localStorage.setItem(localStorage.key(i),false);
+            }
+        }
+
+        clearAllLoggedUsers();
     </script>
     <script type="text/javascript" src="js/app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -30,9 +39,9 @@
         <br>
         <h3>Welcome to The awesome Pacman game!</h3>
         <p>This is our game, if you want to play, please signup for it.</p>
-        <button type="button" class="block" onclick="openRelevantWindow(event, 'signup')">Sign Up !</button>
+        <button type="button" id="signup-wlcm-Btn" class="block" onclick="openRelevantWindow(event, 'signup')">Sign Up !</button>
         <br>
-        <button type="button" class="block" onclick="openRelevantWindow(event, 'login')">Login !</button>
+        <button type="button" id="login-wlcm-Btn" class="block" onclick="openRelevantWindow(event, 'login')">Login !</button>
     </div>
 
     <div id="signup" class="window_content sign-up-form">
@@ -106,6 +115,18 @@
             {
                 localStorage.setItem("should_begin","true");
                 Start();
+            }
+
+            if(navButton == "Welcome")
+            {
+                for (i=0; i < localStorage.length; i++)
+                {
+                    if(localStorage.getItem(localStorage.key(i)) == "true")
+                    {
+                        document.getElementById("login-wlcm-Btn").style.display = "none";
+                        document.getElementById("signup-wlcm-Btn").style.display = "none";
+                    }
+                }
             }
 
             // evt.currentTarget.crrTrgt.className += " active";
@@ -190,6 +211,8 @@
                     document.getElementById("loginButton").style.display = "block";
                     document.getElementById("login").style.display = "block";
                     document.getElementById("signupButton").style.display = "block";
+                    document.getElementById("signup-wlcm-Btn").style.display = "block";
+                    document.getElementById("login-wlcm-Btn").style.display = "block";
 
                     document.getElementById("game").style.display = "none";
                     document.getElementById("login").style.display = "none";
