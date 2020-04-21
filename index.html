@@ -1,11 +1,25 @@
 <html>
 
 <head>
-    <script src="./jquery-3.4.1.slim.min.js"></script>
-    <script>var userNameAndPassward = [{userName:"p", passward:"p"}];</script>
-    <script type="text/javascript" src="./app.js"></script>
+    <script src="js/jquery-3.4.1.slim.min.js"></script>
+    <script>
+        var userNameAndPassward = [{userName:"p", passward:"p"}];
+        localStorage.setItem("should_begin",false);
+
+        function clearAllLoggedUsers() {
+            for (i=0; i<localStorage.length; i++)
+            {
+                localStorage.setItem(localStorage.key(i),false);
+            }
+        }
+
+        clearAllLoggedUsers();
+    </script>
+    <script type="text/javascript" src="js/app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="css/main.css">
+
+
 
 </head>
 <body>
@@ -14,6 +28,7 @@
         <button class="navbuttons" onclick="openRelevantWindow(event, 'Welcome')">Welcome</button>
         <button class="navbuttons" id="signupButton" onclick="openRelevantWindow(event, 'signup')">Sign Up</button>
         <button class="navbuttons" id="loginButton" onclick="openRelevantWindow(event, 'login')">Login</button>
+        <button class="navbuttons" id="settingsButton" onclick="openRelevantWindow(event, 'Settings')">Settings</button>
         <button class="navbuttons" id="gameButton" onclick="openRelevantWindow(event, 'game')">Game</button>
         <button class="navbuttons" id="logoutButton" onclick="logoutUser(event)">Log out</button>
     </div>
@@ -24,13 +39,13 @@
         <br>
         <h3>Welcome to The awesome Pacman game!</h3>
         <p>This is our game, if you want to play, please signup for it.</p>
-        <button type="button" class="block" onclick="openRelevantWindow(event, 'signup')">Sign Up !</button>
+        <button type="button" id="signup-wlcm-Btn" class="block" onclick="openRelevantWindow(event, 'signup')">Sign Up !</button>
         <br>
-        <button type="button" class="block" onclick="openRelevantWindow(event, 'login')">Login !</button>
+        <button type="button" id="login-wlcm-Btn" class="block" onclick="openRelevantWindow(event, 'login')">Login !</button>
     </div>
 
     <div id="signup" class="window_content sign-up-form">
-        <img src="signupiconNobackground.png" class="signup-icon">
+        <img src="images/signupiconNobackground.png" class="signup-icon">
         <h3>Sign Up Now</h3>
         <form id="signup-form">
             <input type="email" class="input-box" id="signupUsername" placeholder="Enter Username">
@@ -61,6 +76,11 @@
         </form>
     </div>
 
+    <div id="Settings" class="window_content">
+        <h3>Set Your Game Settings</h3>
+        <p>Here Will be every settings related to the game</p>
+    </div>
+
     <div id="game" class="window_content">
         <div id="score">
             <label for="lblScore">SCORE:</label>
@@ -79,19 +99,37 @@
 
 
     <script>
-        function openRelevantWindow(evt, cityName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("window_content");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
+        function openRelevantWindow(evt, navButton) {
+            var i, windowsContent, navButtons;
+            windowsContent = document.getElementsByClassName("window_content");
+            for (i = 0; i < windowsContent.length; i++) {
+                windowsContent[i].style.display = "none";
             }
-            tablinks = document.getElementsByClassName("navbuttons");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            navButtons = document.getElementsByClassName("navbuttons");
+            for (i = 0; i < navButtons.length; i++) {
+                navButtons[i].className = navButtons[i].className.replace(" active", "");
             }
-            document.getElementById(cityName).style.display = "block";
+            document.getElementById(navButton).style.display = "block";
 
-            evt.currentTarget.crrTrgt.className += " active";
+            if(navButton == "game" && localStorage.getItem("should_begin") == "false")
+            {
+                localStorage.setItem("should_begin","true");
+                Start();
+            }
+
+            if(navButton == "Welcome")
+            {
+                for (i=0; i < localStorage.length; i++)
+                {
+                    if(localStorage.getItem(localStorage.key(i)) == "true")
+                    {
+                        document.getElementById("login-wlcm-Btn").style.display = "none";
+                        document.getElementById("signup-wlcm-Btn").style.display = "none";
+                    }
+                }
+            }
+
+            // evt.currentTarget.crrTrgt.className += " active";
 
         }
     </script>
@@ -106,14 +144,17 @@
                 if(userName=== userNameAndPassward[i].userName && passward === userNameAndPassward[i].passward){
                     document.getElementById("gameButton").style.display = "block";;
                     document.getElementById("logoutButton").style.display = "block";;
+                    document.getElementById("settingsButton").style.display = "block";;
                     document.getElementById("loginButton").style.display = "none";
                     document.getElementById("login").style.display = "none";
                     document.getElementById("signupButton").style.display = "none";
 
-                    pageToShow = document.getElementById("Welcome");
+                    document.getElementById("login").style.display = "none";
+                    pageToShow = document.getElementById("Settings");
                     pageToShow.style.display = "block";
 
                     console.log("userName: "+ userName +" Passward: "+ passward+ " login successfully");
+                    localStorage.setItem(userName,"true");
                     return
                 }
             }
@@ -149,6 +190,38 @@
 
             document.getElementById("signup-form").style.display = none;
 
+
+        }
+    </script>
+
+    <script class="signUpScript">
+        function logoutUser() {
+            var lclStrg = localStorage;
+
+            for (i=0; i< localStorage.length; i++)
+            {
+                if(localStorage.getItem(localStorage.key(i)) == "true")
+                {
+                    //user is not logged in anymore
+                    localStorage.setItem(localStorage.key(i), "false");
+                    localStorage.setItem("should_begin", "false");
+                    document.getElementById("gameButton").style.display = "none";;
+                    document.getElementById("logoutButton").style.display = "none";;
+                    document.getElementById("settingsButton").style.display = "none";;
+                    document.getElementById("loginButton").style.display = "block";
+                    document.getElementById("login").style.display = "block";
+                    document.getElementById("signupButton").style.display = "block";
+                    document.getElementById("signup-wlcm-Btn").style.display = "block";
+                    document.getElementById("login-wlcm-Btn").style.display = "block";
+
+                    document.getElementById("game").style.display = "none";
+                    document.getElementById("login").style.display = "none";
+                    document.getElementById("Settings").style.display = "none";
+                    pageToShow = document.getElementById("Welcome");
+                    pageToShow.style.display = "block";
+                    Start();
+                }
+            }
 
         }
     </script>

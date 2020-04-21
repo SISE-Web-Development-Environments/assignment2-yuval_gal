@@ -1,3 +1,8 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
 .nav {
     overflow: hidden;
     border: 1px solid #ccc;
@@ -50,12 +55,40 @@
     width: 100px;
     border-radius: 180px;
     margin-top: -60px;
-
 }
+
+.main{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.numberInput{
+    border: none;
+    outline: none;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.5);
+    cursor: text;
+    -webkit-appearance: none;
+    -webkit-writing-mode: horizontal-tb !important;
+}
+.numberInput:hover,
+.numberInput:focus{
+    background: #ff008b;
+    color: #fff;
+}
+
+
 
 #gameButton{
     display: none;
 }
+
+#settingsButton{
+    display: none;
+}
+
 
 #loginButton{
     display: inherit;
