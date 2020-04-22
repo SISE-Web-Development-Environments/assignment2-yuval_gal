@@ -59,6 +59,7 @@ body{
 
 #gameButton{
     display: none;
+    pointer-events: none;
 }
 
 #settingsButton{

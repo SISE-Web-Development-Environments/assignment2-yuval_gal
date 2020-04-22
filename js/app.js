@@ -6,18 +6,39 @@ var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
+var maxFood;
+var keyUp;
+var keyDown;
+var keyLeft;
+var keyRight;
+var maximumTime;
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
     Start();
 });
 
+function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls, colorMedBalls, colorHeavyBalls, chosenUp,
+						chosenDown, chosenLeft, chosenRight) {
+
+	maxFood = numOfEatableBalls;
+	keyUp = chosenUp;
+	keyDown = chosenDown;
+	keyLeft = chosenLeft;
+	keyRight = chosenRight;
+	maximumTime = maxTime;
+
+	window.focus();
+
+	Start();
+}
+
 function Start() {
 	board = new Array();
 	score = 0;
 	pac_color = "yellow";
 	var cnt = 100;
-	var food_remain = 50;
+	var food_remain = maxFood;
 	var pacman_remain = 1;
 	start_time = new Date();
 	for (var i = 0; i < 10; i++) {
@@ -162,14 +183,21 @@ function UpdatePosition() {
 		board[shape.i][shape.j] = 2;
 		var currentTime = new Date();
 		time_elapsed = (currentTime - start_time) / 1000;
-		if (score >= 20 && time_elapsed <= 10) {
+		if (score >= 20 && time_elapsed <= maximumTime) {
 			pac_color = "green";
 		}
-		if (score == 50) {
+		if(time_elapsed >= maximumTime)
+		{
 			window.clearInterval(interval);
-			window.alert("Game completed");
-		} else {
-			Draw();
+			window.alert("Game Over! Time is up");
+		}
+		else {
+			if (score == 50) {
+				window.clearInterval(interval);
+				window.alert("Game completed");
+			} else {
+				Draw();
+			}
 		}
 	}
 }

@@ -17,6 +17,8 @@
         clearAllLoggedUsers();
     </script>
     <script type="text/javascript" src="js/app.js"></script>
+<!--    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">-->
+    <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/main.css">
 
@@ -78,8 +80,44 @@
     </div>
 
     <div id="Settings" class="window_content">
-        <h3>Set Your Game Settings</h3>
-        <p>Here Will be every settings related to the game</p>
+        <h1>Set Your Game Settings</h1>
+        <div class="main">
+            <form>
+                <table style="width:100%">
+                    <tr>
+                        <th> KeySelection </th>
+                        <th> Time Settings </th>
+                        <th> Balls Settings </th>
+                        <th> General Settings </th>
+                    </tr>
+                    <tr>
+                        <td>Up:  <input class="choseable_keys" id="keyUp" onclick="keyPressedSelector(this.id)" type="button" value="ArrowUp"></td>
+                        <td>Select Max Time for the game: <input id="maxTimeForGame" type="number" min="60" value="60"></td>
+                        <td>Select number of eatable balls:    <input id="numOfBalls" type="number" min="1" value="30" max="99"></td>
+                        <td>Select the number of ghosts:    <input id="numOfGhosts" type="number" min="1" max="10" value="4"></td>
+                    </tr>
+                    <tr>
+                        <td>Down:  <input class="choseable_keys" id="keyDown" onclick="keyPressedSelector(this.id)" type="button" value="ArrowDown"></td>
+                        <td></td>
+                        <td>Select Color for the light balls:    <input id="lightBallColor" type="color" value="#0000ff"></td>
+                    </tr>
+                    <tr>
+                        <td>Left:  <input class="choseable_keys" id="keyLeft" onclick="keyPressedSelector(this.id)" type="button" value="ArrowLeft"></td>
+                        <td></td>
+                        <td>Select Color for the medium balls:    <input id="medBallColor" type="color" value="#ff0000"></td>
+                    </tr>
+                    <tr>
+                        <td>Right:  <input class="choseable_keys" id="keyRight" onclick="keyPressedSelector(this.id)" type="button" value="ArrowRight"></td>
+                        <td></td>
+                        <td>Select Color for the hevy balls:    <input id="heavyBallColor" type="color" value="#000000"></td>
+                    </tr>
+                </table>
+                <div style="margin-top: 3%;">
+                    <input  type="button" id="settingsRndmButton" value="randomize all values" onclick="randomizeSettings()">
+                    <input style="margin-left: 30%;" type="button" id="settingStartGameButton" onclick="beginGame()" value="Let's Start the Game!">
+                </div>
+            </form>
+        </div>
     </div>
 
     <div id="game" class="window_content">
@@ -101,6 +139,115 @@
 
 <!-------------------------------------------------Scripts--------------------------------->
 
+    <script type="text/javascript">
+        function keyPressedSelector(keyId) {
+            console.log(keyId);
+            var keyPressed = $("#" + keyId);
+            keyPressed.keydown(function (event) {
+                keyPressed.prop("value",event.key);
+                keyPressed.off("keydown");
+            });
+
+        }
+    </script>
+
+    <script type="text/javascript">
+
+        function validateSettings() {
+            var valueOfKeyUp = document.getElementById("keyUp").value;
+            var valueOfKeyDown = document.getElementById("keyDown").value;
+            var valueOfKeyLeft = document.getElementById("keyLeft").value;
+            var valueOfKeyRight = document.getElementById("keyRight").value;
+
+            var colorLight = document.getElementById("lightBallColor").value;
+            var colorMed = document.getElementById("medBallColor").value;
+            var colorHev = document.getElementById("heavyBallColor").value;
+
+            if(valueOfKeyUp === valueOfKeyDown || valueOfKeyUp === valueOfKeyLeft || valueOfKeyUp === valueOfKeyRight
+                || valueOfKeyDown === valueOfKeyLeft || valueOfKeyDown === valueOfKeyRight || valueOfKeyLeft === valueOfKeyRight
+                || colorLight === colorMed || colorLight === colorHev || colorMed === colorHev)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        function getSettingsValue() {
+            var maxTime = document.getElementById("maxTimeForGame").value;
+            var valueOfKeyUp = document.getElementById("keyUp").value;
+            var valueOfKeyDown = document.getElementById("keyDown").value;
+            var valueOfKeyLeft = document.getElementById("keyLeft").value;
+            var valueOfKeyRight = document.getElementById("keyRight").value;
+
+            var colorLight = document.getElementById("lightBallColor").value;
+            var colorMed = document.getElementById("medBallColor").value;
+            var colorHev = document.getElementById("heavyBallColor").value;
+
+            var numOfEatableBalls = document.getElementById("numOfBalls").value;
+            var numOfGhosts = document.getElementById("numOfGhosts").value;
+
+
+            return [maxTime, numOfEatableBalls, numOfGhosts, colorLight,colorMed,colorHev,valueOfKeyUp,valueOfKeyDown,valueOfKeyLeft,valueOfKeyRight];
+        }
+
+        function beginGame() {
+            if(validateSettings())
+            {
+                var settingsValues = getSettingsValue();
+                localStorage.setItem("should_begin","true");
+                document.getElementById("game").style.display = "block";
+                setSettingVars(settingsValues[0],settingsValues[1],settingsValues[2],settingsValues[3],settingsValues[4],settingsValues[5],settingsValues[6],
+                    settingsValues[7],settingsValues[8],settingsValues[9],settingsValues[10]);
+
+                return;
+            }
+            alert("Keys and Colors could not be Equals");
+        }
+
+    </script>
+
+
+    <script type="text/javascript">
+        function randomizeSettings() {
+            //Generate Random Max Time
+            var randomTime = Math.floor(Math.random()*3600)+60;
+            document.getElementById("maxTimeForGame").value = randomTime;
+
+            //Generate Random of eatable balls
+            var randomEatBalls = Math.floor(Math.random()*100)+1;
+            document.getElementById("numOfBalls").value = randomEatBalls;
+
+            //Generate Random of Ghosts
+            var randomGhosts = Math.floor(Math.random()*9)+1;
+            document.getElementById("numOfGhosts").value = randomGhosts;
+
+            //Generate Random of Colors - Light
+            var randomLightColor = getRandomColor();
+            document.getElementById("lightBallColor").value = randomLightColor;
+
+            //Generate Random of Colors - Medium
+            var randomMedColor = getRandomColor();
+            document.getElementById("medBallColor").value = randomMedColor;
+
+            //Generate Random of Colors - Heavy
+            var randomHeavyColor = getRandomColor();
+            document.getElementById("heavyBallColor").value = randomHeavyColor;
+
+        }
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+
+    </script>
+
     <script>
         function openRelevantWindow(evt, navButton) {
             var i;
@@ -113,7 +260,6 @@
             if(navButton == "game" && localStorage.getItem("should_begin") == "false")
             {
                 localStorage.setItem("should_begin","true");
-                Start();
             }
 
             if(navButton == "Welcome")
@@ -138,7 +284,7 @@
                     console.log("userName: "+ userName +" Passward: "+ passward+ " login successfully");
                     localStorage.setItem(userName,"true");
                     showWelcomeWindow();
-                    return
+                    return;
                 }
             }
             alert("Wrong username or password please  try again");
