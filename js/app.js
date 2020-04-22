@@ -12,6 +12,7 @@ var hitSound;
 var interval;
 var startAngle;
 var lastKeyPressed;
+var pill;
 $(document).ready(function() {
 	context = canvas.getContext("2d");
     Start();
@@ -23,6 +24,7 @@ function Start() {
 	score = 0;
 	pac_color = "yellow";
 	Killed = 5; // initial number of Killed
+	pill=3;
 	var cnt = 100;
 	var food_remain = 50;
 	var pacman_remain = 1;
@@ -66,6 +68,11 @@ function Start() {
 		var emptyCell = findRandomEmptyCell(board);
 		board[emptyCell[0]][emptyCell[1]] = 1;  ///FOOD
 		food_remain--;
+	}
+	while (pill>0){
+		var emptycellforpill = findRandomEmptyCell(board);
+		board[emptycellforpill[0]][emptycellforpill[1]] = 7;  ///Pill
+		pill--;
 	}
 	keysDown = {};
 	addEventListener(
@@ -136,7 +143,7 @@ function Draw() {
 				context.fill();
 				context.beginPath();
 				if (lastKeyPressed == "UP") { //WHERE TO PUT THE EYE OF PACMAN
-					context.arc(center.x - 15, center.y + 5, 5, startAngle, 2 * Math.PI + startAngle);
+					context.arc(center.x - 15, center.y + 5, 5, startAngle, 2 *Math.PI+startAngle);
 				} else if (lastKeyPressed == "LEFT") {
 					context.arc(center.x - 5, center.y - 15, 5, startAngle, 2 * Math.PI + startAngle);
 				} else if (lastKeyPressed == "DOWN") {
@@ -158,6 +165,12 @@ function Draw() {
 				context.beginPath();
 				context.rect(center.x - 30, center.y - 30, 60, 60);
 				context.fillStyle = "grey"; //color --WALLS????
+				context.fill();
+			}
+			else if(board[i][j] == 7){
+				context.beginPath();
+				context.rect(center.x - 30, center.y - 30, 60, 60);
+				context.fillStyle = "red"; //pill
 				context.fill();
 			}
 		}
@@ -194,12 +207,18 @@ function UpdatePosition() {
 		var x = GetKeyPressed();
 		if (x == 1) {
 			if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
+				if(board[shape.i][shape.j - 1] == 7){
+					Killed = Killed+1;
+				}
 				lastKeyPressed="UP";
 				shape.j--;
 			}
 		}
 		if (x == 2) {
 			if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
+				if(board[shape.i][shape.j + 1] == 7){
+					Killed = Killed+1;
+				}
 				lastKeyPressed="DOWN";
 				shape.j++;
 
@@ -207,12 +226,18 @@ function UpdatePosition() {
 		}
 		if (x == 3) {
 			if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
+				if(board[shape.i - 1][shape.j] == 7){
+					Killed = Killed+1;
+				}
 				lastKeyPressed="LEFT";
 				shape.i--;
 			}
 		}
 		if (x == 4) {
 			if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
+				if(board[shape.i + 1][shape.j] == 7){
+					Killed = Killed+1;
+				}
 				lastKeyPressed="RIGHT";
 				shape.i++;
 			}
