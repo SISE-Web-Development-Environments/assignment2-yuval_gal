@@ -93,6 +93,16 @@
             <input id="lblTime" type="text" />
         </div>
 
+        <div id="points">
+            <label for="lblPoints">Points:</label>
+            <input id="lblPoints" type="text" />
+        </div>
+
+        <div id="Killed">
+            <label for="lblKilled">Killed:</label>
+            <input id="lblKilled" type="text" />
+        </div>
+
         <div id="actual_game">
             <canvas id="canvas" height="600" width="600"></canvas>
         </div>
@@ -131,7 +141,6 @@
 
             var userName = document.getElementById('userName').value;
             var passward = document.getElementById('password').value;
-
             for(i=0; i < userNameAndPassward.length; i++){
                 if(userName=== userNameAndPassward[i].userName && passward === userNameAndPassward[i].passward){
                     clearButtonsForUser("false")

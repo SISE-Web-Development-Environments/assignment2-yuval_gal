@@ -2,11 +2,12 @@ var context;
 var shape = new Object();
 var board;
 var score;
+var points;
+var Killed;
 var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
-
 $(document).ready(function() {
 	context = canvas.getContext("2d");
     Start();
@@ -16,6 +17,8 @@ function Start() {
 	board = new Array();
 	score = 0;
 	pac_color = "yellow";
+	points = 0; // initial number of points
+	Killed = 5; // initial number of Killed
 	var cnt = 100;
 	var food_remain = 50;
 	var pacman_remain = 1;
@@ -101,6 +104,8 @@ function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
+	lblPoints.value = points;
+	lblKilled.value = Killed;
 	for (var i = 0; i < 10; i++) {
 		for (var j = 0; j < 10; j++) {
 			var center = new Object();
@@ -172,4 +177,11 @@ function UpdatePosition() {
 			Draw();
 		}
 	}
+
+
+	// The main game loop
+	function main() {
+		UpdatePosition();
+		Draw();
+	};
 }
