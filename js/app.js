@@ -136,11 +136,11 @@ function Draw() {
 				context.fill();
 				context.beginPath();
 				if (lastKeyPressed == "UP") { //WHERE TO PUT THE EYE OF PACMAN
-					context.arc(center.x - 15, center.y + 5, 5, startAngle, 2 * Math.PI + startAngle); // circle
+					context.arc(center.x - 15, center.y + 5, 5, startAngle, 2 * Math.PI + startAngle);
 				} else if (lastKeyPressed == "LEFT") {
-					context.arc(center.x - 5, center.y - 15, 5, startAngle, 2 * Math.PI + startAngle); // !
+					context.arc(center.x - 5, center.y - 15, 5, startAngle, 2 * Math.PI + startAngle);
 				} else if (lastKeyPressed == "DOWN") {
-					context.arc(center.x - 15, center.y + 5, 5, startAngle, 2 * Math.PI + startAngle); // circle
+					context.arc(center.x - 15, center.y + 5, 5, startAngle, 2 * Math.PI + startAngle);
 				} else if(lastKeyPressed =="RIGHT"){
 					context.arc(center.x + 5, center.y - 15, 5, startAngle, 2 * Math.PI + startAngle);
 				}
