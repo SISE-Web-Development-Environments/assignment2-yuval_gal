@@ -25,6 +25,7 @@ function Start() {
 	pac_color = "yellow";
 	Killed = 5; // initial number of Killed
 	pill=3;
+	moreWalls=9;
 	var cnt = 100;
 	var food_remain = 50;
 	var pacman_remain = 1;
@@ -73,6 +74,11 @@ function Start() {
 		var emptycellforpill = findRandomEmptyCell(board);
 		board[emptycellforpill[0]][emptycellforpill[1]] = 7;  ///Pill
 		pill--;
+	}
+	while (moreWalls>0){
+		var emptycellformoreWalls = findRandomEmptyCell(board);
+		board[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 4;  ///Wall
+		moreWalls--;
 	}
 	keysDown = {};
 	addEventListener(
@@ -249,7 +255,7 @@ function UpdatePosition() {
 		board[shape.i][shape.j] = 2; // The location of the pacman
 		var currentTime = new Date();
 		time_elapsed = (currentTime - start_time) / 1000;
-		if (score >= 20 && time_elapsed <= 10) { //AFTER THIS THE PACMAN IS GREEN -NOTE TO AND!!!
+		if (score >= 20 && time_elapsed <= 10) { //AFTER THIS THE PACMAN IS PINK -NOTE TO AND!!!
 			pac_color = "pink";
 		}
 		if (score == 50) { //NEED TO CHANGE ACOORDING THE ASS.2
