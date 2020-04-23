@@ -19,7 +19,7 @@ var pacmangirl;
 var pacmangirlup;
 var pacmangirldown;
 var pacmangirlright;
-
+var restart;
 $(document).ready(function() {
 	context = canvas.getContext("2d");
     Start();
@@ -52,8 +52,8 @@ function Start() {
 	backroundSound = document.getElementById( "backroundSound" );
 	hitSound = document.getElementById( "hitSound" );
 	eatSound = document.getElementById("eatSound");
-	//usernametodisplay = document.getElementById('userName');
-
+	restart = document.getElementById("restartBtn");
+	restart.addEventListener("click",gameRestart);
 	start_time = new Date();
 	for (var i = 0; i < 10; i++) {
 		board[i] = new Array();
@@ -187,6 +187,9 @@ function Draw() {
 	}
 }
 
+function gameRestart(){
+	Start();
+}
 
 function UpdatePosition() {
 	if(localStorage.getItem("should_begin") == "true") {
