@@ -11,7 +11,6 @@ var pillSound;
 var eatSound;
 var hitSound;
 var interval;
-var startAngle;
 var wallImage;
 var pillImage;
 var lastKeyPressed;
@@ -55,7 +54,7 @@ function initializeParameters() {
 	Killed = 5; // initial number of Killed
 	pill=3;
 	moreWalls=9;
-	numOfGhost=5;
+	numOfGhost=4;
 }
 
 function Start() {
