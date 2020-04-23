@@ -26,19 +26,30 @@ $(document).ready(function() {
     Start();
 });
 
-function Start() {
+function initializeImages() {
 	wallImage = new Image();
-	wallImage.src = "walls.PNG";
+	wallImage.src = "images/walls.PNG";
 	pillImage = new Image();
-	pillImage.src = "pill.png";
+	pillImage.src = "images/pill.png";
 	pacmangirl = new Image();
-	pacmangirl.src = "pacmangirl.png";
+	pacmangirl.src = "images/pacmangirl.png";
 	pacmangirldown = new Image();
-	pacmangirldown.src = "pacmangirldown.png";
+	pacmangirldown.src = "images/pacmangirldown.png";
 	pacmangirlup = new Image();
-	pacmangirlup.src = "pacmangirlup.png";
+	pacmangirlup.src = "images/pacmangirlup.png";
 	pacmangirlright = new Image();
-	pacmangirlright.src = "pacmangirlright.png";
+	pacmangirlright.src = "images/pacmangirlright.png";
+}
+
+function initializeAudio() {
+	backroundSound = document.getElementById( "backroundSound" );
+	hitSound = document.getElementById( "hitSound" );
+	eatSound = document.getElementById("eatSound");
+	pillSound = document.getElementById("pillSound");
+}
+
+function Start() {
+	initializeImages();
 	lastKeyPressed ="NOKEY";
 	board = new Array();
 	score = 0;
@@ -50,10 +61,8 @@ function Start() {
 	var food_remain = 50;
 	var pacman_remain = 1;
 	//Sounds
-	backroundSound = document.getElementById( "backroundSound" );
-	hitSound = document.getElementById( "hitSound" );
-	eatSound = document.getElementById("eatSound");
-	pillSound = document.getElementById("pillSound");
+	initializeAudio();
+
 	restart = document.getElementById("restartBtn");
 	restart.addEventListener("click",gameRestart);
 	start_time = new Date();
