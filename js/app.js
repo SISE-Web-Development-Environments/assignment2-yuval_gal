@@ -7,6 +7,7 @@ var pac_color;
 var start_time;
 var time_elapsed;
 var backroundSound;
+var pillSound;
 var eatSound;
 var hitSound;
 var interval;
@@ -52,6 +53,7 @@ function Start() {
 	backroundSound = document.getElementById( "backroundSound" );
 	hitSound = document.getElementById( "hitSound" );
 	eatSound = document.getElementById("eatSound");
+	pillSound = document.getElementById("pillSound");
 	restart = document.getElementById("restartBtn");
 	restart.addEventListener("click",gameRestart);
 	start_time = new Date();
@@ -199,6 +201,7 @@ function UpdatePosition() {
 			if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
 				if(board[shape.i][shape.j - 1] == 7){
 					Killed = Killed+1;
+					pillSound.play();
 				}
 				lastKeyPressed="UP";
 				shape.j--;
@@ -208,6 +211,7 @@ function UpdatePosition() {
 			if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
 				if(board[shape.i][shape.j + 1] == 7){
 					Killed = Killed+1;
+					pillSound.play();
 				}
 				lastKeyPressed="DOWN";
 				shape.j++;
@@ -218,6 +222,7 @@ function UpdatePosition() {
 			if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
 				if(board[shape.i - 1][shape.j] == 7){
 					Killed = Killed+1;
+					pillSound.play();
 				}
 				lastKeyPressed="LEFT";
 				shape.i--;
@@ -227,6 +232,7 @@ function UpdatePosition() {
 			if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
 				if(board[shape.i + 1][shape.j] == 7){
 					Killed = Killed+1;
+					pillSound.play();
 				}
 				lastKeyPressed="RIGHT";
 				shape.i++;
