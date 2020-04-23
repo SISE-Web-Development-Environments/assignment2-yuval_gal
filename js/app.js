@@ -57,7 +57,7 @@ function initializeParameters() {
 	numOfGhost=4;
 }
 
-function Start() {
+function Start() {  
 	initializeImages();
 	initializeAudio();
 	initializeParameters();
