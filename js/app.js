@@ -50,6 +50,7 @@ function initializeAudio() {
 
 function Start() {
 	initializeImages();
+	initializeAudio();
 	lastKeyPressed ="NOKEY";
 	board = new Array();
 	score = 0;
@@ -60,9 +61,6 @@ function Start() {
 	var cnt = 100;
 	var food_remain = 50;
 	var pacman_remain = 1;
-	//Sounds
-	initializeAudio();
-
 	restart = document.getElementById("restartBtn");
 	restart.addEventListener("click",gameRestart);
 	start_time = new Date();
@@ -77,19 +75,19 @@ function Start() {
 				(i == 6 && j == 1) ||
 				(i == 6 && j == 2)
 			) {
-				board[i][j] = 4; ////Walls????
+				board[i][j] = 4; ////Walls
 			} else {
 				var randomNum = Math.random();
 				if (randomNum <= (1.0 * food_remain) / cnt) {
 					food_remain--;
-					board[i][j] = 1; //FOOD
+					board[i][j] = 1; //Food
 				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
 					shape.i = i;
 					shape.j = j;
 					pacman_remain--;
-					board[i][j] = 2; //PACMAN
+					board[i][j] = 2; //Pacman
 				} else {
-					board[i][j] = 0; //??????///WALLS????
+					board[i][j] = 0; //Empty cells
 				}
 				cnt--;
 			}
@@ -264,12 +262,4 @@ function UpdatePosition() {
 			Draw();
 		}
 	}
-
-
-	// The main game loop
-	//NEED TO THINK ABOUT MAIN LOOP
-	function main() {
-		UpdatePosition();
-		Draw();
-	};
 }
