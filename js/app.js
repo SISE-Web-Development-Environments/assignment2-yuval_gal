@@ -21,6 +21,8 @@ var pacmangirlup;
 var pacmangirldown;
 var pacmangirlright;
 var restart;
+var numOfGhost;
+var ghostImage;
 $(document).ready(function() {
 	context = canvas.getContext("2d");
     Start();
@@ -39,25 +41,30 @@ function initializeImages() {
 	pacmangirlup.src = "images/pacmangirlup.png";
 	pacmangirlright = new Image();
 	pacmangirlright.src = "images/pacmangirlright.png";
+	ghostImage = new Image();
+	ghostImage.src = "images/images.png";
 }
-
 function initializeAudio() {
 	backroundSound = document.getElementById( "backroundSound" );
 	hitSound = document.getElementById( "hitSound" );
 	eatSound = document.getElementById("eatSound");
 	pillSound = document.getElementById("pillSound");
 }
+function initializeParameters() {
+	lastKeyPressed ="NOKEY"; // Note-start game no key pressed
+	Killed = 5; // initial number of Killed
+	pill=3;
+	moreWalls=9;
+	numOfGhost=5;
+}
 
 function Start() {
 	initializeImages();
 	initializeAudio();
-	lastKeyPressed ="NOKEY";
+	initializeParameters();
 	board = new Array();
 	score = 0;
-	pac_color = "yellow";
-	Killed = 5; // initial number of Killed
-	pill=3;
-	moreWalls=9;
+	//pac_color = "yellow";
 	var cnt = 100;
 	var food_remain = 50;
 	var pacman_remain = 1;
@@ -107,6 +114,11 @@ function Start() {
 		var emptycellformoreWalls = findRandomEmptyCell(board);
 		board[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 4;  ///Wall
 		moreWalls--;
+	}
+	while (numOfGhost>0){
+		var emptycellforGhost = findRandomEmptyCell(board);
+		board[emptycellforGhost[0]][emptycellforGhost[1]] = 8;  ///Wall
+		numOfGhost--;
 	}
 	keysDown = {};
 	addEventListener(
@@ -192,6 +204,9 @@ function Draw() {
 			else if(board[i][j] == 7){
 				context.drawImage(pillImage,center.x - 30,center.y - 30,60,60);
 			}
+			else if(board[i][j] == 8){
+				context.drawImage(ghostImage,center.x - 30,center.y - 30,60,60);
+			}
 		}
 	}
 }
@@ -253,7 +268,7 @@ function UpdatePosition() {
 		var currentTime = new Date();
 		time_elapsed = (currentTime - start_time) / 1000;
 		if (score >= 20 && time_elapsed <= 10) { //AFTER THIS THE PACMAN IS PINK -NOTE TO AND!!!
-			pac_color = "pink";
+			//pac_color = "pink";
 		}
 		if (score == 50) { //NEED TO CHANGE ACOORDING THE ASS.2
 			window.clearInterval(interval);
