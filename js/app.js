@@ -11,14 +11,33 @@ var eatSound;
 var hitSound;
 var interval;
 var startAngle;
+var wallImage;
+var pillImage;
 var lastKeyPressed;
 var pill;
+var pacmangirl;
+var pacmangirlup;
+var pacmangirldown;
+var pacmangirlright;
+
 $(document).ready(function() {
 	context = canvas.getContext("2d");
     Start();
 });
 
 function Start() {
+	wallImage = new Image();
+	wallImage.src = "walls.PNG";
+	pillImage = new Image();
+	pillImage.src = "pill.png";
+	pacmangirl = new Image();
+	pacmangirl.src = "pacmangirl.png";
+	pacmangirldown = new Image();
+	pacmangirldown.src = "pacmangirldown.png";
+	pacmangirlup = new Image();
+	pacmangirlup.src = "pacmangirlup.png";
+	pacmangirlright = new Image();
+	pacmangirlright.src = "pacmangirlright.png";
 	lastKeyPressed ="NOKEY";
 	board = new Array();
 	score = 0;
@@ -128,7 +147,6 @@ function GetKeyPressed() {
 }
 
 function Draw() {
-	startAngle=getStartAngleForDraw();
 	backroundSound.play();
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
@@ -141,71 +159,36 @@ function Draw() {
 			center.x = i * 60 + 30;
 			center.y = j * 60 + 30;
 			if (board[i][j] == 2) { //Draw pacman
-				context.beginPath();
-				//WHERE TO PUT THE PACMAN
-				context.arc(center.x, center.y, 30, startAngle, 1.8 * Math.PI + startAngle);
-				context.lineTo(center.x, center.y);
-				context.fillStyle = pac_color; //color
-				context.fill();
-				context.beginPath();
 				if (lastKeyPressed == "UP") { //WHERE TO PUT THE EYE OF PACMAN
-					context.arc(center.x - 15, center.y + 5, 5, startAngle, 2 *Math.PI+startAngle);
+					context.drawImage(pacmangirlup,center.x -30,center.y-30,60,60);
 				} else if (lastKeyPressed == "LEFT") {
-					context.arc(center.x - 5, center.y - 15, 5, startAngle, 2 * Math.PI + startAngle);
+					context.drawImage(pacmangirl,center.x -30,center.y-30,60,60);
 				} else if (lastKeyPressed == "DOWN") {
-					context.arc(center.x - 15, center.y + 5, 5, startAngle, 2 * Math.PI + startAngle);
+					context.drawImage(pacmangirldown,center.x -30,center.y-30,60,60);
 				} else if(lastKeyPressed =="RIGHT"){
-					context.arc(center.x + 5, center.y - 15, 5, startAngle, 2 * Math.PI + startAngle);
+					context.drawImage(pacmangirlright,center.x -30,center.y-30,60,60);
 				}
 				else if(lastKeyPressed =="NOKEY"){
-					context.arc(center.x + 5, center.y - 15, 5, startAngle, 2 * Math.PI + startAngle);
+					context.drawImage(pacmangirl,center.x -30,center.y-30,60,60);
 				}
-				context.fillStyle = "black"; //color
-				context.fill();
+
 			} else if (board[i][j] == 1) { //Draw food
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
 			} else if (board[i][j] == 4) {
-				context.beginPath();
-				context.rect(center.x - 30, center.y - 30, 60, 60);
-				context.fillStyle = "grey"; //color --WALLS????
-				context.fill();
+				context.drawImage(wallImage,center.x - 30,center.y - 30,60,60);
+
 			}
 			else if(board[i][j] == 7){
-				context.beginPath();
-				context.rect(center.x - 30, center.y - 30, 60, 60);
-				context.fillStyle = "red"; //pill
-				context.fill();
+				context.drawImage(pillImage,center.x - 30,center.y - 30,60,60);
+
 			}
 		}
 	}
 }
 
-
-function getStartAngleForDraw() {
-	if(lastKeyPressed=="UP"){
-		startAngle= -0.5 * Math.PI;
-		return startAngle;
-	}
-	else if(lastKeyPressed=="DOWN") {
-		startAngle = 0.5 * Math.PI;
-		return startAngle;
-	}
-	else if(lastKeyPressed=="LEFT") {
-		startAngle = Math.PI;
-		return startAngle;
-	}
-	else if(lastKeyPressed=="RIGHT") {
-		startAngle = 0;
-		return startAngle;
-	}
-	else{
-		startAngle =0;
-		return startAngle;
-	}
-}
 
 function UpdatePosition() {
 	if(localStorage.getItem("should_begin") == "true") {
