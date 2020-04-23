@@ -179,11 +179,9 @@ function Draw() {
 				context.fill();
 			} else if (board[i][j] == 4) {
 				context.drawImage(wallImage,center.x - 30,center.y - 30,60,60);
-
 			}
 			else if(board[i][j] == 7){
 				context.drawImage(pillImage,center.x - 30,center.y - 30,60,60);
-
 			}
 		}
 	}
