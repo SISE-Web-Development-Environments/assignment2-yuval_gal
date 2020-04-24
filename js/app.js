@@ -33,6 +33,17 @@ var eatGhost;
 var cnt;
 var food_remain;
 var pacman_remain;
+var applesArray;
+var pillsArray;
+var ghostArray;
+var lastGhostMovementTime;
+
+const ghost = {
+	rowIndex: 0,
+	colIndex: 0,
+
+};
+
 $(document).ready(function() {
 	context = canvas.getContext("2d");
     Start();
@@ -47,6 +58,8 @@ function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls
 	keyLeft = chosenLeft;
 	keyRight = chosenRight;
 	maximumTime = maxTime;
+	numOfGhost = numOfGhosts;
+
 
 	window.focus();
 	Start();
@@ -80,22 +93,31 @@ function initializeParameters() {
 	Killed = 5; // initial number of Killed
 	pill=3;
 	moreWalls=9;
+	//TODO: remove this line after starting to use the settings values
 	numOfGhost=4;
 	score = 0;
-	board = new Array();
+	board = [];
+	applesArray = [];
+	pillsArray = [];
+	ghostArray = new Array(numOfGhost);
 	cnt = 100;
 	food_remain = maxFood;
 	pacman_remain = 1;
 	restart = document.getElementById("restartBtn");
 	restart.addEventListener("click",gameRestart);
 	start_time = new Date();
+	lastGhostMovementTime = new Date();
 }
 
 function drawGhost() {
-	while (numOfGhost > 0) {
+	var ghostToIterate = numOfGhost;
+	while (ghostToIterate > 0) {
 		var emptycellforGhost = findRandomEmptyCell(board);
 		board[emptycellforGhost[0]][emptycellforGhost[1]] = 8;
-		numOfGhost--;
+		ghostArray[ghostToIterate-1] = Object.create(ghost);
+		ghostArray[ghostToIterate-1].rowIndex = emptycellforGhost[0];
+		ghostArray[ghostToIterate-1].colIndex = emptycellforGhost[1];
+		ghostToIterate--;
 	}
 }
 
@@ -105,7 +127,9 @@ function Start() {
 	initializeParameters();
 
 	for (var i = 0; i < 10; i++) {
-		board[i] = new Array();
+		board[i] = [];
+		applesArray[i] = [];
+		pillsArray[i] = [];
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
 		for (var j = 0; j < 10; j++) {
 			if (
@@ -136,11 +160,13 @@ function Start() {
 	while (food_remain > 0) {
 		var emptyCell = findRandomEmptyCell(board);
 		board[emptyCell[0]][emptyCell[1]] = 1;
+		applesArray[emptyCell[0]][emptyCell[1]] = 1;
 		food_remain--;
 	}
 	while (pill>0){
 		var emptycellforpill = findRandomEmptyCell(board);
 		board[emptycellforpill[0]][emptycellforpill[1]] = 7;
+		pillsArray[emptycellforpill[0]][emptycellforpill[1]] = 7;
 		pill--;
 	}
 	while (moreWalls>0){
@@ -197,7 +223,7 @@ function GetKeyPressed() {
 }
 
 function Draw() {
-	backroundSound.play();
+	// backroundSound.play();
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
@@ -244,7 +270,99 @@ function gameRestart(){
 	Start();
 }
 
+// function getGhostIndexes() {
+// 	for (var i = 0; i < 10; i++) {
+// 		for (var j = 0; j < 10; j++) {
+// 			if(board[i][j] === 8)
+// 			{
+// 				return [i,j];
+// 			}
+// 		}
+// 	}
+// 	return 0;
+// }
+
+function checkApplesOrPills(rowIndex, colIndex) {
+	if(applesArray[rowIndex][colIndex] === 1)
+	{
+		board[rowIndex][colIndex] = 1;
+	}
+	else if(pillsArray[rowIndex][colIndex] === 1)
+	{
+		board[rowIndex][colIndex] = 7;
+	}
+	else
+	{
+		board[rowIndex][colIndex] = 0;
+	}
+}
+
+function chooseRandomMovement(ghostToMakeMove) {
+	var isLegal = false;
+	var rowIndex = ghostToMakeMove.rowIndex;
+	var colIndex = ghostToMakeMove.colIndex;
+	while (!isLegal) {
+		var randomMove = Math.random();
+
+		if (randomMove < 0.25) {
+			if (board[rowIndex - 1][colIndex] !== 4) {//Up
+				board[rowIndex - 1][colIndex] = 8;
+				checkApplesOrPills(rowIndex,colIndex);
+				ghostToMakeMove.rowIndex -= 1;
+				return;
+			}
+		} else if (randomMove >= 0.25 && randomMove < 0.5) {//Down
+			if (board[rowIndex + 1][colIndex] !== 4) {
+				board[rowIndex + 1][colIndex] = 8;
+				checkApplesOrPills(rowIndex,colIndex);
+				ghostToMakeMove.rowIndex += 1;
+				return;
+			}
+		} else if (randomMove >= 0.5 && randomMove < 0.75) {//Left
+			if (board[rowIndex][colIndex - 1] !== 4) {
+				board[rowIndex][colIndex - 1] = 8;
+				checkApplesOrPills(rowIndex,colIndex);
+				ghostToMakeMove.colIndex -= 1;
+				return;
+			}
+		} else if (randomMove >= 0.75 && randomMove < 1) {//Right
+			if (board[rowIndex][colIndex + 1] !== 4) {
+				board[rowIndex][colIndex + 1] = 8;
+				checkApplesOrPills(rowIndex,colIndex);
+				ghostToMakeMove.colIndex += 1;
+				return;
+			}
+		}
+	}
+}
+
+
+
+function moveGhostsRandomly() {
+	var countGhosts = 0;
+	while (countGhosts < numOfGhost)
+	{
+		// console.log("What the hell");
+		// var ghostIndexes = getGhostIndexes();
+		// if(ghostIndexes === 0)
+		// {
+		// 	console.error("Something Went Wrong finding the " + (countGhosts+1) + " ghost");
+		// 	return;
+		// }
+		chooseRandomMovement(ghostArray[countGhosts]);
+		countGhosts++;
+	}
+}
+
 function UpdatePosition() {
+	var ghostMoveTime = new Date();
+	var ghost_time_elapsed = (ghostMoveTime - lastGhostMovementTime) / 1000;
+	if(ghost_time_elapsed > 1)
+	{
+		moveGhostsRandomly();
+		lastGhostMovementTime = new Date();
+	}
+
 	if(localStorage.getItem("should_begin") == "true") {
 		board[shape.i][shape.j] = 0;
 		var x = GetKeyPressed();
@@ -284,6 +402,7 @@ function UpdatePosition() {
 				if(board[shape.i + 1][shape.j] == 7){
 					Killed = Killed+1;
 					pillSound.play();
+					pillsArray[shape.i][shape.j] = 0;
 				}
 				lastKeyPressed="RIGHT";
 				shape.i++;
@@ -292,6 +411,7 @@ function UpdatePosition() {
 		if (board[shape.i][shape.j] == 1) { // This is the score of 5 points balls!!!!!
 			score=score+5;
 			eatSound.play();
+			applesArray[shape.i][shape.j] = 0;
 		}
 		if (board[shape.i][shape.j] == 8) { // This is the score of 5 points balls!!!!!
 			score=score-10;
@@ -314,6 +434,7 @@ function UpdatePosition() {
 		{
 			window.clearInterval(interval);
 			window.alert("Game Over! Time is up");
+			return;
 		}
 		else {
 			if (score == 50) {
@@ -323,5 +444,8 @@ function UpdatePosition() {
 				Draw();
 			}
 		}
+
+
+
 	}
 }
