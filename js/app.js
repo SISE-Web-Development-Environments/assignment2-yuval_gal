@@ -11,6 +11,13 @@ var pillSound;
 var eatSound;
 var hitSound;
 var interval;
+var maxFood;
+var keyUp;
+var keyDown;
+var keyLeft;
+var keyRight;
+var maximumTime;
+
 var wallImage;
 var pillImage;
 var lastKeyPressed;
@@ -26,6 +33,21 @@ $(document).ready(function() {
 	context = canvas.getContext("2d");
     Start();
 });
+
+function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls, colorMedBalls, colorHeavyBalls, chosenUp,
+						chosenDown, chosenLeft, chosenRight) {
+
+	maxFood = numOfEatableBalls;
+	keyUp = chosenUp;
+	keyDown = chosenDown;
+	keyLeft = chosenLeft;
+	keyRight = chosenRight;
+	maximumTime = maxTime;
+
+	window.focus();
+
+	Start();
+}
 
 function initializeImages() {
 	wallImage = new Image();
@@ -65,7 +87,7 @@ function Start() {
 	score = 0;
 	//pac_color = "yellow";
 	var cnt = 100;
-	var food_remain = 50;
+	var food_remain = maxFood;
 	var pacman_remain = 1;
 	restart = document.getElementById("restartBtn");
 	restart.addEventListener("click",gameRestart);
@@ -269,11 +291,24 @@ function UpdatePosition() {
 		if (score >= 20 && time_elapsed <= 10) { //AFTER THIS THE PACMAN IS PINK -NOTE TO AND!!!
 			//pac_color = "pink";
 		}
-		if (score == 50) { //NEED TO CHANGE ACOORDING THE ASS.2
+		// if (score == 50) { //NEED TO CHANGE ACOORDING THE ASS.2
+		// 	window.clearInterval(interval);
+		// 	window.alert("Game completed");
+		// } else {
+		// 	Draw();
+		// }
+		if(time_elapsed >= maximumTime)
+		{
 			window.clearInterval(interval);
-			window.alert("Game completed");
-		} else {
-			Draw();
+			window.alert("Game Over! Time is up");
+		}
+		else {
+			if (score == 50) {
+				window.clearInterval(interval);
+				window.alert("Game completed");
+			} else {
+				Draw();
+			}
 		}
 	}
 }
