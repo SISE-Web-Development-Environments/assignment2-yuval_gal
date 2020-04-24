@@ -1,3 +1,8 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
 .nav {
     overflow: hidden;
     border: 1px solid #ccc;
@@ -55,7 +60,16 @@
 
 #gameButton{
     display: none;
+    pointer-events: none;
 }
+
+#settingsButton{
+    display: none;
+}
+#Welcome{
+    display: block;
+}
+
 
 #loginButton{
     display: inherit;
@@ -95,8 +109,28 @@
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
+    text-align: center;
+    align-items: center;
 }
 
 form .error {
     color: #ff0000;
   }
+
+.block {
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: #27bcf4;
+    color: white;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .block:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
