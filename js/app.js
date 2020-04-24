@@ -101,22 +101,22 @@ function Start() {
 	}
 	while (food_remain > 0) {
 		var emptyCell = findRandomEmptyCell(board);
-		board[emptyCell[0]][emptyCell[1]] = 1;  ///FOOD
+		board[emptyCell[0]][emptyCell[1]] = 1;
 		food_remain--;
 	}
 	while (pill>0){
 		var emptycellforpill = findRandomEmptyCell(board);
-		board[emptycellforpill[0]][emptycellforpill[1]] = 7;  ///Pill
+		board[emptycellforpill[0]][emptycellforpill[1]] = 7;
 		pill--;
 	}
 	while (moreWalls>0){
 		var emptycellformoreWalls = findRandomEmptyCell(board);
-		board[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 4;  ///Wall
+		board[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 4;
 		moreWalls--;
 	}
 	while (numOfGhost>0){
 		var emptycellforGhost = findRandomEmptyCell(board);
-		board[emptycellforGhost[0]][emptycellforGhost[1]] = 8;  ///Wall
+		board[emptycellforGhost[0]][emptycellforGhost[1]] = 8;
 		numOfGhost--;
 	}
 	keysDown = {};
