@@ -264,7 +264,12 @@
 
             if(navButton == "Welcome")
             {
-                showWelcomeWindow();
+                showWelcomeWindow(evt);
+            }
+
+            if(navButton == "Settings")
+            {
+                showSettingsWindow(evt);
             }
 
             // evt.currentTarget.crrTrgt.className += " active";
@@ -283,7 +288,7 @@
                     clearButtonsForUser("false")
                     console.log("userName: "+ userName +" Passward: "+ passward+ " login successfully");
                     localStorage.setItem(userName,"true");
-                    showWelcomeWindow();
+                    showSettingsWindow(event);
                     return;
                 }
             }
@@ -315,7 +320,7 @@
             console.log("User signed up successfully");
 
             alert("You can now login.")
-            showWelcomeWindow();
+            showWelcomeWindow(event);
             // hideSignUpForm();
 
         }
@@ -350,9 +355,17 @@
             document.getElementById("login-form").reset();
         }
 
-        function showWelcomeWindow() {
+        function showSettingsWindow(evt) {
             clearActiveWindow();
-            clearAllContents()
+            clearAllContents();
+            pageToShow = document.getElementById("Settings");
+            pageToShow.style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        function showWelcomeWindow(evt) {
+            clearActiveWindow();
+            clearAllContents();
             for (var i=0; i < localStorage.length; i++)
             {
                 if(localStorage.getItem(localStorage.key(i)) === "true")
@@ -369,6 +382,7 @@
 
             pageToShow = document.getElementById("Welcome");
             pageToShow.style.display = "block";
+            evt.currentTarget.className += " active";
         }
 
         function clearButtonsForUser(toShow){
@@ -404,7 +418,7 @@
                     localStorage.setItem("should_begin", "false");
                     clearButtonsForUser("true");
 
-                    showWelcomeWindow();
+                    showWelcomeWindow(event);
                 }
             }
 
