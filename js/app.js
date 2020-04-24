@@ -29,6 +29,10 @@ var pacmangirlright;
 var restart;
 var numOfGhost;
 var ghostImage;
+var eatGhost;
+var cnt;
+var food_remain;
+var pacman_remain;
 $(document).ready(function() {
 	context = canvas.getContext("2d");
     Start();
@@ -45,7 +49,6 @@ function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls
 	maximumTime = maxTime;
 
 	window.focus();
-
 	Start();
 }
 
@@ -70,6 +73,7 @@ function initializeAudio() {
 	hitSound = document.getElementById( "hitSound" );
 	eatSound = document.getElementById("eatSound");
 	pillSound = document.getElementById("pillSound");
+	eatGhost = document.getElementById("eatGhost");
 }
 function initializeParameters() {
 	lastKeyPressed ="NOKEY"; // Note-start game no key pressed
@@ -77,21 +81,29 @@ function initializeParameters() {
 	pill=3;
 	moreWalls=9;
 	numOfGhost=4;
+	score = 0;
+	board = new Array();
+	cnt = 100;
+	food_remain = maxFood;
+	pacman_remain = 1;
+	restart = document.getElementById("restartBtn");
+	restart.addEventListener("click",gameRestart);
+	start_time = new Date();
+}
+
+function drawGhost() {
+	while (numOfGhost > 0) {
+		var emptycellforGhost = findRandomEmptyCell(board);
+		board[emptycellforGhost[0]][emptycellforGhost[1]] = 8;
+		numOfGhost--;
+	}
 }
 
 function Start() {
 	initializeImages();
 	initializeAudio();
 	initializeParameters();
-	board = new Array();
-	score = 0;
-	//pac_color = "yellow";
-	var cnt = 100;
-	var food_remain = maxFood;
-	var pacman_remain = 1;
-	restart = document.getElementById("restartBtn");
-	restart.addEventListener("click",gameRestart);
-	start_time = new Date();
+
 	for (var i = 0; i < 10; i++) {
 		board[i] = new Array();
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
@@ -123,24 +135,20 @@ function Start() {
 	}
 	while (food_remain > 0) {
 		var emptyCell = findRandomEmptyCell(board);
-		board[emptyCell[0]][emptyCell[1]] = 1;  ///FOOD
+		board[emptyCell[0]][emptyCell[1]] = 1;
 		food_remain--;
 	}
 	while (pill>0){
 		var emptycellforpill = findRandomEmptyCell(board);
-		board[emptycellforpill[0]][emptycellforpill[1]] = 7;  ///Pill
+		board[emptycellforpill[0]][emptycellforpill[1]] = 7;
 		pill--;
 	}
 	while (moreWalls>0){
 		var emptycellformoreWalls = findRandomEmptyCell(board);
-		board[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 4;  ///Wall
+		board[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 4;
 		moreWalls--;
 	}
-	while (numOfGhost>0){
-		var emptycellforGhost = findRandomEmptyCell(board);
-		board[emptycellforGhost[0]][emptycellforGhost[1]] = 8;  ///Wall
-		numOfGhost--;
-	}
+	drawGhost();
 	keysDown = {};
 	addEventListener(
 		"keydown",
@@ -284,6 +292,11 @@ function UpdatePosition() {
 		if (board[shape.i][shape.j] == 1) { // This is the score of 5 points balls!!!!!
 			score=score+5;
 			eatSound.play();
+		}
+		if (board[shape.i][shape.j] == 8) { // This is the score of 5 points balls!!!!!
+			score=score-10;
+			Killed--;
+			eatGhost.play();
 		}
 		board[shape.i][shape.j] = 2; // The location of the pacman
 		var currentTime = new Date();
