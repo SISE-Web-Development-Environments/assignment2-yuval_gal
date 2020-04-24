@@ -41,7 +41,7 @@
 
     <!-- Tab content -->
     <div id="Welcome" class="window_content">
-        <img src="logo.png">
+        <img src="images/logo.png">
         <br>
         <h3>Welcome to The awesome Pacman game!</h3>
         <p>This is our game, if you want to play, please signup for it.</p>
@@ -53,8 +53,6 @@
     <div id="signup" class="window_content sign-up-form">
         <img src="images/signupiconNobackground.png" class="signup-icon">
         <br>
-        <br>
-        <img src="signupiconNobackground.png" class="signup-icon">
         <h3>Sign Up Now</h3>
         <div class="container well" style="margin-top: 50px">
             <form id="register-form">
@@ -65,10 +63,10 @@
                     <input class="form-control" name="email" placeholder="Email address" type="email">
                 </div>
                 <div class="form-group col-md-6">
-                    <input class="form-control passClass" name="password" id="password" placeholder="Password" type="password">
+                    <input class="form-control passClass" name="password" id="signup-password" placeholder="Password" type="password">
                 </div>
                 <div class="form-group col-md-6">
-                    <input class="form-control passClass" name="password2" placeholder="Re-enter password" type="password">
+                    <input class="form-control passClass" name="signup-password2" placeholder="Re-enter password" type="password">
                 </div>
                 <div class="clearfix">
                 </div>
@@ -92,7 +90,7 @@
         <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.3.min.js"></script>
         <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
         <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js"></script>
-        <script src="validation.js"></script>
+        <script src="js/validation.js"></script>
 
     </div>
 
@@ -388,7 +386,7 @@
             for (i = 0; i < windowsContent.length; i++) {
                 windowsContent[i].style.display = "none";
             }
-            document.getElementById("signup-form").reset();
+            document.getElementById("register-form").reset();
             document.getElementById("login-form").reset();
         }
 
