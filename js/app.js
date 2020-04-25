@@ -43,6 +43,9 @@ var ghostArray;
 var lastGhostMovementTime;
 var moreWalls;
 var daveObject;
+var cLightBalls;
+var cMedBalls;
+var cHeavyBalls;
 
 const ghost = {
 	rowIndex: 0,
@@ -84,7 +87,9 @@ function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls
 	keyRight = chosenRight;
 	maximumTime = maxTime;
 	numOfGhost = numOfGhosts;
-
+	cLightBalls = colorLightBalls;
+	cMedBalls = colorMedBalls;
+	cHeavyBalls= colorHeavyBalls;
 
 	window.focus();
 	Start();
