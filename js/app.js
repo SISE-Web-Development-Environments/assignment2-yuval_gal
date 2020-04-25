@@ -29,6 +29,8 @@ var pacmangirlright;
 var restart;
 var numOfGhost;
 var ghostImage;
+var daveImage;
+var daveImageLeft;
 var eatGhost;
 var cnt;
 var food_remain;
@@ -38,21 +40,31 @@ var pillsArray;
 var ghostArray;
 var lastGhostMovementTime;
 var moreWalls;
+var daveObject;
 
 const ghost = {
 	rowIndex: 0,
 	colIndex: 0,
 	lastRow: 0,
 	lastCol: 0,
-
+	type: "ghost",
+	hitThePacman() {
+		Killed--;
+		eatGhost.play();
+		score=score-10;
+	},
 };
 
 const dave = {
+	type: "dave",
 	rowIndex: 0,
 	colIndex: 0,
 	lastRow: 0,
 	lastCol: 0,
-
+	hitThePacman() {
+		pillSound.play();
+		score=score+50;
+	},
 };
 
 $(document).ready(function() {
@@ -91,6 +103,11 @@ function initializeImages() {
 	pacmangirlright.src = "images/pacmangirlright.png";
 	ghostImage = new Image();
 	ghostImage.src = "images/images.png";
+	daveImage = new Image();
+	daveImage.src = "images/dave.png";
+	daveImageLeft = new Image();
+	daveImageLeft.src = "images/daveLeft.png";
+
 }
 function initializeAudio() {
 	backroundSound = document.getElementById( "backroundSound" );
@@ -120,7 +137,7 @@ function initializeParameters() {
 	lastGhostMovementTime = new Date();
 }
 
-function drawGhost() {
+function putGhostsInBoard() {
 	var ghostToIterate = numOfGhost;
 	while (ghostToIterate > 0) {
 		var emptycellforGhost = findRandomEmptyCell(board);
@@ -197,7 +214,12 @@ function Start() {
 		pillsArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
 		moreWalls--;
 	}
-	drawGhost();
+	//Putting dave in an EmptyCell in the board
+	var emptyCellForDave = findRandomEmptyCell(board);
+	board[emptyCellForDave[0]][emptyCellForDave[1]] = 11;
+	daveObject = Object.create(dave);
+
+	putGhostsInBoard();
 	keysDown = {};
 	addEventListener(
 		"keydown",
@@ -245,6 +267,31 @@ function GetKeyPressed() {
 	}
 }
 
+function moveDaveRandomly(rowLocation, colLocation) {
+	context.drawImage(daveImageLeft,rowLocation - 30,colLocation - 30,60,60);
+	var movementDir = chooseRandomMovement(daveObject);
+	// if(movementDir === "up")
+	// {
+	// 	//Draw Dave looking up?
+	// }
+	// else if(movementDir === "down")
+	// {
+	// 	//Draw Dave looking down?
+	// }
+	// else if(movementDir === "left")
+	// {
+	// 	//Draw Dave looking left?
+	// 	context.drawImage(daveImageLeft,rowLocation - 30,colLocation - 30,60,60);
+	//
+	// }
+	// else if(movementDir === "right")
+	// {
+	// 	//Draw Dave looking right?
+	// 	context.drawImage(daveImage,rowLocation - 30,colLocation - 30,60,60);
+	// }
+
+}
+
 function Draw() {
 	// backroundSound.play();
 	canvas.width = canvas.width; //clean board
@@ -285,6 +332,11 @@ function Draw() {
 			else if(board[i][j] == 8){
 				context.drawImage(ghostImage,center.x - 30,center.y - 30,60,60);
 			}
+			// else if (board[i][j] == 11)
+			// {
+			// 	moveDaveRandomly(center.x,center.y);
+			// 	// context.drawImage(daveImage,center.x - 30,center.y - 30,60,60);
+			// }
 		}
 	}
 }
@@ -328,49 +380,49 @@ function chooseRandomMovement(characterToMakeMove) {
 			if (rowIndex > 0 && board[rowIndex - 1][colIndex] !== 4 && characterToMakeMove.lastRow !== (rowIndex-1)) {//Up
 				if(board[rowIndex - 1][colIndex] === 2)
 				{
-					hitThePacman();
+					characterToMakeMove.hitThePacman();
 				}
 				board[rowIndex - 1][colIndex] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
 				characterToMakeMove.lastRow = rowIndex;
 				characterToMakeMove.rowIndex -= 1;
-				return;
+				return "up";
 			}
 		} else if (rowIndex < 9 && randomGhostMove >= 0.25 && randomGhostMove < 0.5 && characterToMakeMove.lastRow !== (rowIndex+1)) {//Down
 			if (board[rowIndex + 1][colIndex] !== 4) {
 				if(board[rowIndex + 1][colIndex] === 2)
 				{
-					hitThePacman();
+					characterToMakeMove.hitThePacman();
 				}
 				board[rowIndex + 1][colIndex] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
 				characterToMakeMove.lastRow = rowIndex;
 				characterToMakeMove.rowIndex += 1;
-				return;
+				return "down";
 			}
 		} else if (colIndex > 0 && randomGhostMove >= 0.5 && randomGhostMove < 0.75 && characterToMakeMove.lastCol !== (colIndex-1)) {//Left
 			if (board[rowIndex][colIndex - 1] !== 4) {
 				if(board[rowIndex][colIndex - 1] === 2)
 				{
-					hitThePacman();
+					characterToMakeMove.hitThePacman();
 				}
 				board[rowIndex][colIndex - 1] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
 				characterToMakeMove.lastCol = colIndex;
 				characterToMakeMove.colIndex -= 1;
-				return;
+				return "left";
 			}
 		} else if (colIndex < 9 && randomGhostMove >= 0.75 && randomGhostMove < 1 && characterToMakeMove.lastCol !== (colIndex+1)) {//Right
 			if (board[rowIndex][colIndex + 1] !== 4) {
 				if(board[rowIndex][colIndex + 1] === 2)
 				{
-					hitThePacman();
+					characterToMakeMove.hitThePacman();
 				}
 				board[rowIndex][colIndex + 1] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
 				characterToMakeMove.lastCol = colIndex;
 				characterToMakeMove.colIndex += 1;
-				return;
+				return "right";
 			}
 		}
 		countTries--;
@@ -395,17 +447,13 @@ function moveGhostsRandomly() {
 	}
 }
 
-function hitThePacman() {
-	Killed--;
-	eatGhost.play();
-	score=score-10;
-}
+
 
 function UpdatePosition() {
 	if(localStorage.getItem("should_begin") == "true") {
 		var ghostMoveTime = new Date();
 		var ghost_time_elapsed = (ghostMoveTime - lastGhostMovementTime) / 1000;
-		if(ghost_time_elapsed > 0.8)
+		if(ghost_time_elapsed > 0.25)
 		{
 			moveGhostsRandomly();
 			lastGhostMovementTime = new Date();
