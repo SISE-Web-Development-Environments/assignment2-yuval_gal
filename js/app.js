@@ -45,6 +45,12 @@ var ghostArray;
 var lastGhostMovementTime;
 var moreWalls;
 var daveObject;
+var cLightBalls;
+var cMedBalls;
+var cHeavyBalls;
+var pointsLightBalls;
+var pointsMedBalls;
+var pointsHeavyBalls;
 
 const ghost = {
 	rowIndex: 0,
@@ -91,7 +97,9 @@ function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls
 	keyRight = chosenRight;
 	maximumTime = maxTime;
 	numOfGhost = numOfGhosts;
-
+	cLightBalls = colorLightBalls;
+	cMedBalls = colorMedBalls;
+	cHeavyBalls = colorHeavyBalls;
 
 	window.focus();
 	Start();
@@ -139,6 +147,9 @@ function initializeParameters() {
 	//TODO: remove this line after starting to use the settings values
 	numOfGhost=4;
 	score = 0;
+	pointsHeavyBalls = 25;
+	pointsLightBalls = 5;
+	pointsMedBalls = 15;
 	board = [];
 	applesArray = [];
 	pillsArray = [];
@@ -341,7 +352,8 @@ function Draw() {
 			} else if (board[i][j] == 1) { //Draw food
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-				context.fillStyle = "black"; //color
+				//context.fillStyle = "black"; //color
+				context.fillStyle = cLightBalls;
 				context.fill();
 			} else if (board[i][j] == 4) {
 				context.drawImage(wallImage,center.x - 30,center.y - 30,60,60);
