@@ -37,6 +37,7 @@ var applesArray;
 var pillsArray;
 var ghostArray;
 var lastGhostMovementTime;
+var moreWalls;
 
 const ghost = {
 	rowIndex: 0,
@@ -46,7 +47,7 @@ const ghost = {
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
-    Start();
+	Start();
 });
 
 function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls, colorMedBalls, colorHeavyBalls, chosenUp,
@@ -122,38 +123,48 @@ function drawGhost() {
 }
 
 function Start() {
-	initializeImages();
-	initializeAudio();
-	initializeParameters();
+	if(localStorage.getItem("should_begin") == "true") {
+		initializeImages();
+		initializeAudio();
+		initializeParameters();
 
-	for (var i = 0; i < 10; i++) {
-		board[i] = [];
-		applesArray[i] = [];
-		pillsArray[i] = [];
-		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-		for (var j = 0; j < 10; j++) {
-			if (
-				(i == 3 && j == 3) ||
-				(i == 3 && j == 4) ||
-				(i == 3 && j == 5) ||
-				(i == 6 && j == 1) ||
-				(i == 6 && j == 2)
-			) {
-				board[i][j] = 4; ////Walls
-			} else {
-				var randomNum = Math.random();
-				if (randomNum <= (1.0 * food_remain) / cnt) {
-					food_remain--;
-					board[i][j] = 1; //Food
-				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
-					shape.i = i;
-					shape.j = j;
-					pacman_remain--;
-					board[i][j] = 2; //Pacman
+		for (var i = 0; i < 10; i++) {
+			board[i] = new Array();
+			applesArray[i] = new Array();
+			pillsArray[i] = new Array();
+			//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
+			for (var j = 0; j < 10; j++) {
+				if (
+					(i == 3 && j == 3) ||
+					(i == 3 && j == 4) ||
+					(i == 3 && j == 5) ||
+					(i == 6 && j == 1) ||
+					(i == 6 && j == 2)
+				) {
+					board[i][j] = 4; ////Walls
+					applesArray[i][j] = 0;
+					pillsArray[i][j] = 0;
 				} else {
-					board[i][j] = 0; //Empty cells
+					var randomNum = Math.random();
+					if (randomNum <= (1.0 * food_remain) / cnt) {
+						food_remain--;
+						board[i][j] = 1; //Food
+						applesArray[i][j] = 1;
+						pillsArray[i][j] = 0;
+					} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
+						shape.i = i;
+						shape.j = j;
+						pacman_remain--;
+						board[i][j] = 2; //Pacman
+						applesArray[i][j] = 0;
+						pillsArray[i][j] = 0;
+					} else {
+						board[i][j] = 0; //Empty cells
+						applesArray[i][j] = 0;
+						pillsArray[i][j] = 0;
+					}
+					cnt--;
 				}
-				cnt--;
 			}
 		}
 	}
@@ -166,12 +177,14 @@ function Start() {
 	while (pill>0){
 		var emptycellforpill = findRandomEmptyCell(board);
 		board[emptycellforpill[0]][emptycellforpill[1]] = 7;
-		pillsArray[emptycellforpill[0]][emptycellforpill[1]] = 7;
+		pillsArray[emptycellforpill[0]][emptycellforpill[1]] = 1;
 		pill--;
 	}
 	while (moreWalls>0){
 		var emptycellformoreWalls = findRandomEmptyCell(board);
 		board[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 4;
+		applesArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
+		pillsArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
 		moreWalls--;
 	}
 	drawGhost();
@@ -270,17 +283,6 @@ function gameRestart(){
 	Start();
 }
 
-// function getGhostIndexes() {
-// 	for (var i = 0; i < 10; i++) {
-// 		for (var j = 0; j < 10; j++) {
-// 			if(board[i][j] === 8)
-// 			{
-// 				return [i,j];
-// 			}
-// 		}
-// 	}
-// 	return 0;
-// }
 
 function checkApplesOrPills(rowIndex, colIndex) {
 	if(applesArray[rowIndex][colIndex] === 1)
@@ -301,31 +303,32 @@ function chooseRandomMovement(ghostToMakeMove) {
 	var isLegal = false;
 	var rowIndex = ghostToMakeMove.rowIndex;
 	var colIndex = ghostToMakeMove.colIndex;
+	var randomGhostMove = 0;
 	while (!isLegal) {
-		var randomMove = Math.random();
+		randomGhostMove = Math.random();
 
-		if (randomMove < 0.25) {
-			if (board[rowIndex - 1][colIndex] !== 4) {//Up
+		if (randomGhostMove < 0.25) {
+			if (rowIndex > 0 && board[rowIndex - 1][colIndex] !== 4) {//Up
 				board[rowIndex - 1][colIndex] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
 				ghostToMakeMove.rowIndex -= 1;
 				return;
 			}
-		} else if (randomMove >= 0.25 && randomMove < 0.5) {//Down
+		} else if (rowIndex < 9 && randomGhostMove >= 0.25 && randomGhostMove < 0.5) {//Down
 			if (board[rowIndex + 1][colIndex] !== 4) {
 				board[rowIndex + 1][colIndex] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
 				ghostToMakeMove.rowIndex += 1;
 				return;
 			}
-		} else if (randomMove >= 0.5 && randomMove < 0.75) {//Left
+		} else if (colIndex > 0 && randomGhostMove >= 0.5 && randomGhostMove < 0.75) {//Left
 			if (board[rowIndex][colIndex - 1] !== 4) {
 				board[rowIndex][colIndex - 1] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
 				ghostToMakeMove.colIndex -= 1;
 				return;
 			}
-		} else if (randomMove >= 0.75 && randomMove < 1) {//Right
+		} else if (colIndex < 9 && randomGhostMove >= 0.75 && randomGhostMove < 1) {//Right
 			if (board[rowIndex][colIndex + 1] !== 4) {
 				board[rowIndex][colIndex + 1] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
@@ -355,15 +358,16 @@ function moveGhostsRandomly() {
 }
 
 function UpdatePosition() {
-	var ghostMoveTime = new Date();
-	var ghost_time_elapsed = (ghostMoveTime - lastGhostMovementTime) / 1000;
-	if(ghost_time_elapsed > 1)
-	{
-		moveGhostsRandomly();
-		lastGhostMovementTime = new Date();
-	}
-
 	if(localStorage.getItem("should_begin") == "true") {
+		var ghostMoveTime = new Date();
+		var ghost_time_elapsed = (ghostMoveTime - lastGhostMovementTime) / 1000;
+		if(ghost_time_elapsed > 1)
+		{
+			moveGhostsRandomly();
+			lastGhostMovementTime = new Date();
+		}
+
+
 		board[shape.i][shape.j] = 0;
 		var x = GetKeyPressed();
 		if (x == 1) {
@@ -371,6 +375,7 @@ function UpdatePosition() {
 				if(board[shape.i][shape.j - 1] == 7){
 					Killed = Killed+1;
 					pillSound.play();
+					pillsArray[shape.i][shape.j] = 0;
 				}
 				lastKeyPressed="UP";
 				shape.j--;
@@ -381,6 +386,7 @@ function UpdatePosition() {
 				if(board[shape.i][shape.j + 1] == 7){
 					Killed = Killed+1;
 					pillSound.play();
+					pillsArray[shape.i][shape.j] = 0;
 				}
 				lastKeyPressed="DOWN";
 				shape.j++;
@@ -392,6 +398,7 @@ function UpdatePosition() {
 				if(board[shape.i - 1][shape.j] == 7){
 					Killed = Killed+1;
 					pillSound.play();
+					pillsArray[shape.i][shape.j] = 0;
 				}
 				lastKeyPressed="LEFT";
 				shape.i--;
