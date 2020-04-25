@@ -550,7 +550,7 @@ function UpdatePosition() {
 			}
 		}
 		if (board[shape.i][shape.j] == 1) { // This is the score of 5 points balls!!!!!
-			score=score+5;
+			score=score+pointsLightBalls;
 			eatSound.play();
 			applesArray[shape.i][shape.j] = 0;
 		}
