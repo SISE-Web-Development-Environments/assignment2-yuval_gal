@@ -94,7 +94,7 @@ function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls
 	keyDown = chosenDown;
 	keyLeft = chosenLeft;
 	keyRight = chosenRight;
-	maximumTime = maxTime;
+	maximumTime = parseInt(maxTime);
 	numOfGhost = numOfGhosts;
 	cLightBalls = colorLightBalls;
 	cMedBalls = colorMedBalls;
