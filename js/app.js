@@ -215,9 +215,9 @@ function Start() {
 		moreWalls--;
 	}
 	//Putting dave in an EmptyCell in the board
-	var emptyCellForDave = findRandomEmptyCell(board);
-	board[emptyCellForDave[0]][emptyCellForDave[1]] = 11;
-	daveObject = Object.create(dave);
+	//var emptyCellForDave = findRandomEmptyCell(board);
+	//board[emptyCellForDave[0]][emptyCellForDave[1]] = 11;
+	//daveObject = Object.create(dave);
 
 	putGhostsInBoard();
 	keysDown = {};
