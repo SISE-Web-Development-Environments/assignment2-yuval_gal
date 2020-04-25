@@ -405,7 +405,7 @@ function UpdatePosition() {
 	if(localStorage.getItem("should_begin") == "true") {
 		var ghostMoveTime = new Date();
 		var ghost_time_elapsed = (ghostMoveTime - lastGhostMovementTime) / 1000;
-		if(ghost_time_elapsed > 1)
+		if(ghost_time_elapsed > 0.8)
 		{
 			moveGhostsRandomly();
 			lastGhostMovementTime = new Date();
@@ -419,7 +419,8 @@ function UpdatePosition() {
 				if(board[shape.i][shape.j - 1] == 7){
 					Killed = Killed+1;
 					pillSound.play();
-					pillsArray[shape.i][shape.j] = 0;
+					board[shape.i][shape.j - 1] = 0;
+					pillsArray[shape.i][shape.j- 1] = 0;
 				}
 				lastKeyPressed="UP";
 				shape.j--;
@@ -430,7 +431,8 @@ function UpdatePosition() {
 				if(board[shape.i][shape.j + 1] == 7){
 					Killed = Killed+1;
 					pillSound.play();
-					pillsArray[shape.i][shape.j] = 0;
+					board[shape.i][shape.j + 1] = 0;
+					pillsArray[shape.i][shape.j + 1] = 0;
 				}
 				lastKeyPressed="DOWN";
 				shape.j++;
@@ -442,7 +444,8 @@ function UpdatePosition() {
 				if(board[shape.i - 1][shape.j] == 7){
 					Killed = Killed+1;
 					pillSound.play();
-					pillsArray[shape.i][shape.j] = 0;
+					board[shape.i - 1][shape.j] = 0;
+					pillsArray[shape.i - 1][shape.j] = 0;
 				}
 				lastKeyPressed="LEFT";
 				shape.i--;
@@ -453,7 +456,8 @@ function UpdatePosition() {
 				if(board[shape.i + 1][shape.j] == 7){
 					Killed = Killed+1;
 					pillSound.play();
-					pillsArray[shape.i][shape.j] = 0;
+					board[shape.i + 1][shape.j] = 0;
+					pillsArray[shape.i + 1][shape.j] = 0;
 				}
 				lastKeyPressed="RIGHT";
 				shape.i++;
