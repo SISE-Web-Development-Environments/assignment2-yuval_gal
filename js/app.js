@@ -309,6 +309,10 @@ function chooseRandomMovement(ghostToMakeMove) {
 
 		if (randomGhostMove < 0.25) {
 			if (rowIndex > 0 && board[rowIndex - 1][colIndex] !== 4) {//Up
+				if(board[rowIndex - 1][colIndex] == 2)
+				{
+					hitThePacman();
+				}
 				board[rowIndex - 1][colIndex] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
 				ghostToMakeMove.rowIndex -= 1;
@@ -316,6 +320,10 @@ function chooseRandomMovement(ghostToMakeMove) {
 			}
 		} else if (rowIndex < 9 && randomGhostMove >= 0.25 && randomGhostMove < 0.5) {//Down
 			if (board[rowIndex + 1][colIndex] !== 4) {
+				if(board[rowIndex + 1][colIndex] == 2)
+				{
+					hitThePacman();
+				}
 				board[rowIndex + 1][colIndex] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
 				ghostToMakeMove.rowIndex += 1;
@@ -323,6 +331,10 @@ function chooseRandomMovement(ghostToMakeMove) {
 			}
 		} else if (colIndex > 0 && randomGhostMove >= 0.5 && randomGhostMove < 0.75) {//Left
 			if (board[rowIndex][colIndex - 1] !== 4) {
+				if(board[rowIndex][colIndex - 1] == 2)
+				{
+					hitThePacman();
+				}
 				board[rowIndex][colIndex - 1] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
 				ghostToMakeMove.colIndex -= 1;
@@ -330,6 +342,10 @@ function chooseRandomMovement(ghostToMakeMove) {
 			}
 		} else if (colIndex < 9 && randomGhostMove >= 0.75 && randomGhostMove < 1) {//Right
 			if (board[rowIndex][colIndex + 1] !== 4) {
+				if(board[rowIndex][colIndex + 1] == 2)
+				{
+					hitThePacman();
+				}
 				board[rowIndex][colIndex + 1] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
 				ghostToMakeMove.colIndex += 1;
@@ -355,6 +371,12 @@ function moveGhostsRandomly() {
 		chooseRandomMovement(ghostArray[countGhosts]);
 		countGhosts++;
 	}
+}
+
+function hitThePacman() {
+	Killed--;
+	eatGhost.play();
+	score=score-10;
 }
 
 function UpdatePosition() {
@@ -421,9 +443,7 @@ function UpdatePosition() {
 			applesArray[shape.i][shape.j] = 0;
 		}
 		if (board[shape.i][shape.j] == 8) { // This is the score of 5 points balls!!!!!
-			score=score-10;
-			Killed--;
-			eatGhost.play();
+			hitThePacman();
 		}
 		board[shape.i][shape.j] = 2; // The location of the pacman
 		var currentTime = new Date();
