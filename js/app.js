@@ -3,7 +3,6 @@ var shape = new Object();
 var board;
 var score;
 var Killed;
-var pac_color;
 var start_time;
 var time_elapsed;
 var backroundSound;
@@ -20,6 +19,7 @@ var maximumTime;
 
 var wallImage;
 var pillImage;
+var clockImage;
 var lastKeyPressed;
 var pill;
 var pacmangirl;
@@ -33,10 +33,12 @@ var daveImage;
 var daveImageLeft;
 var eatGhost;
 var cnt;
+var clock;
 var food_remain;
 var pacman_remain;
 var applesArray;
 var pillsArray;
+var clockArray;
 var ghostArray;
 var lastGhostMovementTime;
 var moreWalls;
@@ -91,6 +93,8 @@ function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls
 function initializeImages() {
 	wallImage = new Image();
 	wallImage.src = "images/walls.png";
+	clockImage = new Image();
+	clockImage.src = "images/clock.png";
 	pillImage = new Image();
 	pillImage.src = "images/pill.png";
 	pacmangirl = new Image();
@@ -120,11 +124,13 @@ function initializeParameters() {
 	lastKeyPressed ="NOKEY"; // Note-start game no key pressed
 	Killed = 5; // initial number of Killed
 	pill=3;
+	clock=1;
 	moreWalls=9;
 	//TODO: remove this line after starting to use the settings values
-	numOfGhost=4;
+	numOfGhost=1;
 	score = 0;
 	board = [];
+	clockArray = [];
 	applesArray = [];
 	pillsArray = [];
 	ghostArray = new Array(numOfGhost);
@@ -158,6 +164,7 @@ function Start() {
 		for (var i = 0; i < 10; i++) {
 			board[i] = new Array();
 			applesArray[i] = new Array();
+			clockArray[i]=new Array();
 			pillsArray[i] = new Array();
 			//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
 			for (var j = 0; j < 10; j++) {
@@ -170,6 +177,7 @@ function Start() {
 				) {
 					board[i][j] = 4; ////Walls
 					applesArray[i][j] = 0;
+					clockArray[i][j] = 0;
 					pillsArray[i][j] = 0;
 				} else {
 					var randomNum = Math.random();
@@ -178,6 +186,7 @@ function Start() {
 						board[i][j] = 1; //Food
 						applesArray[i][j] = 1;
 						pillsArray[i][j] = 0;
+						clockArray[i][j]=0;
 					} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
 						shape.i = i;
 						shape.j = j;
@@ -185,10 +194,12 @@ function Start() {
 						board[i][j] = 2; //Pacman
 						applesArray[i][j] = 0;
 						pillsArray[i][j] = 0;
+						clockArray[i][j]=0;
 					} else {
 						board[i][j] = 0; //Empty cells
 						applesArray[i][j] = 0;
 						pillsArray[i][j] = 0;
+						clockArray[i][j]=0;
 					}
 					cnt--;
 				}
@@ -207,11 +218,18 @@ function Start() {
 		pillsArray[emptycellforpill[0]][emptycellforpill[1]] = 1;
 		pill--;
 	}
+	while (clock>0){
+		var emptycellforClock = findRandomEmptyCell(board);
+		board[emptycellforClock[0]][emptycellforClock[1]] = 10;
+		clockArray[emptycellforClock[0]][emptycellforClock[1]] = 1;
+		clock--;
+	}
 	while (moreWalls>0){
 		var emptycellformoreWalls = findRandomEmptyCell(board);
 		board[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 4;
 		applesArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
 		pillsArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
+		clockArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
 		moreWalls--;
 	}
 	//Putting dave in an EmptyCell in the board
@@ -332,6 +350,9 @@ function Draw() {
 			else if(board[i][j] == 8){
 				context.drawImage(ghostImage,center.x - 30,center.y - 30,60,60);
 			}
+			else if(board[i][j] == 10){
+				context.drawImage(clockImage,center.x - 30,center.y - 30,60,60);
+			}
 			// else if (board[i][j] == 11)
 			// {
 			// 	moveDaveRandomly(center.x,center.y);
@@ -354,6 +375,10 @@ function checkApplesOrPills(rowIndex, colIndex) {
 	else if(pillsArray[rowIndex][colIndex] === 1)
 	{
 		board[rowIndex][colIndex] = 7;
+	}
+	else if(clockArray[rowIndex][colIndex] === 1)
+	{
+		board[rowIndex][colIndex] = 10;
 	}
 	else
 	{
@@ -470,6 +495,14 @@ function UpdatePosition() {
 					board[shape.i][shape.j - 1] = 0;
 					pillsArray[shape.i][shape.j- 1] = 0;
 				}
+				if(board[shape.i][shape.j - 1] == 10){
+					board[shape.i][shape.j - 1] = 0;
+					clockArray[shape.i][shape.j - 1] = 0;
+					console.log(maximumTime);
+					maximumTime +=10;
+					console.log(maximumTime);
+
+				}
 				lastKeyPressed="UP";
 				shape.j--;
 			}
@@ -481,6 +514,14 @@ function UpdatePosition() {
 					pillSound.play();
 					board[shape.i][shape.j + 1] = 0;
 					pillsArray[shape.i][shape.j + 1] = 0;
+				}
+				if(board[shape.i][shape.j + 1] == 10){
+					clockArray[shape.i][shape.j + 1] = 0;
+					board[shape.i][shape.j + 1] = 0;
+					console.log(maximumTime);
+					maximumTime +=10;
+					console.log(maximumTime);
+
 				}
 				lastKeyPressed="DOWN";
 				shape.j++;
@@ -495,6 +536,13 @@ function UpdatePosition() {
 					board[shape.i - 1][shape.j] = 0;
 					pillsArray[shape.i - 1][shape.j] = 0;
 				}
+				if(board[shape.i - 1][shape.j] == 10){
+					board[shape.i - 1][shape.j] = 0;
+					clockArray[shape.i - 1][shape.j] = 0;
+					console.log(maximumTime);
+					maximumTime +=10;
+					console.log(maximumTime);
+				}
 				lastKeyPressed="LEFT";
 				shape.i--;
 			}
@@ -506,6 +554,14 @@ function UpdatePosition() {
 					pillSound.play();
 					board[shape.i + 1][shape.j] = 0;
 					pillsArray[shape.i + 1][shape.j] = 0;
+				}
+				if(board[shape.i + 1][shape.j] == 10){
+					board[shape.i + 1][shape.j] = 0;
+					clockArray[shape.i + 1][shape.j] = 0;
+					console.log(maximumTime);
+					maximumTime +=10;
+					console.log(maximumTime);
+
 				}
 				lastKeyPressed="RIGHT";
 				shape.i++;
@@ -519,12 +575,14 @@ function UpdatePosition() {
 		if (board[shape.i][shape.j] == 8) { // This is the score of 5 points balls!!!!!
 			hitThePacman();
 		}
+
 		board[shape.i][shape.j] = 2; // The location of the pacman
 		var currentTime = new Date();
 		time_elapsed = (currentTime - start_time) / 1000;
 		if (score >= 20 && time_elapsed <= 10) { //AFTER THIS THE PACMAN IS PINK -NOTE TO AND!!!
 			//pac_color = "pink";
 		}
+
 		// if (score == 50) { //NEED TO CHANGE ACOORDING THE ASS.2
 		// 	window.clearInterval(interval);
 		// 	window.alert("Game completed");
