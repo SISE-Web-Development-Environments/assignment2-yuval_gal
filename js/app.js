@@ -42,6 +42,16 @@ var moreWalls;
 const ghost = {
 	rowIndex: 0,
 	colIndex: 0,
+	lastRow: 0,
+	lastCol: 0,
+
+};
+
+const dave = {
+	rowIndex: 0,
+	colIndex: 0,
+	lastRow: 0,
+	lastCol: 0,
 
 };
 
@@ -299,59 +309,71 @@ function checkApplesOrPills(rowIndex, colIndex) {
 	}
 }
 
-function chooseRandomMovement(ghostToMakeMove) {
+function chooseRandomMovement(characterToMakeMove) {
 	var isLegal = false;
-	var rowIndex = ghostToMakeMove.rowIndex;
-	var colIndex = ghostToMakeMove.colIndex;
+	var rowIndex = characterToMakeMove.rowIndex;
+	var colIndex = characterToMakeMove.colIndex;
 	var randomGhostMove = 0;
+	var countTries = 5;
 	while (!isLegal) {
 		randomGhostMove = Math.random();
+		if(countTries === 0)
+		{
+			characterToMakeMove.lastRow = 0;
+			characterToMakeMove.lastCol = 0;
+
+		}
 
 		if (randomGhostMove < 0.25) {
-			if (rowIndex > 0 && board[rowIndex - 1][colIndex] !== 4) {//Up
-				if(board[rowIndex - 1][colIndex] == 2)
+			if (rowIndex > 0 && board[rowIndex - 1][colIndex] !== 4 && characterToMakeMove.lastRow !== (rowIndex-1)) {//Up
+				if(board[rowIndex - 1][colIndex] === 2)
 				{
 					hitThePacman();
 				}
 				board[rowIndex - 1][colIndex] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
-				ghostToMakeMove.rowIndex -= 1;
+				characterToMakeMove.lastRow = rowIndex;
+				characterToMakeMove.rowIndex -= 1;
 				return;
 			}
-		} else if (rowIndex < 9 && randomGhostMove >= 0.25 && randomGhostMove < 0.5) {//Down
+		} else if (rowIndex < 9 && randomGhostMove >= 0.25 && randomGhostMove < 0.5 && characterToMakeMove.lastRow !== (rowIndex+1)) {//Down
 			if (board[rowIndex + 1][colIndex] !== 4) {
-				if(board[rowIndex + 1][colIndex] == 2)
+				if(board[rowIndex + 1][colIndex] === 2)
 				{
 					hitThePacman();
 				}
 				board[rowIndex + 1][colIndex] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
-				ghostToMakeMove.rowIndex += 1;
+				characterToMakeMove.lastRow = rowIndex;
+				characterToMakeMove.rowIndex += 1;
 				return;
 			}
-		} else if (colIndex > 0 && randomGhostMove >= 0.5 && randomGhostMove < 0.75) {//Left
+		} else if (colIndex > 0 && randomGhostMove >= 0.5 && randomGhostMove < 0.75 && characterToMakeMove.lastCol !== (colIndex-1)) {//Left
 			if (board[rowIndex][colIndex - 1] !== 4) {
-				if(board[rowIndex][colIndex - 1] == 2)
+				if(board[rowIndex][colIndex - 1] === 2)
 				{
 					hitThePacman();
 				}
 				board[rowIndex][colIndex - 1] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
-				ghostToMakeMove.colIndex -= 1;
+				characterToMakeMove.lastCol = colIndex;
+				characterToMakeMove.colIndex -= 1;
 				return;
 			}
-		} else if (colIndex < 9 && randomGhostMove >= 0.75 && randomGhostMove < 1) {//Right
+		} else if (colIndex < 9 && randomGhostMove >= 0.75 && randomGhostMove < 1 && characterToMakeMove.lastCol !== (colIndex+1)) {//Right
 			if (board[rowIndex][colIndex + 1] !== 4) {
-				if(board[rowIndex][colIndex + 1] == 2)
+				if(board[rowIndex][colIndex + 1] === 2)
 				{
 					hitThePacman();
 				}
 				board[rowIndex][colIndex + 1] = 8;
 				checkApplesOrPills(rowIndex,colIndex);
-				ghostToMakeMove.colIndex += 1;
+				characterToMakeMove.lastCol = colIndex;
+				characterToMakeMove.colIndex += 1;
 				return;
 			}
 		}
+		countTries--;
 	}
 }
 
