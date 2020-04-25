@@ -332,11 +332,11 @@ function Draw() {
 			else if(board[i][j] == 8){
 				context.drawImage(ghostImage,center.x - 30,center.y - 30,60,60);
 			}
-			else if (board[i][j] == 11)
-			{
-				moveDaveRandomly(center.x,center.y);
-				// context.drawImage(daveImage,center.x - 30,center.y - 30,60,60);
-			}
+			// else if (board[i][j] == 11)
+			// {
+			// 	moveDaveRandomly(center.x,center.y);
+			// 	// context.drawImage(daveImage,center.x - 30,center.y - 30,60,60);
+			// }
 		}
 	}
 }
