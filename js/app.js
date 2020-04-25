@@ -90,7 +90,7 @@ function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls
 
 function initializeImages() {
 	wallImage = new Image();
-	wallImage.src = "images/walls.PNG";
+	wallImage.src = "images/walls.png";
 	pillImage = new Image();
 	pillImage.src = "images/pill.png";
 	pacmangirl = new Image();
