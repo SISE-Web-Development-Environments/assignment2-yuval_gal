@@ -5,7 +5,7 @@ var score;
 var Killed;
 var start_time;
 var time_elapsed;
-var backroundSound;
+var backgroundSound;
 var pillSound;
 var eatSound;
 var hitSound;
@@ -31,6 +31,10 @@ var numOfGhost;
 var ghostImage;
 var daveImage;
 var daveImageLeft;
+var daveImageUp;
+var daveImageDown;
+var daveToDraw;
+var shouldDrawDave;
 var eatGhost;
 var cnt;
 var clock;
@@ -52,6 +56,7 @@ const ghost = {
 	colIndex: 0,
 	lastRow: 0,
 	lastCol: 0,
+	boardValue: 8,
 	type: "ghost",
 	hitThePacman() {
 		Killed--;
@@ -66,9 +71,13 @@ const dave = {
 	colIndex: 0,
 	lastRow: 0,
 	lastCol: 0,
+	boardValue: 11,
 	hitThePacman() {
 		pillSound.play();
 		score=score+50;
+		shouldDrawDave = false;
+		this.rowIndex = -100;
+		this.colIndex = -100;
 	},
 };
 
@@ -116,10 +125,16 @@ function initializeImages() {
 	daveImage.src = "images/dave.png";
 	daveImageLeft = new Image();
 	daveImageLeft.src = "images/daveLeft.png";
+	daveImageUp = new Image();
+	daveImageUp.src = "images/daveUp.png";
+	daveImageDown = new Image();
+	daveImageDown.src = "images/daveDown.png";
+	daveToDraw = daveImage;
+	shouldDrawDave = true;
 
 }
 function initializeAudio() {
-	backroundSound = document.getElementById( "backroundSound" );
+	backgroundSound = document.getElementById( "backroundSound" );
 	hitSound = document.getElementById( "hitSound" );
 	eatSound = document.getElementById("eatSound");
 	pillSound = document.getElementById("pillSound");
@@ -132,7 +147,7 @@ function initializeParameters() {
 	clock=1;
 	moreWalls=9;
 	//TODO: remove this line after starting to use the settings values
-	numOfGhost=1;
+	numOfGhost=4;
 	score = 0;
 	board = [];
 	clockArray = [];
@@ -238,9 +253,11 @@ function Start() {
 		moreWalls--;
 	}
 	//Putting dave in an EmptyCell in the board
-	//var emptyCellForDave = findRandomEmptyCell(board);
-	//board[emptyCellForDave[0]][emptyCellForDave[1]] = 11;
-	//daveObject = Object.create(dave);
+	var emptyCellForDave = findRandomEmptyCell(board);
+	board[emptyCellForDave[0]][emptyCellForDave[1]] = 11;
+	daveObject = Object.create(dave);
+	daveObject.rowIndex = emptyCellForDave[0];
+	daveObject.colIndex = emptyCellForDave[1];
 
 	putGhostsInBoard();
 	keysDown = {};
@@ -290,33 +307,36 @@ function GetKeyPressed() {
 	}
 }
 
-function moveDaveRandomly(rowLocation, colLocation) {
-	context.drawImage(daveImageLeft,rowLocation - 30,colLocation - 30,60,60);
+function moveDaveRandomly() {
 	var movementDir = chooseRandomMovement(daveObject);
-	// if(movementDir === "up")
-	// {
-	// 	//Draw Dave looking up?
-	// }
-	// else if(movementDir === "down")
-	// {
-	// 	//Draw Dave looking down?
-	// }
-	// else if(movementDir === "left")
-	// {
-	// 	//Draw Dave looking left?
-	// 	context.drawImage(daveImageLeft,rowLocation - 30,colLocation - 30,60,60);
-	//
-	// }
-	// else if(movementDir === "right")
-	// {
-	// 	//Draw Dave looking right?
-	// 	context.drawImage(daveImage,rowLocation - 30,colLocation - 30,60,60);
-	// }
+	var rowLocation = daveObject.rowIndex * 60 + 30;
+	var colLocation = daveObject.colIndex * 60 + 30;
+	if(movementDir === "up")
+	{
+		//Draw Dave looking up?
+		daveToDraw = daveImageUp;
+
+	}
+	else if(movementDir === "down")
+	{
+		//Draw Dave looking down?
+		daveToDraw = daveImageDown;
+	}
+	else if(movementDir === "left")
+	{
+		//Draw Dave looking left?
+		daveToDraw = daveImageLeft;
+	}
+	else if(movementDir === "right")
+	{
+		//Draw Dave looking right?
+		daveToDraw = daveImage;
+	}
 
 }
 
 function Draw() {
-	// backroundSound.play();
+	// backgroundSound.play();
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
@@ -355,14 +375,16 @@ function Draw() {
 			else if(board[i][j] == 8){
 				context.drawImage(ghostImage,center.x - 30,center.y - 30,60,60);
 			}
+			else if (board[i][j] == 11)
+			{
+				if(shouldDrawDave)
+				{
+					context.drawImage(daveToDraw,center.x - 30,center.y - 30,60,60);
+				}
+			}
 			else if(board[i][j] == 10){
 				context.drawImage(clockImage,center.x - 30,center.y - 30,60,60);
 			}
-			// else if (board[i][j] == 11)
-			// {
-			// 	moveDaveRandomly(center.x,center.y);
-			// 	// context.drawImage(daveImage,center.x - 30,center.y - 30,60,60);
-			// }
 		}
 	}
 }
@@ -412,7 +434,7 @@ function chooseRandomMovement(characterToMakeMove) {
 				{
 					characterToMakeMove.hitThePacman();
 				}
-				board[rowIndex - 1][colIndex] = 8;
+				board[rowIndex - 1][colIndex] = characterToMakeMove.boardValue;
 				checkApplesOrPills(rowIndex,colIndex);
 				characterToMakeMove.lastRow = rowIndex;
 				characterToMakeMove.rowIndex -= 1;
@@ -424,7 +446,7 @@ function chooseRandomMovement(characterToMakeMove) {
 				{
 					characterToMakeMove.hitThePacman();
 				}
-				board[rowIndex + 1][colIndex] = 8;
+				board[rowIndex + 1][colIndex] = characterToMakeMove.boardValue;
 				checkApplesOrPills(rowIndex,colIndex);
 				characterToMakeMove.lastRow = rowIndex;
 				characterToMakeMove.rowIndex += 1;
@@ -436,7 +458,7 @@ function chooseRandomMovement(characterToMakeMove) {
 				{
 					characterToMakeMove.hitThePacman();
 				}
-				board[rowIndex][colIndex - 1] = 8;
+				board[rowIndex][colIndex - 1] = characterToMakeMove.boardValue;
 				checkApplesOrPills(rowIndex,colIndex);
 				characterToMakeMove.lastCol = colIndex;
 				characterToMakeMove.colIndex -= 1;
@@ -448,7 +470,7 @@ function chooseRandomMovement(characterToMakeMove) {
 				{
 					characterToMakeMove.hitThePacman();
 				}
-				board[rowIndex][colIndex + 1] = 8;
+				board[rowIndex][colIndex + 1] = characterToMakeMove.boardValue;
 				checkApplesOrPills(rowIndex,colIndex);
 				characterToMakeMove.lastCol = colIndex;
 				characterToMakeMove.colIndex += 1;
@@ -483,9 +505,12 @@ function UpdatePosition() {
 	if(localStorage.getItem("should_begin") == "true") {
 		var ghostMoveTime = new Date();
 		var ghost_time_elapsed = (ghostMoveTime - lastGhostMovementTime) / 1000;
-		if(ghost_time_elapsed > 0.25)
+		if(ghost_time_elapsed > 0.8)
 		{
 			moveGhostsRandomly();
+			if(shouldDrawDave) {
+				moveDaveRandomly();
+			}
 			lastGhostMovementTime = new Date();
 		}
 
@@ -578,7 +603,10 @@ function UpdatePosition() {
 			applesArray[shape.i][shape.j] = 0;
 		}
 		if (board[shape.i][shape.j] == 8) { // This is the score of 5 points balls!!!!!
-			hitThePacman();
+			ghostArray[0].hitThePacman();
+		}
+		if (board[shape.i][shape.j] == daveObject.boardValue) { // Eat Dave!!!!!
+			daveObject.hitThePacman();
 		}
 
 		board[shape.i][shape.j] = 2; // The location of the pacman
@@ -601,7 +629,7 @@ function UpdatePosition() {
 			return;
 		}
 		else {
-			if (score == 50) {
+			if (score == 5*maxFood) {
 				window.clearInterval(interval);
 				window.alert("Game completed");
 			} else {
