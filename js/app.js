@@ -312,7 +312,7 @@ function Start() {
 		}
 		generateNewGhosts();
 		putGhostsInBoard(true);
-		while (food_remain > 0) {
+		while (settingApples > 0) {
 			var emptyCell = findRandomEmptyCell(board);
 			randomNum2 = Math.random();
 			if (randomNum2<=0.6){
