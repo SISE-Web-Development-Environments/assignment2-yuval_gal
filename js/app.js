@@ -762,8 +762,12 @@ function UpdatePosition() {
 			window.alert("Loser! You've earned "+score+" points!" );
 			return;
 		}
+		if (score >= 10*maxFood) {
+			window.clearInterval(interval);
+			window.alert("Winner!! You've earned "+score+" points!");
+		}
 		else {
-			if (score >= 25*maxFood) {
+			if (score >= 10*maxFood) {
 				window.clearInterval(interval);
 				window.alert("Winner!! You've earned "+score+" points!");
 			} else {
