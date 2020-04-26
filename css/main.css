@@ -198,7 +198,7 @@ form .error {
 }
 
 #gameValues{
-    overflow: hidden; /* will contain if #first is longer than #second */
+    overflow: auto; /* will contain if #first is longer than #second */
 }
 
 .in-game{

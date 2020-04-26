@@ -2,7 +2,7 @@ var context;
 // var shape = new Object();
 var board;
 var score;
-var Killed;
+var Lives;
 var start_time;
 var time_elapsed;
 var backgroundSound;
@@ -64,7 +64,7 @@ const ghost = {
 	boardValue: 8,
 	type: "ghost",
 	hitThePacman() {
-		Killed--;
+		Lives--;
 		eatGhost.play();
 		score=score-10;
 		StartAfterKilled();
@@ -158,12 +158,12 @@ function initializeAudio() {
 }
 function initializeParameters() {
 	lastKeyPressed ="NOKEY"; // Note-start game no key pressed
-	Killed = 5; // initial number of Killed
+	Lives = 5; // initial number of Killed
 	pill=3;
 	clock=1;
 	moreWalls=9;
 	//TODO: remove this line after starting to use the settings values
-	numOfGhost=4;
+	numOfGhost=2;
 	score = 0;
 	pointsHeavyBalls = 25;
 	pointsLightBalls = 5;
@@ -173,7 +173,7 @@ function initializeParameters() {
 	applesArray = [];
 	pillsArray = [];
 	ghostArray = new Array(numOfGhost);
-	cnt = 100;
+	cnt = 144;
 	food_remain = maxFood;
 	pacman_remain = 1;
 	// restart = document.getElementById("restartBtn");
@@ -252,13 +252,13 @@ function Start() {
 		pacmanObject = Object.create(pacman);
 
 
-		for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < 12; i++) {
 			board[i] = new Array();
 			applesArray[i] = new Array();
 			clockArray[i]=new Array();
 			pillsArray[i] = new Array();
 			//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-			for (var j = 0; j < 10; j++) {
+			for (var j = 0; j < 12; j++) {
 				if (
 					(i == 3 && j == 3) ||
 					(i == 3 && j == 4) ||
@@ -389,19 +389,19 @@ function findRandomEmptyCell() {
 }
 
 function GetKeyPressed() {
-	if (keysDown[38]) {
+	if (keysDown[keyUp]) {
 		lastKeyPressed="UP";
 		return 1;
 	}
-	if (keysDown[40]) {
+	if (keysDown[keyDown]) {
 		lastKeyPressed="DOWN";
 		return 2;
 	}
-	if (keysDown[37]) {
+	if (keysDown[keyLeft]) {
 		lastKeyPressed="LEFT";
 		return 3;
 	}
-	if (keysDown[39]) {
+	if (keysDown[keyRight]) {
 		lastKeyPressed="RIGHT";
 		return 4;
 	}
@@ -440,10 +440,10 @@ function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
-	lblKilled.value = Killed;
+	lblLives.value = Lives;
 	userN.value = currentUser;
-	for (var i = 0; i < 10; i++) {
-		for (var j = 0; j < 10; j++) {
+	for (var i = 0; i < 12; i++) {
+		for (var j = 0; j < 12; j++) {
 			var center = new Object();
 			center.x = i * 60 + 30;
 			center.y = j * 60 + 30;
@@ -556,7 +556,7 @@ function chooseRandomMovement(characterToMakeMove) {
 				characterToMakeMove.rowIndex -= 1;
 				return "up";
 			}
-		} else if (rowIndex < 9 && randomGhostMove >= 0.25 && randomGhostMove < 0.5 && characterToMakeMove.lastRow !== (rowIndex+1)) {//Down
+		} else if (rowIndex < 11 && randomGhostMove >= 0.25 && randomGhostMove < 0.5 && characterToMakeMove.lastRow !== (rowIndex+1)) {//Down
 			if (board[rowIndex + 1][colIndex] !== 4) {
 				if(board[rowIndex + 1][colIndex] === 2)
 				{
@@ -580,7 +580,7 @@ function chooseRandomMovement(characterToMakeMove) {
 				characterToMakeMove.colIndex -= 1;
 				return "left";
 			}
-		} else if (colIndex < 9 && randomGhostMove >= 0.75 && randomGhostMove < 1 && characterToMakeMove.lastCol !== (colIndex+1)) {//Right
+		} else if (colIndex < 11 && randomGhostMove >= 0.75 && randomGhostMove < 1 && characterToMakeMove.lastCol !== (colIndex+1)) {//Right
 			if (board[rowIndex][colIndex + 1] !== 4) {
 				if(board[rowIndex][colIndex + 1] === 2)
 				{
@@ -632,7 +632,7 @@ function UpdatePosition() {
 		if (x == 1) {
 			if (pacmanObject.colIndex > 0 && board[pacmanObject.rowIndex][pacmanObject.colIndex-1] !== 4) {
 				if(board[pacmanObject.rowIndex][pacmanObject.colIndex-1] === 7){
-					Killed = Killed+1;
+					Lives = Lives+1;
 					pillSound.play();
 					board[pacmanObject.rowIndex][pacmanObject.colIndex-1] = 0;
 					pillsArray[pacmanObject.rowIndex][pacmanObject.colIndex-1] = 0;
@@ -650,9 +650,9 @@ function UpdatePosition() {
 			}
 		}
 		if (x == 2) {
-			if (pacmanObject.colIndex < 9 && board[pacmanObject.rowIndex][pacmanObject.colIndex+1] !== 4) {
+			if (pacmanObject.colIndex < 11 && board[pacmanObject.rowIndex][pacmanObject.colIndex+1] !== 4) {
 				if(board[pacmanObject.rowIndex][pacmanObject.colIndex+1] === 7){
-					Killed = Killed+1;
+					Lives = Lives+1;
 					pillSound.play();
 					board[pacmanObject.rowIndex][pacmanObject.colIndex+1] = 0;
 					pillsArray[pacmanObject.rowIndex][pacmanObject.colIndex+1] = 0;
@@ -673,7 +673,7 @@ function UpdatePosition() {
 		if (x == 3) {
 			if (pacmanObject.rowIndex > 0 && board[pacmanObject.rowIndex-1][pacmanObject.colIndex] !== 4) {
 				if(board[pacmanObject.rowIndex-1][pacmanObject.colIndex] === 7){
-					Killed = Killed+1;
+					Lives = Lives+1;
 					pillSound.play();
 					board[pacmanObject.rowIndex-1][pacmanObject.colIndex] = 0;
 					pillsArray[pacmanObject.rowIndex-1][pacmanObject.colIndex] = 0;
@@ -690,9 +690,9 @@ function UpdatePosition() {
 			}
 		}
 		if (x == 4) {
-			if (pacmanObject.rowIndex < 9 && board[pacmanObject.rowIndex+1][pacmanObject.colIndex] !== 4) {
+			if (pacmanObject.rowIndex < 11 && board[pacmanObject.rowIndex+1][pacmanObject.colIndex] !== 4) {
 				if(board[pacmanObject.rowIndex+1][pacmanObject.colIndex] === 7){
-					Killed = Killed+1;
+					Lives = Lives+1;
 					pillSound.play();
 					board[pacmanObject.rowIndex+1][pacmanObject.colIndex] = 0;
 					pillsArray[pacmanObject.rowIndex+1][pacmanObject.colIndex] = 0;
@@ -746,14 +746,26 @@ function UpdatePosition() {
 		// }
 		if(time_elapsed >= maximumTime)
 		{
+			if(score >= 100){
+				window.clearInterval(interval);
+				window.alert("Winner!!! You've earned "+score+" points!");
+			}
+			else{
+				window.clearInterval(interval);
+				window.alert("You are better than " + score + " points!");
+			}
+			return;
+		}
+		if(Lives === 0)
+		{
 			window.clearInterval(interval);
-			window.alert("Game Over! Time is up");
+			window.alert("Loser! You've earned "+score+" points!" );
 			return;
 		}
 		else {
-			if (score >= 5*maxFood) {
+			if (score >= 25*maxFood) {
 				window.clearInterval(interval);
-				window.alert("Game completed");
+				window.alert("Winner!! You've earned "+score+" points!");
 			} else {
 				Draw();
 			}
