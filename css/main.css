@@ -14,7 +14,7 @@ table{
 
 .sign-up-form{
     width: 50%;
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
     position: absolute;
@@ -207,5 +207,15 @@ form .error {
 
 #canvas{
     border: 3px solid black;
+}
+
+footer{
+    position: absolute;
+    overflow: auto;
+}
+
+footer h3{
+    padding: 0;
+    margin: 0;
 }
 

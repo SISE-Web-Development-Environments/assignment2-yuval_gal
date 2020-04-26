@@ -195,7 +195,7 @@
                 </div>
             </div>
             <div id="actual_game">
-                <canvas id="canvas" height="600" width="600"></canvas>
+                <canvas id="canvas" height="600" width="600" tabindex="1"></canvas>
             </div>
             <audio id = "backroundSound" preload = "auto">
                 <source src = "audio/PacMan%20Original%20Theme.mp3" type = "audio/mpeg"></audio>
@@ -290,7 +290,7 @@
             document.getElementById("maxTimeForGame").value = randomTime;
 
             //Generate Random of eatable balls
-            var randomEatBalls = Math.floor(Math.random()*100)+1;
+            var randomEatBalls = Math.floor(Math.random()*90)+1;
             document.getElementById("numOfBalls").value = randomEatBalls;
 
             //Generate Random of Ghosts
@@ -502,10 +502,9 @@
     </script>
 <!--Footer-->
     <footer>
-        <p> This game was created by Gal & Yuval </p>
-        <p>Contact information: </p>
-        <p><a href="mailto:ybene@post.bgu.ac.il">ybene@post.bgu.ac.il</a>.</p>
-        <p><a href="mailto:rosengal@post.bgu.ac.il">rosengal@post.bgu.ac.il</a>.</p>
+        <h3> This game was created by Gal & Yuval </h3>
+        Contact information: <a href="mailto:ybene@post.bgu.ac.il">ybene@post.bgu.ac.il</a>.
+        <a href="mailto:rosengal@post.bgu.ac.il">rosengal@post.bgu.ac.il</a>.
     </footer>
 </body>
 
