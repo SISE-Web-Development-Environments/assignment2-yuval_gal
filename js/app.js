@@ -1,5 +1,5 @@
 var context;
-var shape = new Object();
+// var shape = new Object();
 var board;
 var score;
 var Killed;
@@ -47,9 +47,11 @@ var ghostArray;
 var lastGhostMovementTime;
 var moreWalls;
 var daveObject;
+var pacmanObject;
 var cLightBalls;
 var cMedBalls;
 var cHeavyBalls;
+
 
 const ghost = {
 	rowIndex: 0,
@@ -62,6 +64,7 @@ const ghost = {
 		Killed--;
 		eatGhost.play();
 		score=score-10;
+		StartAfterKilled();
 	},
 };
 
@@ -81,6 +84,12 @@ const dave = {
 	},
 };
 
+const pacman = {
+	type: "pacman",
+	rowIndex: 0,
+	colIndex: 0,
+	boardValue: 2,
+};
 $(document).ready(function() {
 	context = canvas.getContext("2d");
 	Start();
@@ -101,7 +110,10 @@ function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls
 	cHeavyBalls= colorHeavyBalls;
 
 	window.focus();
-
+	window.clearInterval(interval);
+	initializeImages();
+	initializeAudio();
+	initializeParameters();
 	Start();
 }
 
@@ -164,24 +176,75 @@ function initializeParameters() {
 	lastGhostMovementTime = new Date();
 }
 
-function putGhostsInBoard() {
+function findNextEmptyCorner() {
+	var maxRow = board.length -1;
+	var maxCol = board[0].length -1;
+	if(board[0][0] !== 4 && board[0][0] !== 8)
+	{
+		return [0,0];
+	}
+	if(board[0][maxCol] !== 4 && board[0][maxCol] !== 8)
+	{
+		return [0,maxCol];
+	}
+	if(board[maxRow][0] !== 4 && board[maxRow][0] !== 8)
+	{
+		return [maxRow,0];
+	}
+	if(board[maxRow][maxCol] !== 4 && board[maxRow][maxCol] !== 8)
+	{
+		return [maxRow,maxCol];
+	}
+	return undefined;
+}
+
+function putGhostsInBoard(isBegining) {
 	var ghostToIterate = numOfGhost;
 	while (ghostToIterate > 0) {
-		var emptycellforGhost = findRandomEmptyCell(board);
-		board[emptycellforGhost[0]][emptycellforGhost[1]] = 8;
-		ghostArray[ghostToIterate-1] = Object.create(ghost);
+		if(!isBegining)
+		{
+			checkApplesOrPills(ghostArray[ghostToIterate-1].rowIndex,ghostArray[ghostToIterate-1].colIndex);
+		}
+		var emptycellforGhost = findNextEmptyCorner();
 		ghostArray[ghostToIterate-1].rowIndex = emptycellforGhost[0];
 		ghostArray[ghostToIterate-1].colIndex = emptycellforGhost[1];
+		board[ghostArray[ghostToIterate-1].rowIndex][ghostArray[ghostToIterate-1].colIndex] = 8;
 		ghostToIterate--;
+	}
+}
+
+function putPacmanInBoard() {
+	board[pacmanObject.rowIndex][pacmanObject.colIndex] = 0;
+	var pacmanNewIndexes = findRandomEmptyCell();
+	pacmanObject.rowIndex = pacmanNewIndexes[0];
+	pacmanObject.colIndex = pacmanNewIndexes[1];
+	board[pacmanObject.rowIndex][pacmanObject.colIndex] = pacmanObject.boardValue;
+}
+
+function StartAfterKilled() {
+	putGhostsInBoard(false);
+	putPacmanInBoard();
+}
+
+
+function generateNewGhosts() {
+	var countGhosts = 0;
+	while(countGhosts < numOfGhost)
+	{
+		ghostArray[countGhosts] = Object.create(ghost);
+		countGhosts++;
 	}
 }
 
 function Start() {
 	if(localStorage.getItem("should_begin") == "true") {
-		window.clearInterval(interval);
-		initializeImages();
-		initializeAudio();
-		initializeParameters();
+		var settingApples = food_remain;
+		var settingPacman = pacman_remain;
+		var settingPills = pill;
+		var settingClock = clock;
+		var settingWalls = moreWalls;
+		pacmanObject = Object.create(pacman);
+
 
 		for (var i = 0; i < 10; i++) {
 			board[i] = new Array();
@@ -203,17 +266,19 @@ function Start() {
 					pillsArray[i][j] = 0;
 				} else {
 					var randomNum = Math.random();
-					if (randomNum <= (1.0 * food_remain) / cnt) {
-						food_remain--;
+					if (randomNum <= (1.0 * settingApples) / cnt) {
+						settingApples--;
 						board[i][j] = 1; //Food
 						applesArray[i][j] = 1;
 						pillsArray[i][j] = 0;
 						clockArray[i][j]=0;
-					} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
-						shape.i = i;
-						shape.j = j;
-						pacman_remain--;
-						board[i][j] = 2; //Pacman
+					} else if ((randomNum < (1.0 * (settingPacman + settingApples)) / cnt) && i !== 0 && j !== 0) {
+						// shape.i = i;
+						// shape.j = j;
+						settingPacman--;
+						pacmanObject.rowIndex = i;
+						pacmanObject.colIndex = j;
+						board[i][j] = pacmanObject.boardValue; //Pacman
 						applesArray[i][j] = 0;
 						pillsArray[i][j] = 0;
 						clockArray[i][j]=0;
@@ -227,60 +292,62 @@ function Start() {
 				}
 			}
 		}
-	}
-	while (food_remain > 0) {
-		var emptyCell = findRandomEmptyCell(board);
-		board[emptyCell[0]][emptyCell[1]] = 1;
-		applesArray[emptyCell[0]][emptyCell[1]] = 1;
-		food_remain--;
-	}
-	while (pill>0){
-		var emptycellforpill = findRandomEmptyCell(board);
-		board[emptycellforpill[0]][emptycellforpill[1]] = 7;
-		pillsArray[emptycellforpill[0]][emptycellforpill[1]] = 1;
-		pill--;
-	}
-	while (clock>0){
-		var emptycellforClock = findRandomEmptyCell(board);
-		board[emptycellforClock[0]][emptycellforClock[1]] = 10;
-		clockArray[emptycellforClock[0]][emptycellforClock[1]] = 1;
-		clock--;
-	}
-	while (moreWalls>0){
-		var emptycellformoreWalls = findRandomEmptyCell(board);
-		board[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 4;
-		applesArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
-		pillsArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
-		clockArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
-		moreWalls--;
-	}
-	//Putting dave in an EmptyCell in the board
-	var emptyCellForDave = findRandomEmptyCell(board);
-	board[emptyCellForDave[0]][emptyCellForDave[1]] = 11;
-	daveObject = Object.create(dave);
-	daveObject.rowIndex = emptyCellForDave[0];
-	daveObject.colIndex = emptyCellForDave[1];
+		generateNewGhosts();
+		putGhostsInBoard(true);
+		while (settingApples > 0) {
+			var emptyCell = findRandomEmptyCell(board);
+			board[emptyCell[0]][emptyCell[1]] = 1;
+			applesArray[emptyCell[0]][emptyCell[1]] = 1;
+			settingApples--;
+		}
+		while (settingPills>0){
+			var emptycellforpill = findRandomEmptyCell(board);
+			board[emptycellforpill[0]][emptycellforpill[1]] = 7;
+			pillsArray[emptycellforpill[0]][emptycellforpill[1]] = 1;
+			settingPills--;
+		}
+		while (settingClock>0){
+			var emptycellforClock = findRandomEmptyCell(board);
+			board[emptycellforClock[0]][emptycellforClock[1]] = 10;
+			clockArray[emptycellforClock[0]][emptycellforClock[1]] = 1;
+			settingClock--;
+		}
+		while (settingWalls>0){
+			var emptycellformoreWalls = findRandomEmptyCell(board);
+			board[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 4;
+			applesArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
+			pillsArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
+			clockArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
+			settingWalls--;
+		}
+		//Putting dave in an EmptyCell in the board
+		var emptyCellForDave = findRandomEmptyCell(board);
+		board[emptyCellForDave[0]][emptyCellForDave[1]] = 11;
+		daveObject = Object.create(dave);
+		daveObject.rowIndex = emptyCellForDave[0];
+		daveObject.colIndex = emptyCellForDave[1];
 
-	putGhostsInBoard();
-	keysDown = {};
-	addEventListener(
-		"keydown",
-		function(e) {
-			keysDown[e.keyCode] = true;
-		},
-		false
-	);
-	addEventListener(
-		"keyup",
-		function(e) {
-			keysDown[e.keyCode] = false;
-		},
-		false
-	);
-	interval = setInterval(UpdatePosition, 150);
+
+		keysDown = {};
+		addEventListener(
+			"keydown",
+			function(e) {
+				keysDown[e.keyCode] = true;
+			},
+			false
+		);
+		addEventListener(
+			"keyup",
+			function(e) {
+				keysDown[e.keyCode] = false;
+			},
+			false
+		);
+		interval = setInterval(UpdatePosition, 150);
+	}
 }
 
-function findRandomEmptyCell(board) {
+function findRandomEmptyCell() {
 	var i = Math.floor(Math.random() * 9 + 1);
 	var j = Math.floor(Math.random() * 9 + 1);
 	while (board[i][j] != 0) {
@@ -517,101 +584,101 @@ function UpdatePosition() {
 		}
 
 
-		board[shape.i][shape.j] = 0;
+		board[pacmanObject.rowIndex][pacmanObject.colIndex] = 0;
 		var x = GetKeyPressed();
 		if (x == 1) {
-			if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
-				if(board[shape.i][shape.j - 1] == 7){
+			if (pacmanObject.colIndex > 0 && board[pacmanObject.rowIndex][pacmanObject.colIndex-1] !== 4) {
+				if(board[pacmanObject.rowIndex][pacmanObject.colIndex-1] === 7){
 					Killed = Killed+1;
 					pillSound.play();
-					board[shape.i][shape.j - 1] = 0;
-					pillsArray[shape.i][shape.j- 1] = 0;
+					board[pacmanObject.rowIndex][pacmanObject.colIndex-1] = 0;
+					pillsArray[pacmanObject.rowIndex][pacmanObject.colIndex-1] = 0;
 				}
-				if(board[shape.i][shape.j - 1] == 10){
-					board[shape.i][shape.j - 1] = 0;
-					clockArray[shape.i][shape.j - 1] = 0;
+				if(board[pacmanObject.rowIndex][pacmanObject.colIndex-1] === 10){
+					board[pacmanObject.rowIndex][pacmanObject.colIndex-1] = 0;
+					clockArray[pacmanObject.rowIndex][pacmanObject.colIndex-1] = 0;
 					console.log(maximumTime);
 					maximumTime +=10;
 					console.log(maximumTime);
 
 				}
 				lastKeyPressed="UP";
-				shape.j--;
+				pacmanObject.colIndex--;
 			}
 		}
 		if (x == 2) {
-			if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
-				if(board[shape.i][shape.j + 1] == 7){
+			if (pacmanObject.colIndex < 9 && board[pacmanObject.rowIndex][pacmanObject.colIndex+1] !== 4) {
+				if(board[pacmanObject.rowIndex][pacmanObject.colIndex+1] === 7){
 					Killed = Killed+1;
 					pillSound.play();
-					board[shape.i][shape.j + 1] = 0;
-					pillsArray[shape.i][shape.j + 1] = 0;
+					board[pacmanObject.rowIndex][pacmanObject.colIndex+1] = 0;
+					pillsArray[pacmanObject.rowIndex][pacmanObject.colIndex+1] = 0;
 				}
-				if(board[shape.i][shape.j + 1] == 10){
-					clockArray[shape.i][shape.j + 1] = 0;
-					board[shape.i][shape.j + 1] = 0;
+				if(board[pacmanObject.rowIndex][pacmanObject.colIndex+1] === 10){
+					clockArray[pacmanObject.rowIndex][pacmanObject.colIndex+1] = 0;
+					board[pacmanObject.rowIndex][pacmanObject.colIndex+1] = 0;
 					console.log(maximumTime);
 					maximumTime +=10;
 					console.log(maximumTime);
 
 				}
 				lastKeyPressed="DOWN";
-				shape.j++;
+				pacmanObject.colIndex++;
 
 			}
 		}
 		if (x == 3) {
-			if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
-				if(board[shape.i - 1][shape.j] == 7){
+			if (pacmanObject.rowIndex > 0 && board[pacmanObject.rowIndex-1][pacmanObject.colIndex] !== 4) {
+				if(board[pacmanObject.rowIndex-1][pacmanObject.colIndex] === 7){
 					Killed = Killed+1;
 					pillSound.play();
-					board[shape.i - 1][shape.j] = 0;
-					pillsArray[shape.i - 1][shape.j] = 0;
+					board[pacmanObject.rowIndex-1][pacmanObject.colIndex] = 0;
+					pillsArray[pacmanObject.rowIndex-1][pacmanObject.colIndex] = 0;
 				}
-				if(board[shape.i - 1][shape.j] == 10){
-					board[shape.i - 1][shape.j] = 0;
-					clockArray[shape.i - 1][shape.j] = 0;
+				if(board[pacmanObject.rowIndex-1][pacmanObject.colIndex] === 10){
+					board[pacmanObject.rowIndex-1][pacmanObject.colIndex] = 0;
+					clockArray[pacmanObject.rowIndex-1][pacmanObject.colIndex] = 0;
 					console.log(maximumTime);
 					maximumTime +=10;
 					console.log(maximumTime);
 				}
 				lastKeyPressed="LEFT";
-				shape.i--;
+				pacmanObject.rowIndex--;
 			}
 		}
 		if (x == 4) {
-			if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
-				if(board[shape.i + 1][shape.j] == 7){
+			if (pacmanObject.rowIndex < 9 && board[pacmanObject.rowIndex+1][pacmanObject.colIndex] !== 4) {
+				if(board[pacmanObject.rowIndex+1][pacmanObject.colIndex] === 7){
 					Killed = Killed+1;
 					pillSound.play();
-					board[shape.i + 1][shape.j] = 0;
-					pillsArray[shape.i + 1][shape.j] = 0;
+					board[pacmanObject.rowIndex+1][pacmanObject.colIndex] = 0;
+					pillsArray[pacmanObject.rowIndex+1][pacmanObject.colIndex] = 0;
 				}
-				if(board[shape.i + 1][shape.j] == 10){
-					board[shape.i + 1][shape.j] = 0;
-					clockArray[shape.i + 1][shape.j] = 0;
+				if(board[pacmanObject.rowIndex+1][pacmanObject.colIndex] === 10){
+					board[pacmanObject.rowIndex+1][pacmanObject.colIndex] = 0;
+					clockArray[pacmanObject.rowIndex+1][pacmanObject.colIndex] = 0;
 					console.log(maximumTime);
 					maximumTime +=10;
 					console.log(maximumTime);
 
 				}
 				lastKeyPressed="RIGHT";
-				shape.i++;
+				pacmanObject.rowIndex++;
 			}
 		}
-		if (board[shape.i][shape.j] == 1) { // This is the score of 5 points balls!!!!!
+		if (board[pacmanObject.rowIndex][pacmanObject.colIndex] === 1) { // This is the score of 5 points balls!!!!!
 			score=score+5;
 			eatSound.play();
-			applesArray[shape.i][shape.j] = 0;
+			applesArray[pacmanObject.rowIndex][pacmanObject.colIndex] = 0;
 		}
-		if (board[shape.i][shape.j] == 8) { // This is the score of 5 points balls!!!!!
+		if (board[pacmanObject.rowIndex][pacmanObject.colIndex] === 8) { // This is the score of 5 points balls!!!!!
 			ghostArray[0].hitThePacman();
 		}
-		if (board[shape.i][shape.j] == daveObject.boardValue) { // Eat Dave!!!!!
+		if (board[pacmanObject.rowIndex][pacmanObject.colIndex] === daveObject.boardValue) { // Eat Dave!!!!!
 			daveObject.hitThePacman();
 		}
 
-		board[shape.i][shape.j] = 2; // The location of the pacman
+		board[pacmanObject.rowIndex][pacmanObject.colIndex] = 2; // The location of the pacman
 		var currentTime = new Date();
 		time_elapsed = (currentTime - start_time) / 1000;
 		if (score >= 20 && time_elapsed <= 10) { //AFTER THIS THE PACMAN IS PINK -NOTE TO AND!!!
