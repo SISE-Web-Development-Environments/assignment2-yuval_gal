@@ -431,7 +431,6 @@ function gameRestart(){
 	Start();
 }
 
-
 function checkApplesOrPills(rowIndex, colIndex) {
 	if(applesArray[rowIndex][colIndex] === 1)
 	{
@@ -527,8 +526,6 @@ function chooseRandomMovement(characterToMakeMove) {
 	}
 }
 
-
-
 function moveGhostsRandomly() {
 	var countGhosts = 0;
 	while (countGhosts < numOfGhost)
@@ -544,8 +541,6 @@ function moveGhostsRandomly() {
 		countGhosts++;
 	}
 }
-
-
 
 function UpdatePosition() {
 	if(localStorage.getItem("should_begin") == "true") {
