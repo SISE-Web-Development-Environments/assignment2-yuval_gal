@@ -16,7 +16,6 @@ var keyDown;
 var keyLeft;
 var keyRight;
 var maximumTime;
-
 var wallImage;
 var pillImage;
 var clockImage;
@@ -102,7 +101,6 @@ function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls
 	cLightBalls = colorLightBalls;
 	cMedBalls = colorMedBalls;
 	cHeavyBalls= colorHeavyBalls;
-
 	window.focus();
 	Start();
 }
@@ -209,8 +207,20 @@ function Start() {
 					var randomNum = Math.random();
 					if (randomNum <= (1.0 * food_remain) / cnt) {
 						food_remain--;
-						board[i][j] = 1; //Food
-						applesArray[i][j] = 1;
+						var randomNum2 = Math.random();
+						if (randomNum2<=0.6){
+							board[i][j] = 1; //Food
+							applesArray[i][j] = 1;
+						}
+						else if(randomNum2>0.6 && randomNum2 <= 0.9){
+							board[i][j] = 13; //Food
+							applesArray[i][j] = 13;
+						}
+						else{
+							board[i][j] = 14; //Food
+							applesArray[i][j] = 14;
+						}
+						//applesArray[i][j] = 1;
 						pillsArray[i][j] = 0;
 						clockArray[i][j]=0;
 					} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
@@ -234,8 +244,21 @@ function Start() {
 	}
 	while (food_remain > 0) {
 		var emptyCell = findRandomEmptyCell(board);
-		board[emptyCell[0]][emptyCell[1]] = 1;
-		applesArray[emptyCell[0]][emptyCell[1]] = 1;
+		randomNum2 = Math.random();
+		if (randomNum2<=0.6){
+			board[emptyCell[0]][emptyCell[1]] = 1;
+			applesArray[emptyCell[0]][emptyCell[1]] = 1;
+
+		}
+		else if(randomNum2>0.6 && randomNum2 <= 0.9){
+			board[emptyCell[0]][emptyCell[1]] = 13;
+			applesArray[emptyCell[0]][emptyCell[1]] = 13;
+
+		}
+		else{
+			board[emptyCell[0]][emptyCell[1]] = 14;
+			applesArray[emptyCell[0]][emptyCell[1]] = 14;
+		}
 		food_remain--;
 	}
 	while (pill>0){
@@ -367,11 +390,19 @@ function Draw() {
 					context.drawImage(pacmangirl,center.x -30,center.y-30,60,60);
 				}
 
-			} else if (board[i][j] == 1) { //Draw food
+			} else if (board[i][j] == 1 || board[i][j] == 14 || board[i][j] == 13) { //Draw food
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
 				//context.fillStyle = "black"; //color
-				context.fillStyle = cLightBalls;
+				if(board[i][j] == 1 ){
+					context.fillStyle = cLightBalls;
+				}
+				else if(board[i][j] == 14){
+					context.fillStyle = cHeavyBalls;
+				}
+				else {
+					context.fillStyle = cMedBalls;
+				}
 				context.fill();
 			} else if (board[i][j] == 4) {
 				context.drawImage(wallImage,center.x - 30,center.y - 30,60,60);
@@ -405,6 +436,14 @@ function checkApplesOrPills(rowIndex, colIndex) {
 	if(applesArray[rowIndex][colIndex] === 1)
 	{
 		board[rowIndex][colIndex] = 1;
+	}
+	else if(applesArray[rowIndex][colIndex] === 13)
+	{
+		board[rowIndex][colIndex] = 13;
+	}
+	else if(applesArray[rowIndex][colIndex] === 14)
+	{
+		board[rowIndex][colIndex] = 14;
 	}
 	else if(pillsArray[rowIndex][colIndex] === 1)
 	{
@@ -606,6 +645,16 @@ function UpdatePosition() {
 		}
 		if (board[shape.i][shape.j] == 1) { // This is the score of 5 points balls!!!!!
 			score=score+pointsLightBalls;
+			eatSound.play();
+			applesArray[shape.i][shape.j] = 0;
+		}
+		if (board[shape.i][shape.j] == 13) { // This is the score of 5 points balls!!!!!
+			score=score+pointsMedBalls;
+			eatSound.play();
+			applesArray[shape.i][shape.j] = 0;
+		}
+		if (board[shape.i][shape.j] == 14) { // This is the score of 5 points balls!!!!!
+			score=score+pointsHeavyBalls;
 			eatSound.play();
 			applesArray[shape.i][shape.j] = 0;
 		}
