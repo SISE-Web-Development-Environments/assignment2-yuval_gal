@@ -2,7 +2,10 @@ body{
     margin: 0;
     padding: 0;
 }
-
+table{
+    border-collapse:separate;
+    border-spacing: 0 1px;
+}
 .nav {
     overflow: hidden;
     border: 1px solid #ccc;
@@ -11,7 +14,7 @@ body{
 
 .sign-up-form{
     width: 50%;
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
     position: absolute;
@@ -178,5 +181,41 @@ form .error {
     -moz-box-shadow:    1px 1px 5px rgba(0,0,0,0.5);
     -webkit-box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
     box-shadow:         1px 1px 5px rgba(0,0,0,0.5);
+}
+
+#GameAndSettings{
+    width: 90%;
+    border: 1px solid black;
+    overflow: auto; /* will contain if #first is longer than #second */
+}
+#Settings{
+    width: 30%;
+    float:left; /* add this */
+    border-left: 3px solid black;
+}
+#game{
+    overflow: auto;
+}
+
+#gameValues{
+    overflow: hidden; /* will contain if #first is longer than #second */
+}
+
+.in-game{
+    overflow: auto;
+}
+
+#canvas{
+    border: 3px solid black;
+}
+
+footer{
+    position: absolute;
+    overflow: auto;
+}
+
+footer h3{
+    padding: 0;
+    margin: 0;
 }
 

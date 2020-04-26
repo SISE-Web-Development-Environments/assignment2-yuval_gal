@@ -127,88 +127,89 @@
         <a href="#" rel="modal:close">Close</a>
     </div>
 
-    <div id="Settings" class="window_content">
-        <h1>Set Your Game Settings</h1>
-        <div class="main">
-            <form>
-                <table style="width:100%">
-                    <tr>
-                        <th> KeySelection </th>
-                        <th> Time Settings </th>
-                        <th> Balls Settings </th>
-                        <th> General Settings </th>
-                    </tr>
-                    <tr>
-                        <td>Up:  <input class="choseable_keys" id="keyUp" onclick="keyPressedSelector(this.id)" type="button" value="ArrowUp"></td>
-                        <td>Select Max Time for the game: <input id="maxTimeForGame" type="number" min="60" value="60"></td>
-                        <td>Select number of eatable balls:    <input id="numOfBalls" type="number" min="1" value="30" max="99"></td>
-                        <td>Select the number of ghosts:    <input id="numOfGhosts" type="number" min="1" max="10" value="4"></td>
-                    </tr>
-                    <tr>
-                        <td>Down:  <input class="choseable_keys" id="keyDown" onclick="keyPressedSelector(this.id)" type="button" value="ArrowDown"></td>
-                        <td></td>
-                        <td>Select Color for the light balls:    <input id="lightBallColor" type="color" value="#0000ff"></td>
-                    </tr>
-                    <tr>
-                        <td>Left:  <input class="choseable_keys" id="keyLeft" onclick="keyPressedSelector(this.id)" type="button" value="ArrowLeft"></td>
-                        <td></td>
-                        <td>Select Color for the medium balls:    <input id="medBallColor" type="color" value="#ff0000"></td>
-                    </tr>
-                    <tr>
-                        <td>Right:  <input class="choseable_keys" id="keyRight" onclick="keyPressedSelector(this.id)" type="button" value="ArrowRight"></td>
-                        <td></td>
-                        <td>Select Color for the hevy balls:    <input id="heavyBallColor" type="color" value="#000000"></td>
-                    </tr>
-                </table>
-                <div style="margin-top: 3%;">
-                    <input  type="button" id="settingsRndmButton" value="randomize all values" onclick="randomizeSettings()">
-                    <input style="margin-left: 30%;" type="button" id="settingStartGameButton" onclick="beginGame()" value="Let's Start the Game!">
+    <div id="GameAndSettings">
+        <div id="Settings" class="window_content">
+            <h1>Set Your Game Settings</h1>
+            <div class="main">
+                <form>
+                    <table style="width:30%;">
+                        <tr>
+                            <th> KeySelection </th>
+                            <th> Time Settings </th>
+                            <th> Balls Settings </th>
+                            <th> General Settings </th>
+                        </tr>
+                        <tr>
+                            <td>Up:  <input class="choseable_keys" id="keyUp" onclick="keyPressedSelector(this.id)" type="button" value="ArrowUp"></td>
+                            <td>Select Max Time for the game: <input id="maxTimeForGame" type="number" min="60" value="60"></td>
+                            <td>Select number of eatable balls:    <input id="numOfBalls" type="number" min="1" value="30" max="99"></td>
+                            <td>Select the number of ghosts:    <input id="numOfGhosts" type="number" min="1" max="10" value="4"></td>
+                        </tr>
+                        <tr>
+                            <td>Down:  <input class="choseable_keys" id="keyDown" onclick="keyPressedSelector(this.id)" type="button" value="ArrowDown"></td>
+                            <td></td>
+                            <td>Select Color for the light balls:    <input id="lightBallColor" type="color" value="#0000ff"></td>
+                        </tr>
+                        <tr>
+                            <td>Left:  <input class="choseable_keys" id="keyLeft" onclick="keyPressedSelector(this.id)" type="button" value="ArrowLeft"></td>
+                            <td></td>
+                            <td>Select Color for the medium balls:    <input id="medBallColor" type="color" value="#ff0000"></td>
+                        </tr>
+                        <tr>
+                            <td>Right:  <input class="choseable_keys" id="keyRight" onclick="keyPressedSelector(this.id)" type="button" value="ArrowRight"></td>
+                            <td></td>
+                            <td>Select Color for the hevy balls:    <input id="heavyBallColor" type="color" value="#000000"></td>
+                        </tr>
+                    </table>
+                    <div style="margin-top: 3%;">
+                        <input  type="button" id="settingsRndmButton" value="randomize all values" onclick="randomizeSettings()">
+                        <input style="margin-left: 10%;" type="button" id="settingStartGameButton" onclick="beginGame()" value="Let's Start the Game!">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="game" class="window_content">
+<!--            <div id="restart">-->
+<!--                <button id="restartBtn">Restart</button>-->
+<!--            </div>-->
+            <div id="gameValues">
+                <div id="in-game-score" class="in-game">
+                    <label for="lblScore">SCORE:</label>
+                    <input id="lblScore" type="text" />
+<!--                </div>-->
+
+<!--                <div id="in-game-time" class="in-game">-->
+                    <label for="lblTime">TIME:</label>
+                    <input id="lblTime" type="text" />
+<!--                </div>-->
+
+<!--                <div id="in-game-Killed" class="in-game">-->
+                    <label for="lblKilled">Killed:</label>
+                    <input id="lblKilled" type="text" />
+<!--                </div>-->
+
+<!--                <div id="in-game-user" class="in-game">-->
+                    <label for="userN">username:</label>
+                    <input id="userN" type="text" />
                 </div>
-            </form>
+            </div>
+            <div id="actual_game">
+                <canvas id="canvas" height="600" width="600" tabindex="1"></canvas>
+            </div>
+            <audio id = "backroundSound" preload = "auto">
+                <source src = "audio/PacMan%20Original%20Theme.mp3" type = "audio/mpeg"></audio>
+            <audio id = "hitSound" preload = "auto">
+                <source src = "audio/blocker_hit.mp3" type = "audio/mpeg"></audio>
+            <audio id = "eatSound" preload = "auto">
+                <source src = "audio/Blop%20sound%20effect.mp3" type = "audio/mpeg"></audio>
+            <audio id = "pillSound" preload = "auto">
+                <source src = "audio/Extra.mp3" type = "audio/mpeg"></audio>
+            <audio id = "eatGhost" preload = "auto">
+                <source src = "audio/blocker_hit.mp3" type = "audio/mpeg"></audio>
+
         </div>
     </div>
-
-    <div id="game" class="window_content">
-        <div id="restart">
-            <button id="restartBtn">Restart</button>
-        </div>
-
-        <div id="score">
-            <label for="lblScore">SCORE:</label>
-            <input id="lblScore" type="text" />
-        </div>
-
-        <div id="time">
-            <label for="lblTime">TIME:</label>
-            <input id="lblTime" type="text" />
-        </div>
-
-        <div id="Killed">
-            <label for="lblKilled">Killed:</label>
-            <input id="lblKilled" type="text" />
-        </div>
-
-        <div id="user">
-            <label for="userN">username:</label>
-            <input id="userN" type="text" />
-        </div>
-
-        <div id="actual_game">
-            <canvas id="canvas" height="600" width="600"></canvas>
-        </div>
-        <audio id = "backroundSound" preload = "auto">
-            <source src = "audio/PacMan%20Original%20Theme.mp3" type = "audio/mpeg"></audio>
-        <audio id = "hitSound" preload = "auto">
-            <source src = "audio/blocker_hit.mp3" type = "audio/mpeg"></audio>
-        <audio id = "eatSound" preload = "auto">
-            <source src = "audio/Blop%20sound%20effect.mp3" type = "audio/mpeg"></audio>
-        <audio id = "pillSound" preload = "auto">
-            <source src = "audio/Extra.mp3" type = "audio/mpeg"></audio>
-        <audio id = "eatGhost" preload = "auto">
-            <source src = "audio/blocker_hit.mp3" type = "audio/mpeg"></audio>
-
-    </div>
-
 
 
 <!-------------------------------------------------Scripts--------------------------------->
@@ -289,7 +290,7 @@
             document.getElementById("maxTimeForGame").value = randomTime;
 
             //Generate Random of eatable balls
-            var randomEatBalls = Math.floor(Math.random()*100)+1;
+            var randomEatBalls = Math.floor(Math.random()*90)+1;
             document.getElementById("numOfBalls").value = randomEatBalls;
 
             //Generate Random of Ghosts
@@ -501,10 +502,9 @@
     </script>
 <!--Footer-->
     <footer>
-        <p> This game was created by Gal & Yuval </p>
-        <p>Contact information: </p>
-        <p><a href="mailto:ybene@post.bgu.ac.il">ybene@post.bgu.ac.il</a>.</p>
-        <p><a href="mailto:rosengal@post.bgu.ac.il">rosengal@post.bgu.ac.il</a>.</p>
+        <h3> This game was created by Gal & Yuval </h3>
+        Contact information: <a href="mailto:ybene@post.bgu.ac.il">ybene@post.bgu.ac.il</a>.
+        <a href="mailto:rosengal@post.bgu.ac.il">rosengal@post.bgu.ac.il</a>.
     </footer>
 </body>
 
