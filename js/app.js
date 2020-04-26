@@ -94,6 +94,7 @@ function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls
 
 
 	window.focus();
+
 	Start();
 }
 
@@ -146,8 +147,8 @@ function initializeParameters() {
 	cnt = 100;
 	food_remain = maxFood;
 	pacman_remain = 1;
-	restart = document.getElementById("restartBtn");
-	restart.addEventListener("click",gameRestart);
+	// restart = document.getElementById("restartBtn");
+	// restart.addEventListener("click",gameRestart);
 	start_time = new Date();
 	lastGhostMovementTime = new Date();
 }
@@ -166,6 +167,7 @@ function putGhostsInBoard() {
 
 function Start() {
 	if(localStorage.getItem("should_begin") == "true") {
+		window.clearInterval(interval);
 		initializeImages();
 		initializeAudio();
 		initializeParameters();
@@ -252,7 +254,7 @@ function Start() {
 		},
 		false
 	);
-	interval = setInterval(UpdatePosition, 250);
+	interval = setInterval(UpdatePosition, 150);
 }
 
 function findRandomEmptyCell(board) {
@@ -567,7 +569,7 @@ function UpdatePosition() {
 			return;
 		}
 		else {
-			if (score == 5*maxFood) {
+			if (score >= 5*maxFood) {
 				window.clearInterval(interval);
 				window.alert("Game completed");
 			} else {
