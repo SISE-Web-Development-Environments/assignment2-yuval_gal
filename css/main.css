@@ -151,14 +151,14 @@ form .error {
   }
 
 
-a {
-    color: black;
-    text-transform: inherit;
-    text-underline: none;
-    text-decoration: none;
-    padding: 8px 8px;
-    text-align: center;
-}
+/*a {*/
+/*    color: black;*/
+/*    text-transform: inherit;*/
+/*    text-underline: none;*/
+/*    text-decoration: none;*/
+/*    padding: 8px 8px;*/
+/*    text-align: center;*/
+/*}*/
 .modal a.close-modal[class*="icon-"] {
     top: -10px;
     right: -10px;
