@@ -140,23 +140,23 @@
                             <th> General Settings </th>
                         </tr>
                         <tr>
-                            <td>Up:  <input class="choseable_keys" id="keyUp" onclick="keyPressedSelector(this.id)" type="button" value="ArrowUp"></td>
-                            <td>Select Max Time for the game: <input id="maxTimeForGame" type="number" min="60" value="60"></td>
-                            <td>Select number of eatable balls:    <input id="numOfBalls" type="number" min="1" value="30" max="99"></td>
-                            <td>Select the number of ghosts:    <input id="numOfGhosts" type="number" min="1" max="10" value="4"></td>
+                            <td>Up:  <input class="choseable_keys" id="keyUp" onclick="keyPressedSelector(this.id)" type="button" value="ArrowUp" name="38"></td>
+                            <td>Select Max Time for the game: <input id="maxTimeForGame" type="number" min="60" value="60" ></td>
+                            <td>Select number of eatable balls:    <input id="numOfBalls" type="number" min="50" value="50" max="90"></td>
+                            <td>Select the number of ghosts:    <input id="numOfGhosts" type="number" min="1" max="4" value="4"></td>
                         </tr>
                         <tr>
-                            <td>Down:  <input class="choseable_keys" id="keyDown" onclick="keyPressedSelector(this.id)" type="button" value="ArrowDown"></td>
+                            <td>Down:  <input class="choseable_keys" id="keyDown" onclick="keyPressedSelector(this.id)" type="button" value="ArrowDown" name="40"></td>
                             <td></td>
                             <td>Select Color for the light balls:    <input id="lightBallColor" type="color" value="#0000ff"></td>
                         </tr>
                         <tr>
-                            <td>Left:  <input class="choseable_keys" id="keyLeft" onclick="keyPressedSelector(this.id)" type="button" value="ArrowLeft"></td>
+                            <td>Left:  <input class="choseable_keys" id="keyLeft" onclick="keyPressedSelector(this.id)" type="button" value="ArrowLeft" name="37"></td>
                             <td></td>
                             <td>Select Color for the medium balls:    <input id="medBallColor" type="color" value="#ff0000"></td>
                         </tr>
                         <tr>
-                            <td>Right:  <input class="choseable_keys" id="keyRight" onclick="keyPressedSelector(this.id)" type="button" value="ArrowRight"></td>
+                            <td>Right:  <input class="choseable_keys" id="keyRight" onclick="keyPressedSelector(this.id)" type="button" value="ArrowRight" name="39" ></td>
                             <td></td>
                             <td>Select Color for the hevy balls:    <input id="heavyBallColor" type="color" value="#000000"></td>
                         </tr>
@@ -185,8 +185,8 @@
 <!--                </div>-->
 
 <!--                <div id="in-game-Killed" class="in-game">-->
-                    <label for="lblKilled">Killed:</label>
-                    <input id="lblKilled" type="text" />
+                    <label for="lblLives">Lives:</label>
+                    <input id="lblLives" type="text" />
 <!--                </div>-->
 
 <!--                <div id="in-game-user" class="in-game">-->
@@ -195,7 +195,7 @@
                 </div>
             </div>
             <div id="actual_game">
-                <canvas id="canvas" height="600" width="600" tabindex="1"></canvas>
+                <canvas id="canvas" height="720" width="720" tabindex="1"></canvas>
             </div>
             <audio id = "backroundSound" preload = "auto">
                 <source src = "audio/PacMan%20Original%20Theme.mp3" type = "audio/mpeg"></audio>
@@ -219,6 +219,7 @@
             console.log(keyId);
             var keyPressed = $("#" + keyId);
             keyPressed.keydown(function (event) {
+                keyPressed.prop("name",event.keyCode);
                 keyPressed.prop("value",event.key);
                 keyPressed.off("keydown");
             });
@@ -229,10 +230,10 @@
     <script type="text/javascript">
 
         function validateSettings() {
-            var valueOfKeyUp = document.getElementById("keyUp").value;
-            var valueOfKeyDown = document.getElementById("keyDown").value;
-            var valueOfKeyLeft = document.getElementById("keyLeft").value;
-            var valueOfKeyRight = document.getElementById("keyRight").value;
+            var valueOfKeyUp = document.getElementById("keyUp").name;
+            var valueOfKeyDown = document.getElementById("keyDown").name;
+            var valueOfKeyLeft = document.getElementById("keyLeft").name;
+            var valueOfKeyRight = document.getElementById("keyRight").name;
 
             var colorLight = document.getElementById("lightBallColor").value;
             var colorMed = document.getElementById("medBallColor").value;
@@ -250,10 +251,10 @@
 
         function getSettingsValue() {
             var maxTime = document.getElementById("maxTimeForGame").value;
-            var valueOfKeyUp = document.getElementById("keyUp").value;
-            var valueOfKeyDown = document.getElementById("keyDown").value;
-            var valueOfKeyLeft = document.getElementById("keyLeft").value;
-            var valueOfKeyRight = document.getElementById("keyRight").value;
+            var valueOfKeyUp = document.getElementById("keyUp").name;
+            var valueOfKeyDown = document.getElementById("keyDown").name;
+            var valueOfKeyLeft = document.getElementById("keyLeft").name;
+            var valueOfKeyRight = document.getElementById("keyRight").name;
 
             var colorLight = document.getElementById("lightBallColor").value;
             var colorMed = document.getElementById("medBallColor").value;
@@ -329,7 +330,6 @@
             clearWindowContent();
             clearActiveWindow();
             clearAllContents();
-
             document.getElementById(navButton).style.display = "block";
 
             if(navButton == "game" && localStorage.getItem("should_begin") == "false")
@@ -460,6 +460,7 @@
             pageToShow.style.display = "block";
             evt.currentTarget.className += " active";
         }
+
 
         function clearButtonsForUser(toShow){
             if(toShow === "true")
