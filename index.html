@@ -37,7 +37,7 @@
         <button class="navbuttons" id="settingsButton" onclick="openRelevantWindow(event, 'Settings')">Settings</button>
         <button class="navbuttons" id="gameButton" onclick="openRelevantWindow(event, 'game')">Game</button>
         <button class="navbuttons" id="aboutButton">
-            <a href="#popUpModal" rel="modal:open">About</a>
+            <a id="about" href="#popUpModal" rel="modal:open">About</a>
         </button>
         <button class="navbuttons" id="logoutButton" onclick="logoutUser(event)">Log out</button>
     </div>
@@ -183,7 +183,7 @@
                     <label for="lblTime">TIME:</label>
                     <input id="lblTime" type="text" />
 <!--                </div>-->
-
+                    <br>
 <!--                <div id="in-game-Killed" class="in-game">-->
                     <label for="lblLives">Lives:</label>
                     <input id="lblLives" type="text" />
@@ -210,6 +210,7 @@
 
         </div>
     </div>
+
 
 
 <!-------------------------------------------------Scripts--------------------------------->
@@ -501,6 +502,8 @@
 
         }
     </script>
+
+
 <!--Footer-->
     <footer>
         <h3> This game was created by Gal & Yuval </h3>
