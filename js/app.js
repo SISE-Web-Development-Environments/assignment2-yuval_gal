@@ -100,7 +100,6 @@ $(document).ready(function() {
 
 function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls, colorMedBalls, colorHeavyBalls, chosenUp,
 						chosenDown, chosenLeft, chosenRight) {
-
 	maxFood = numOfEatableBalls;
 	keyUp = chosenUp;
 	keyDown = chosenDown;
@@ -240,16 +239,16 @@ function generateNewGhosts() {
 }
 
 function Start() {
-	backgroundSound.play();
+
 	if(localStorage.getItem("should_begin") == "true") {
+		gameOver();
+		backgroundSound.play();
 		var settingApples = food_remain;
 		var settingPacman = pacman_remain;
 		var settingPills = pill;
 		var settingClock = clock;
 		var settingWalls = moreWalls;
 		pacmanObject = Object.create(pacman);
-
-
 		for (var i = 0; i < 12; i++) {
 			board[i] = new Array();
 			applesArray[i] = new Array();
