@@ -65,32 +65,32 @@
         <div class="container well" style="margin-top: 50px">
             <form id="register-form">
                 <div class="form-group-col-md-6">
-                    <input class="form-control" name="userName" placeholder="userName" type="text">
+                    <input class="form-control" name="userName" id="signupUsername" placeholder="userName" type="text">
                 </div>
                 <div class="form-group col-md-12">
-                    <input class="form-control" name="email" placeholder="Email address" type="email">
+                    <input class="form-control" name="email" id="email" placeholder="Email address" type="email">
                 </div>
                 <div class="form-group col-md-6">
                     <input class="form-control passClass" name="password" id="signup-password" placeholder="Password" type="password">
                 </div>
-                <div class="form-group col-md-6">
-                    <input class="form-control passClass" name="signup-password2" placeholder="Re-enter password" type="password">
-                </div>
+<!--                <div class="form-group col-md-6">-->
+<!--                    <input class="form-control passClass" name="signup-password2" placeholder="Re-enter password" type="password">-->
+<!--                </div>-->
                 <div class="clearfix">
                 </div>
 
                 <div class="form-group col-md-6">
-                    <input class="form-control" name="firstName" placeholder="First Name" type="text">
+                    <input class="form-control" name="firstName" id="firstName" placeholder="First Name" type="text">
                 </div>
                 <div class="form-group col-md-6">
-                    <input class="form-control" name="secondName" placeholder="Second Name" type="text">
+                    <input class="form-control" name="secondName" id="secondName" placeholder="Second Name" type="text">
                 </div>
 
                 <div class="form-group col-md-12">
-                    <input class="form-control" name="bDay" placeholder="BDay" type="date">
+                    <input class="form-control" name="bDay" id="bDay" placeholder="BDay" type="date" required>
                 </div>
                 <div>
-                    <input class="btn btn-primary" id="submit-button" type="submit" value="Sign Up">
+                    <input class="btn btn-primary" id="submit-button" type="submit" onclick="signUp()" value="Sign Up">
                 </div>
 
             </form>
@@ -102,23 +102,27 @@
 
     </div>
 
-    <div id="login" class="window_content">
+    <div id="login" class="window_content sign-up-form">
+        <img src="images/signupiconNobackground.png" class="signup-icon">
+        <br>
+        <div class="container well" style="margin-top: 50px">
         <form id="login-form">
             <div id="loginForm">
                 <h1>Login</h1>
+                <div class="form-group col-md-6">
                 <i class="fa fa-user" aria-hidden="true"></i>
-                <label for=userName></label> Username: </label>
-                <input type="text" placeholder="Enter Username" id="userName" autocomplete="off" required>
-                <br>
-                <br>
+                <label for=userName> Username: </label>
+                <input class="form-control" type="text" placeholder="Enter Username" id="userName" autocomplete="off" required>
+                </div>
+                <div class="form-group col-md-6">
                 <i class="fa fa-lock" aria-hidden="true"></i>
                 <label for=password>Password: </label>
-                <input type="password" placeholder="Enter Password" id="password" autocomplete="off" required>
-                <br>
-                <br>
-                <button type="button" onclick="Login()">Login</button>
+                <input class="form-control" type="password" placeholder="Enter Password" id="password" autocomplete="off" required>
+                </div>
+                <button class="btn btn-primary" type="button" onclick="Login()">Login</button>
             </div>
         </form>
+        </div>
     </div>
 
     <div id="popUpModal" class="modal">
@@ -294,7 +298,7 @@
             //Generate Random of eatable balls
             var randomEatBalls = Math.floor(Math.random()*41)+50;
             document.getElementById("numOfBalls").value = randomEatBalls;
-            
+
             //Generate Random of Ghosts
             var randomGhosts = Math.floor(Math.random()*2)+1;
             document.getElementById("numOfGhosts").value = randomGhosts;
@@ -355,9 +359,12 @@
 
     <script class="loginScript">
         function Login(){
-
             var userName = document.getElementById('userName').value;
             var passward = document.getElementById('password').value;
+            if(userName === "" || passward === ""){
+                alert("Enter a password and username");
+                return;
+            }
             currentUser = userName;
             for(i=0; i < userNameAndPassward.length; i++){
                 if(userName=== userNameAndPassward[i].userName && passward === userNameAndPassward[i].passward){
@@ -375,17 +382,16 @@
 
     <script class="signUpScript">
         function signUp(){
-            var userName = document.getElementById('signupUsername').value;
-            var password = document.getElementById('signupPass').value;
-            var confirmPassword = document.getElementById('signupPassConfirm').value;
+            var userName = document.getElementById("signupUsername").value;
+            var password = document.getElementById("signup-password").value;
+            var firstName = document.getElementById("firstName").value;
+            var secondName = document.getElementById("secondName").value;
+            var email = document.getElementById("email").value;
+            var bDay = document.getElementById("bDay").value;
 
-            if(password !== confirmPassword)
-            {
-                alert("Password are not the same");
+            if(userName === "" || password === "" || firstName === "" || secondName === "" || email === "" || bDay === "" ){
                 return;
             }
-
-
             for(i=0; i < userNameAndPassward.length; i++){
                 if(userName === userNameAndPassward[i].userName){
                     alert("userName: "+ userName + " is already taken");
@@ -393,7 +399,7 @@
                 }
             }
 
-            userNameAndPassward.push({"Username": userName, "Password": password});
+            userNameAndPassward.push({"userName": userName, "passward": password});
             console.log("User signed up successfully");
 
             alert("You can now login.")

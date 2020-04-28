@@ -39,10 +39,6 @@ $(function() {
                 required: true,
                 strongPassword: true
             },
-            password2: {
-                required: true,
-                equalTo: '#password'
-            },
             userName: {
                 required: true,
                 nowhitespace: true,
