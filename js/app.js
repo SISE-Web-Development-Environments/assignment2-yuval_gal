@@ -162,8 +162,6 @@ function initializeParameters() {
 	pill=3;
 	clock=1;
 	moreWalls=9;
-	//TODO: remove this line after starting to use the settings values
-	numOfGhost=3;
 	score = 0;
 	pointsHeavyBalls = 25;
 	pointsLightBalls = 5;
@@ -232,7 +230,6 @@ function StartAfterKilled() {
 	putPacmanInBoard();
 }
 
-
 function generateNewGhosts() {
 	var countGhosts = 0;
 	while(countGhosts < numOfGhost)
@@ -243,6 +240,7 @@ function generateNewGhosts() {
 }
 
 function Start() {
+	backgroundSound.play();
 	if(localStorage.getItem("should_begin") == "true") {
 		var settingApples = food_remain;
 		var settingPacman = pacman_remain;
@@ -765,29 +763,34 @@ function UpdatePosition() {
 		if(time_elapsed >= maximumTime)
 		{
 			if(score >= 100){
-				window.clearInterval(interval);
+				gameOver();
 				window.alert("Winner!!! You've earned "+score+" points!");
+
 			}
 			else{
-				window.clearInterval(interval);
+				gameOver();
 				window.alert("You are better than " + score + " points!");
+
 			}
 			return;
 		}
 		if(Lives === 0)
 		{
-			window.clearInterval(interval);
+			gameOver();
 			window.alert("Loser! You've earned "+score+" points!" );
+
 			return;
 		}
 		if (score >= 10*maxFood) {
-			window.clearInterval(interval);
+			gameOver();
 			window.alert("Winner!! You've earned "+score+" points!");
+
 		}
 		else {
 			if (score >= 10*maxFood) {
-				window.clearInterval(interval);
+				gameOver();
 				window.alert("Winner!! You've earned "+score+" points!");
+
 			} else {
 				Draw();
 			}
@@ -796,4 +799,10 @@ function UpdatePosition() {
 
 
 	}
+}
+
+function gameOver() {
+	backgroundSound.pause();
+	backgroundSound.currentTime = 0;
+	window.clearInterval(interval);
 }
