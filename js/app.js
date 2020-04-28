@@ -163,7 +163,7 @@ function initializeParameters() {
 	clock=1;
 	moreWalls=9;
 	//TODO: remove this line after starting to use the settings values
-	numOfGhost=2;
+	numOfGhost=3;
 	score = 0;
 	pointsHeavyBalls = 25;
 	pointsLightBalls = 5;
@@ -212,7 +212,7 @@ function putGhostsInBoard(isBegining) {
 			checkApplesOrPills(ghostArray[ghostToIterate-1].rowIndex,ghostArray[ghostToIterate-1].colIndex);
 		}
 		var emptycellforGhost = findNextEmptyCorner();
-		ghostArray[ghostToIterate-1].rowIndex = emptycellforGhost[0];
+        ghostArray[ghostToIterate-1].rowIndex = emptycellforGhost[0];
 		ghostArray[ghostToIterate-1].colIndex = emptycellforGhost[1];
 		board[ghostArray[ghostToIterate-1].rowIndex][ghostArray[ghostToIterate-1].colIndex] = 8;
 		ghostToIterate--;
@@ -312,6 +312,22 @@ function Start() {
 		}
 		generateNewGhosts();
 		putGhostsInBoard(true);
+		if(numOfGhost<4){
+			var emptyCellForDaveCorner = findNextEmptyCorner();
+			board[emptyCellForDaveCorner[0]][emptyCellForDaveCorner[1]] = 11;
+			daveObject = Object.create(dave);
+			daveObject.rowIndex = emptyCellForDaveCorner[0];
+			daveObject.colIndex = emptyCellForDaveCorner[1];
+		}
+		//Putting dave in an EmptyCell in the board
+		else
+		{
+			var emptyCellForDave = findRandomEmptyCell(board);
+			board[emptyCellForDave[0]][emptyCellForDave[1]] = 11;
+			daveObject = Object.create(dave);
+			daveObject.rowIndex = emptyCellForDave[0];
+			daveObject.colIndex = emptyCellForDave[1];
+		}
 		while (settingApples > 0) {
 			var emptyCell = findRandomEmptyCell(board);
 			randomNum2 = Math.random();
@@ -351,12 +367,7 @@ function Start() {
 			clockArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
 			settingWalls--;
 		}
-		//Putting dave in an EmptyCell in the board
-		var emptyCellForDave = findRandomEmptyCell(board);
-		board[emptyCellForDave[0]][emptyCellForDave[1]] = 11;
-		daveObject = Object.create(dave);
-		daveObject.rowIndex = emptyCellForDave[0];
-		daveObject.colIndex = emptyCellForDave[1];
+
 
 
 		keysDown = {};
@@ -515,7 +526,7 @@ function checkApplesOrPills(rowIndex, colIndex) {
 	{
 		board[rowIndex][colIndex] = 14;
 	}
-	else if(pillsArray[rowIndex][colIndex] === 1)
+	else if(pillsArray[rowIndex][colIndex] === 7)
 	{
 		board[rowIndex][colIndex] = 7;
 	}
@@ -549,12 +560,15 @@ function chooseRandomMovement(characterToMakeMove) {
 				if(board[rowIndex - 1][colIndex] === 2)
 				{
 					characterToMakeMove.hitThePacman();
+
 				}
-				board[rowIndex - 1][colIndex] = characterToMakeMove.boardValue;
-				checkApplesOrPills(rowIndex,colIndex);
-				characterToMakeMove.lastRow = rowIndex;
-				characterToMakeMove.rowIndex -= 1;
-				return "up";
+
+                    board[rowIndex - 1][colIndex] = characterToMakeMove.boardValue;
+                    checkApplesOrPills(rowIndex, colIndex);
+                    characterToMakeMove.lastRow = rowIndex;
+                    characterToMakeMove.rowIndex -= 1;
+                    return "up";
+
 			}
 		} else if (rowIndex < 11 && randomGhostMove >= 0.25 && randomGhostMove < 0.5 && characterToMakeMove.lastRow !== (rowIndex+1)) {//Down
 			if (board[rowIndex + 1][colIndex] !== 4) {
@@ -574,11 +588,13 @@ function chooseRandomMovement(characterToMakeMove) {
 				{
 					characterToMakeMove.hitThePacman();
 				}
-				board[rowIndex][colIndex - 1] = characterToMakeMove.boardValue;
-				checkApplesOrPills(rowIndex,colIndex);
-				characterToMakeMove.lastCol = colIndex;
-				characterToMakeMove.colIndex -= 1;
-				return "left";
+
+                    board[rowIndex][colIndex - 1] = characterToMakeMove.boardValue;
+                    checkApplesOrPills(rowIndex, colIndex);
+                    characterToMakeMove.lastCol = colIndex;
+                    characterToMakeMove.colIndex -= 1;
+                    return "left";
+
 			}
 		} else if (colIndex < 11 && randomGhostMove >= 0.75 && randomGhostMove < 1 && characterToMakeMove.lastCol !== (colIndex+1)) {//Right
 			if (board[rowIndex][colIndex + 1] !== 4) {
@@ -586,11 +602,13 @@ function chooseRandomMovement(characterToMakeMove) {
 				{
 					characterToMakeMove.hitThePacman();
 				}
-				board[rowIndex][colIndex + 1] = characterToMakeMove.boardValue;
-				checkApplesOrPills(rowIndex,colIndex);
-				characterToMakeMove.lastCol = colIndex;
-				characterToMakeMove.colIndex += 1;
-				return "right";
+
+                    board[rowIndex][colIndex + 1] = characterToMakeMove.boardValue;
+                    checkApplesOrPills(rowIndex, colIndex);
+                    characterToMakeMove.lastCol = colIndex;
+                    characterToMakeMove.colIndex += 1;
+                    return "right";
+                
 			}
 		}
 		countTries--;
