@@ -295,3 +295,18 @@ footer h3{
 /*    width: 100%;*/
 /*    color: #579E81;*/
 /*}*/
+.header {
+    background-color: #f1f1f1;
+    padding: 30px;
+    text-align: center;
+    font-size: 35px;
+}
+.resize {
+    width: 400px;
+    height: auto;
+}
+
+.resize {
+    width: 400px;
+    height: auto;
+}
