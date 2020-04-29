@@ -110,8 +110,8 @@ function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls
 	cLightBalls = colorLightBalls;
 	cMedBalls = colorMedBalls;
 	cHeavyBalls= colorHeavyBalls;
-
-	window.focus();
+	document.getElementById("canvas").focus();
+	// window.focus();
 	window.clearInterval(interval);
 	initializeImages();
 	initializeAudio();
