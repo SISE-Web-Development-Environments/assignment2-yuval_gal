@@ -34,14 +34,14 @@
 </div>
 
     <!-- Tab links -->
-    <div class="nav">
+    <div class="nav">         
         <button class="navbuttons" onclick="openRelevantWindow(event, 'Welcome')">Welcome</button>
         <button class="navbuttons" id="signupButton" onclick="openRelevantWindow(event, 'signup')">Sign Up</button>
         <button class="navbuttons" id="loginButton" onclick="openRelevantWindow(event, 'login')">Login</button>
         <button class="navbuttons" id="settingsButton" onclick="openRelevantWindow(event, 'Settings')">Settings</button>
         <button class="navbuttons" id="gameButton" onclick="openRelevantWindow(event, 'game')">Game</button>
         <button class="navbuttons" id="aboutButton">
-            <a id="about" href="#popUpModal" rel="modal:open">About</a>
+            <a id="about" href="#popUpModal" rel="modal:open"> <i class="fa fa-info-circle"></i> About </a>
         </button>
         <button class="navbuttons" id="logoutButton" onclick="logoutUser(event)">Log out</button>
     </div>
@@ -130,7 +130,7 @@
     </div>
 
     <div id="popUpModal" class="modal">
-        <h3>About Us</h3>
+        <h3> About Us </h3>
         <p> bla bla bla</p>
         <a href="#" rel="modal:close">Close</a>
     </div>
