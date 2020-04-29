@@ -365,8 +365,6 @@ function Start() {
 			settingWalls--;
 		}
 
-
-
 		keysDown = {};
 		addEventListener(
 			"keydown",
@@ -439,6 +437,9 @@ function moveDaveRandomly() {
 	{
 		//Draw Dave looking right?
 		daveToDraw = daveImage;
+	}
+	else if(movementDir === "stay"){
+
 	}
 
 }
@@ -557,14 +558,15 @@ function chooseRandomMovement(characterToMakeMove) {
 				if(board[rowIndex - 1][colIndex] === 2)
 				{
 					characterToMakeMove.hitThePacman();
-
+					return "stay";
 				}
-
-                    board[rowIndex - 1][colIndex] = characterToMakeMove.boardValue;
-                    checkApplesOrPills(rowIndex, colIndex);
-                    characterToMakeMove.lastRow = rowIndex;
-                    characterToMakeMove.rowIndex -= 1;
-                    return "up";
+				else {
+					board[rowIndex - 1][colIndex] = characterToMakeMove.boardValue;
+					checkApplesOrPills(rowIndex, colIndex);
+					characterToMakeMove.lastRow = rowIndex;
+					characterToMakeMove.rowIndex -= 1;
+					return "up";
+				}
 
 			}
 		} else if (rowIndex < 11 && randomGhostMove >= 0.25 && randomGhostMove < 0.5 && characterToMakeMove.lastRow !== (rowIndex+1)) {//Down
@@ -572,25 +574,30 @@ function chooseRandomMovement(characterToMakeMove) {
 				if(board[rowIndex + 1][colIndex] === 2)
 				{
 					characterToMakeMove.hitThePacman();
+					return "stay";
 				}
-				board[rowIndex + 1][colIndex] = characterToMakeMove.boardValue;
-				checkApplesOrPills(rowIndex,colIndex);
-				characterToMakeMove.lastRow = rowIndex;
-				characterToMakeMove.rowIndex += 1;
-				return "down";
+				else {
+					board[rowIndex + 1][colIndex] = characterToMakeMove.boardValue;
+					checkApplesOrPills(rowIndex, colIndex);
+					characterToMakeMove.lastRow = rowIndex;
+					characterToMakeMove.rowIndex += 1;
+					return "down";
+				}
 			}
 		} else if (colIndex > 0 && randomGhostMove >= 0.5 && randomGhostMove < 0.75 && characterToMakeMove.lastCol !== (colIndex-1)) {//Left
 			if (board[rowIndex][colIndex - 1] !== 4) {
 				if(board[rowIndex][colIndex - 1] === 2)
 				{
 					characterToMakeMove.hitThePacman();
+					return "stay";
 				}
-
-                    board[rowIndex][colIndex - 1] = characterToMakeMove.boardValue;
-                    checkApplesOrPills(rowIndex, colIndex);
-                    characterToMakeMove.lastCol = colIndex;
-                    characterToMakeMove.colIndex -= 1;
-                    return "left";
+					else {
+					board[rowIndex][colIndex - 1] = characterToMakeMove.boardValue;
+					checkApplesOrPills(rowIndex, colIndex);
+					characterToMakeMove.lastCol = colIndex;
+					characterToMakeMove.colIndex -= 1;
+					return "left";
+				}
 
 			}
 		} else if (colIndex < 11 && randomGhostMove >= 0.75 && randomGhostMove < 1 && characterToMakeMove.lastCol !== (colIndex+1)) {//Right
@@ -598,13 +605,15 @@ function chooseRandomMovement(characterToMakeMove) {
 				if(board[rowIndex][colIndex + 1] === 2)
 				{
 					characterToMakeMove.hitThePacman();
+					return "stay";
 				}
-
-                    board[rowIndex][colIndex + 1] = characterToMakeMove.boardValue;
-                    checkApplesOrPills(rowIndex, colIndex);
-                    characterToMakeMove.lastCol = colIndex;
-                    characterToMakeMove.colIndex += 1;
-                    return "right";
+					else {
+					board[rowIndex][colIndex + 1] = characterToMakeMove.boardValue;
+					checkApplesOrPills(rowIndex, colIndex);
+					characterToMakeMove.lastCol = colIndex;
+					characterToMakeMove.colIndex += 1;
+					return "right";
+				}
                 
 			}
 		}
