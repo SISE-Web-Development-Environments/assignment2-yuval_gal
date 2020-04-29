@@ -174,14 +174,14 @@ form .error {
 .modal a.close-modal[class*="icon-"] {
     top: -10px;
     right: -10px;
-    width: 20px;
+    width: 40px;
     height: 20px;
     color: #fff;
     line-height: 1.25;
     text-align: center;
     text-decoration: none;
     text-indent: 0;
-    background: #0888c4;
+    background: #0821c4;
     border: 2px solid #fff;
     -webkit-border-radius:  26px;
     -moz-border-radius:     26px;
@@ -231,12 +231,6 @@ footer h3{
     margin: 0;
 }
 
-#link1{
-
-}
-#link2{
-
-}
 
 /*body {*/
 /*    background-color: #f0f7ef;*/
@@ -310,3 +304,32 @@ footer h3{
     width: 400px;
     height: auto;
 }
+
+#popUpModelH3 {
+    color: #1E90FF;
+    font-size: 35px;
+    font-family: 'Bubblegum Sans';
+    text-align: center;
+}
+ .aboutP{
+     font-family: 'Annie Use Your Telescope';
+     font-size: 20px;
+ }
+
+ .abouth4{
+     color: #4682B4;
+     font-family: 'Annie Use Your Telescope';
+     font-size: 20px;
+     text-decoration: underline;
+ }
+ .abouth3{
+     color: #4682B4;
+     font-family: 'Annie Use Your Telescope';
+     font-size: 25px;
+     text-align: center;
+ }
+
+ .aboutImg{
+     width: 40px;
+     height: auto;
+ }
