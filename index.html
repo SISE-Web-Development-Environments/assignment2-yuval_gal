@@ -437,7 +437,9 @@
             clearWindowContent();
             clearActiveWindow();
             clearAllContents();
-            document.getElementById(navButton).style.display = "block";
+            var elem = document.getElementById(navButton);
+            elem.style.display = "block";
+            window.scrollTo(0,elem.offsetTop-130);
 
             if(navButton == "game" && localStorage.getItem("should_begin") == "false")
             {
