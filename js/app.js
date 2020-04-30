@@ -100,7 +100,6 @@ $(document).ready(function() {
 
 function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls, colorMedBalls, colorHeavyBalls, chosenUp,
 						chosenDown, chosenLeft, chosenRight) {
-
 	maxFood = numOfEatableBalls;
 	keyUp = chosenUp;
 	keyDown = chosenDown;
@@ -111,8 +110,8 @@ function setSettingVars(maxTime, numOfEatableBalls, numOfGhosts, colorLightBalls
 	cLightBalls = colorLightBalls;
 	cMedBalls = colorMedBalls;
 	cHeavyBalls= colorHeavyBalls;
-
-	window.focus();
+	document.getElementById("canvas").focus();
+	// window.focus();
 	window.clearInterval(interval);
 	initializeImages();
 	initializeAudio();
@@ -162,8 +161,6 @@ function initializeParameters() {
 	pill=3;
 	clock=1;
 	moreWalls=9;
-	//TODO: remove this line after starting to use the settings values
-	numOfGhost=2;
 	score = 0;
 	pointsHeavyBalls = 25;
 	pointsLightBalls = 5;
@@ -212,7 +209,7 @@ function putGhostsInBoard(isBegining) {
 			checkApplesOrPills(ghostArray[ghostToIterate-1].rowIndex,ghostArray[ghostToIterate-1].colIndex);
 		}
 		var emptycellforGhost = findNextEmptyCorner();
-		ghostArray[ghostToIterate-1].rowIndex = emptycellforGhost[0];
+        ghostArray[ghostToIterate-1].rowIndex = emptycellforGhost[0];
 		ghostArray[ghostToIterate-1].colIndex = emptycellforGhost[1];
 		board[ghostArray[ghostToIterate-1].rowIndex][ghostArray[ghostToIterate-1].colIndex] = 8;
 		ghostToIterate--;
@@ -232,7 +229,6 @@ function StartAfterKilled() {
 	putPacmanInBoard();
 }
 
-
 function generateNewGhosts() {
 	var countGhosts = 0;
 	while(countGhosts < numOfGhost)
@@ -243,15 +239,16 @@ function generateNewGhosts() {
 }
 
 function Start() {
+
 	if(localStorage.getItem("should_begin") == "true") {
+		gameOver();
+		backgroundSound.play();
 		var settingApples = food_remain;
 		var settingPacman = pacman_remain;
 		var settingPills = pill;
 		var settingClock = clock;
 		var settingWalls = moreWalls;
 		pacmanObject = Object.create(pacman);
-
-
 		for (var i = 0; i < 12; i++) {
 			board[i] = new Array();
 			applesArray[i] = new Array();
@@ -312,6 +309,22 @@ function Start() {
 		}
 		generateNewGhosts();
 		putGhostsInBoard(true);
+		if(numOfGhost<4){
+			var emptyCellForDaveCorner = findNextEmptyCorner();
+			board[emptyCellForDaveCorner[0]][emptyCellForDaveCorner[1]] = 11;
+			daveObject = Object.create(dave);
+			daveObject.rowIndex = emptyCellForDaveCorner[0];
+			daveObject.colIndex = emptyCellForDaveCorner[1];
+		}
+		//Putting dave in an EmptyCell in the board
+		else
+		{
+			var emptyCellForDave = findRandomEmptyCell(board);
+			board[emptyCellForDave[0]][emptyCellForDave[1]] = 11;
+			daveObject = Object.create(dave);
+			daveObject.rowIndex = emptyCellForDave[0];
+			daveObject.colIndex = emptyCellForDave[1];
+		}
 		while (settingApples > 0) {
 			var emptyCell = findRandomEmptyCell(board);
 			randomNum2 = Math.random();
@@ -351,19 +364,15 @@ function Start() {
 			clockArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
 			settingWalls--;
 		}
-		//Putting dave in an EmptyCell in the board
-		var emptyCellForDave = findRandomEmptyCell(board);
-		board[emptyCellForDave[0]][emptyCellForDave[1]] = 11;
-		daveObject = Object.create(dave);
-		daveObject.rowIndex = emptyCellForDave[0];
-		daveObject.colIndex = emptyCellForDave[1];
-
 
 		keysDown = {};
 		addEventListener(
 			"keydown",
 			function(e) {
 				keysDown[e.keyCode] = true;
+				if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+					e.preventDefault();
+				}
 			},
 			false
 		);
@@ -431,6 +440,9 @@ function moveDaveRandomly() {
 	{
 		//Draw Dave looking right?
 		daveToDraw = daveImage;
+	}
+	else if(movementDir === "stay"){
+
 	}
 
 }
@@ -515,7 +527,7 @@ function checkApplesOrPills(rowIndex, colIndex) {
 	{
 		board[rowIndex][colIndex] = 14;
 	}
-	else if(pillsArray[rowIndex][colIndex] === 1)
+	else if(pillsArray[rowIndex][colIndex] === 7)
 	{
 		board[rowIndex][colIndex] = 7;
 	}
@@ -549,48 +561,63 @@ function chooseRandomMovement(characterToMakeMove) {
 				if(board[rowIndex - 1][colIndex] === 2)
 				{
 					characterToMakeMove.hitThePacman();
+					return "stay";
 				}
-				board[rowIndex - 1][colIndex] = characterToMakeMove.boardValue;
-				checkApplesOrPills(rowIndex,colIndex);
-				characterToMakeMove.lastRow = rowIndex;
-				characterToMakeMove.rowIndex -= 1;
-				return "up";
+				else {
+					board[rowIndex - 1][colIndex] = characterToMakeMove.boardValue;
+					checkApplesOrPills(rowIndex, colIndex);
+					characterToMakeMove.lastRow = rowIndex;
+					characterToMakeMove.rowIndex -= 1;
+					return "up";
+				}
+
 			}
 		} else if (rowIndex < 11 && randomGhostMove >= 0.25 && randomGhostMove < 0.5 && characterToMakeMove.lastRow !== (rowIndex+1)) {//Down
 			if (board[rowIndex + 1][colIndex] !== 4) {
 				if(board[rowIndex + 1][colIndex] === 2)
 				{
 					characterToMakeMove.hitThePacman();
+					return "stay";
 				}
-				board[rowIndex + 1][colIndex] = characterToMakeMove.boardValue;
-				checkApplesOrPills(rowIndex,colIndex);
-				characterToMakeMove.lastRow = rowIndex;
-				characterToMakeMove.rowIndex += 1;
-				return "down";
+				else {
+					board[rowIndex + 1][colIndex] = characterToMakeMove.boardValue;
+					checkApplesOrPills(rowIndex, colIndex);
+					characterToMakeMove.lastRow = rowIndex;
+					characterToMakeMove.rowIndex += 1;
+					return "down";
+				}
 			}
 		} else if (colIndex > 0 && randomGhostMove >= 0.5 && randomGhostMove < 0.75 && characterToMakeMove.lastCol !== (colIndex-1)) {//Left
 			if (board[rowIndex][colIndex - 1] !== 4) {
 				if(board[rowIndex][colIndex - 1] === 2)
 				{
 					characterToMakeMove.hitThePacman();
+					return "stay";
 				}
-				board[rowIndex][colIndex - 1] = characterToMakeMove.boardValue;
-				checkApplesOrPills(rowIndex,colIndex);
-				characterToMakeMove.lastCol = colIndex;
-				characterToMakeMove.colIndex -= 1;
-				return "left";
+					else {
+					board[rowIndex][colIndex - 1] = characterToMakeMove.boardValue;
+					checkApplesOrPills(rowIndex, colIndex);
+					characterToMakeMove.lastCol = colIndex;
+					characterToMakeMove.colIndex -= 1;
+					return "left";
+				}
+
 			}
 		} else if (colIndex < 11 && randomGhostMove >= 0.75 && randomGhostMove < 1 && characterToMakeMove.lastCol !== (colIndex+1)) {//Right
 			if (board[rowIndex][colIndex + 1] !== 4) {
 				if(board[rowIndex][colIndex + 1] === 2)
 				{
 					characterToMakeMove.hitThePacman();
+					return "stay";
 				}
-				board[rowIndex][colIndex + 1] = characterToMakeMove.boardValue;
-				checkApplesOrPills(rowIndex,colIndex);
-				characterToMakeMove.lastCol = colIndex;
-				characterToMakeMove.colIndex += 1;
-				return "right";
+					else {
+					board[rowIndex][colIndex + 1] = characterToMakeMove.boardValue;
+					checkApplesOrPills(rowIndex, colIndex);
+					characterToMakeMove.lastCol = colIndex;
+					characterToMakeMove.colIndex += 1;
+					return "right";
+				}
+                
 			}
 		}
 		countTries--;
@@ -747,29 +774,34 @@ function UpdatePosition() {
 		if(time_elapsed >= maximumTime)
 		{
 			if(score >= 100){
-				window.clearInterval(interval);
+				gameOver();
 				window.alert("Winner!!! You've earned "+score+" points!");
+
 			}
 			else{
-				window.clearInterval(interval);
+				gameOver();
 				window.alert("You are better than " + score + " points!");
+
 			}
 			return;
 		}
 		if(Lives === 0)
 		{
-			window.clearInterval(interval);
+			gameOver();
 			window.alert("Loser! You've earned "+score+" points!" );
+
 			return;
 		}
 		if (score >= 10*maxFood) {
-			window.clearInterval(interval);
+			gameOver();
 			window.alert("Winner!! You've earned "+score+" points!");
+
 		}
 		else {
 			if (score >= 10*maxFood) {
-				window.clearInterval(interval);
+				gameOver();
 				window.alert("Winner!! You've earned "+score+" points!");
+
 			} else {
 				Draw();
 			}
@@ -778,4 +810,10 @@ function UpdatePosition() {
 
 
 	}
+}
+
+function gameOver() {
+	backgroundSound.pause();
+	backgroundSound.currentTime = 0;
+	window.clearInterval(interval);
 }
