@@ -222,7 +222,7 @@
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
-                                <option value="4">4</option>
+                                <option value="4" selected="selected">4</option>
                             </select>
                             </td>
                         </tr>
@@ -252,33 +252,33 @@
         </div>
 
         <div id="game" class="window_content">
-<!--            <div id="restart">-->
-<!--                <button id="restartBtn">Restart</button>-->
-<!--            </div>-->
-            <div id="gameValues">
-                <div id="in-game-score" class="in-game">
-                    <label for="lblScore">SCORE:</label>
-                    <input id="lblScore" type="text" />
-<!--                </div>-->
 
-<!--                <div id="in-game-time" class="in-game">-->
-                    <label for="lblTime">TIME:</label>
-                    <input id="lblTime" type="text" />
-<!--                </div>-->
-                    <br>
-<!--                <div id="in-game-Killed" class="in-game">-->
-                    <label for="lblLives">Lives:</label>
-                    <input id="lblLives" type="text" />
-<!--                </div>-->
-
-<!--                <div id="in-game-user" class="in-game">-->
-                    <label for="userN">username:</label>
-                    <input id="userN" type="text" />
-                </div>
-            </div>
             <div id="actual_game">
                 <canvas id="canvas" height="720" width="720" tabindex="1"></canvas>
             </div>
+
+            <div id="gameValues">
+                <div id="in-game-score" class="in-game">
+                    <label class="gameValuesLables" for="lblScore">Score</label>
+                    <input id="lblScore" class="form-control" type="text" />
+<!--                </div>-->
+
+<!--                <div id="in-game-time" class="in-game">-->
+                    <label class="gameValuesLables" for="lblTime">Time</label>
+                    <input id="lblTime" class="form-control" type="text" />
+<!--                </div>-->
+                    <br>
+<!--                <div id="in-game-Killed" class="in-game">-->
+                    <label class="gameValuesLables" for="lblLives">Lives</label>
+                    <input id="lblLives" class="form-control" type="text" />
+<!--                </div>-->
+
+<!--                <div id="in-game-user" class="in-game">-->
+                    <label class="gameValuesLables" for="userN">Username</label>
+                    <input id="userN" class="form-control" type="text" />
+                </div>
+            </div>
+
             <audio id = "backroundSound" preload = "auto">
                 <source src = "audio/PacMan%20Original%20Theme.mp3" type = "audio/mpeg"></audio>
             <audio id = "hitSound" preload = "auto">
@@ -378,6 +378,7 @@
                 var settingsValues = getSettingsValue();
                 localStorage.setItem("should_begin","true");
                 document.getElementById("game").style.display = "block";
+                window.scrollTo(0,document.getElementById("game").offsetTop-20);
                 document.getElementById("settingStartGameButton").value = "Restart The Game";
                 settingsValuesDisable(true);
                 setSettingVars(settingsValues[0],settingsValues[1],settingsValues[2],settingsValues[3],settingsValues[4],settingsValues[5],settingsValues[6],
@@ -548,6 +549,7 @@
             clearAllContents();
             pageToShow = document.getElementById("Settings");
             pageToShow.style.display = "block";
+            window.scrollTo(0,pageToShow.offsetTop-90);
             evt.currentTarget.className += " active";
         }
 
@@ -570,6 +572,7 @@
 
             pageToShow = document.getElementById("Welcome");
             pageToShow.style.display = "block";
+            window.scrollTo(0,pageToShow.offsetTop-130);
             evt.currentTarget.className += " active";
         }
 
