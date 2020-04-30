@@ -131,10 +131,13 @@
     </div>
 
     <div id="popUpModal" class="modal">
-        <h1 id="popUpModelH3"><img class="aboutImg" src="images/ghostBlue.png">About Us<img class="aboutImg" src="images/ghostBlue.png"></h1>
-
+        <div id="aboutHeader" >
+            <img class="aboutImg about_header"  src="images/ghostBlue.png">
+            <h1 class="about_header" style="display: inline; margin-top: -50px;" id="popUpModelH3">About Us</h1>
+            <img class="aboutImg about_header" src="images/ghostBlue.png">
+        </div>
         <p class="aboutP">
-            This game was created by Yuval Ben Eliezer (313581381) and Gal Rosenthal (______)
+            This game was created by Yuval Ben Eliezer (313581381) and Gal Rosenthal (312585268)
         </p>
             <h4 class="abouth4">We use jQuery plugins:</h4>
              <p class="aboutP">
@@ -236,7 +239,7 @@
                         </tr>
                     </table>
                     <div style="margin-top: 3%;">
-                        <input  type="button" id="settingsRndmButton" value="randomize all values" onclick="randomizeSettings()">
+                        <input type="button" id="settingsRndmButton" value="randomize all values" onclick="randomizeSettings()">
                         <input style="margin-left: 10%;" type="button" id="settingStartGameButton" onclick="beginGame()" value="Let's Start the Game!">
                     </div>
                 </form>
@@ -342,12 +345,36 @@
             return [maxTime, numOfEatableBalls, numOfGhosts, colorLight,colorMed,colorHev,valueOfKeyUp,valueOfKeyDown,valueOfKeyLeft,valueOfKeyRight];
         }
 
+        function settingsValuesDisable(isDisabled) {
+            document.getElementById("maxTimeForGame").disabled = isDisabled;
+            document.getElementById("numOfBalls").disabled = isDisabled;
+            document.getElementById("numOfGhosts").disabled = isDisabled;
+            document.getElementById("keyUp").disabled = isDisabled;
+            document.getElementById("keyDown").disabled = isDisabled;
+            document.getElementById("keyLeft").disabled = isDisabled;
+            document.getElementById("keyRight").disabled = isDisabled;
+            document.getElementById("lightBallColor").disabled = isDisabled;
+            document.getElementById("medBallColor").disabled = isDisabled;
+            document.getElementById("heavyBallColor").disabled = isDisabled;
+            if(isDisabled)
+            {
+                document.getElementById("settingsRndmButton").style.visibility = "hidden";
+            }
+            else
+            {
+                document.getElementById("settingsRndmButton").style.visibility = "inherit";
+            }
+
+        }
+
         function beginGame() {
             if(validateSettings())
             {
                 var settingsValues = getSettingsValue();
                 localStorage.setItem("should_begin","true");
                 document.getElementById("game").style.display = "block";
+                document.getElementById("settingStartGameButton").value = "Restart The Game";
+                settingsValuesDisable(true);
                 setSettingVars(settingsValues[0],settingsValues[1],settingsValues[2],settingsValues[3],settingsValues[4],settingsValues[5],settingsValues[6],
                     settingsValues[7],settingsValues[8],settingsValues[9],settingsValues[10]);
 
@@ -562,6 +589,21 @@
     </script>
 
     <script>
+        function resetSettingsPage() {
+            document.getElementById("maxTimeForGame").value = 60;
+            document.getElementById("numOfBalls").value = 50;
+            document.getElementById("numOfGhosts").value = 4;
+            document.getElementById("keyUp").value = "ArrowUp";
+            document.getElementById("keyDown").value = "ArrowDown";
+            document.getElementById("keyLeft").value = "ArrowLeft";
+            document.getElementById("keyRight").value = "ArrowRight";
+            document.getElementById("lightBallColor").value = "#0000ff";
+            document.getElementById("medBallColor").value = "#ff0000";
+            document.getElementById("heavyBallColor").value = "#000000";
+            document.getElementById("settingStartGameButton").value = "Let's Start the Game!";
+
+        }
+
         function logoutUser() {
             for (i=0; i< localStorage.length; i++)
             {
@@ -570,9 +612,13 @@
                     //user is not logged in anymore
                     localStorage.setItem(localStorage.key(i), "false");
                     localStorage.setItem("should_begin", "false");
-                    clearButtonsForUser("true");
+                    resetSettingsPage();
+                    settingsValuesDisable(false);
 
+                    clearButtonsForUser("true");
                     showWelcomeWindow(event);
+
+
                 }
             }
 
