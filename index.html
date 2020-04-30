@@ -273,6 +273,7 @@
                 var settingsValues = getSettingsValue();
                 localStorage.setItem("should_begin","true");
                 document.getElementById("game").style.display = "block";
+                document.getElementById("settingStartGameButton").value = "Restart The Game";
                 setSettingVars(settingsValues[0],settingsValues[1],settingsValues[2],settingsValues[3],settingsValues[4],settingsValues[5],settingsValues[6],
                     settingsValues[7],settingsValues[8],settingsValues[9],settingsValues[10]);
 
@@ -485,6 +486,21 @@
     </script>
 
     <script>
+        function resetSettingsPage() {
+            document.getElementById("maxTimeForGame").value = 60;
+            document.getElementById("numOfBalls").value = 50;
+            document.getElementById("numOfGhosts").value = 4;
+            document.getElementById("keyUp").value = "ArrowUp";
+            document.getElementById("keyDown").value = "ArrowDown";
+            document.getElementById("keyLeft").value = "ArrowLeft";
+            document.getElementById("keyRight").value = "ArrowRight";
+            document.getElementById("lightBallColor").value = "#0000ff";
+            document.getElementById("medBallColor").value = "#ff0000";
+            document.getElementById("heavyBallColor").value = "#000000";
+            document.getElementById("settingStartGameButton").value = "Let's Start the Game!";
+
+        }
+
         function logoutUser() {
             for (i=0; i< localStorage.length; i++)
             {
@@ -493,9 +509,12 @@
                     //user is not logged in anymore
                     localStorage.setItem(localStorage.key(i), "false");
                     localStorage.setItem("should_begin", "false");
-                    clearButtonsForUser("true");
+                    resetSettingsPage();
 
+                    clearButtonsForUser("true");
                     showWelcomeWindow(event);
+
+
                 }
             }
 
