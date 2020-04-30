@@ -527,7 +527,7 @@ function checkApplesOrPills(rowIndex, colIndex) {
 	{
 		board[rowIndex][colIndex] = 14;
 	}
-	else if(pillsArray[rowIndex][colIndex] === 7)
+	else if(pillsArray[rowIndex][colIndex] === 1)
 	{
 		board[rowIndex][colIndex] = 7;
 	}
