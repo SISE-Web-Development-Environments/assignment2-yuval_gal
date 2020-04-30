@@ -134,7 +134,7 @@ table{
 
 /* Create an active/current tablink class */
 .nav button.active {
-    background-color: #ccc;
+    background-color: #cccccc;
 }
 
 /* Style the tab content */

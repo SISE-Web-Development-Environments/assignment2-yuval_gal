@@ -36,7 +36,7 @@
 
     <!-- Tab links -->
     <div class="nav">
-        <button class="navbuttons" onclick="openRelevantWindow(event, 'Welcome')">Welcome</button>
+        <button class="navbuttons" id="welcomeButton" onclick="openRelevantWindow(event, 'Welcome')">Welcome</button>
         <button class="navbuttons" id="signupButton" onclick="openRelevantWindow(event, 'signup')">Sign Up</button>
         <button class="navbuttons" id="loginButton" onclick="openRelevantWindow(event, 'login')">Login</button>
         <button class="navbuttons" id="settingsButton" onclick="openRelevantWindow(event, 'Settings')">Settings</button>
@@ -375,9 +375,11 @@
         function beginGame() {
             if(validateSettings())
             {
+                clearActiveWindow();
                 var settingsValues = getSettingsValue();
                 localStorage.setItem("should_begin","true");
                 document.getElementById("game").style.display = "block";
+                document.getElementById("gameButton").className += " active";
                 window.scrollTo(0,document.getElementById("game").offsetTop-20);
                 document.getElementById("settingStartGameButton").value = "Restart The Game";
                 settingsValuesDisable(true);
@@ -440,27 +442,35 @@
             clearAllContents();
             var elem = document.getElementById(navButton);
             elem.style.display = "block";
+            // evt.currentTarget.className += " active";
             window.scrollTo(0,elem.offsetTop-130);
 
-            if(navButton == "game" && localStorage.getItem("should_begin") == "false")
+            if(navButton === "game" && localStorage.getItem("should_begin") === "false")
             {
                 localStorage.setItem("should_begin","true");
             }
 
-            if(navButton == "Welcome")
+            if(navButton === "Welcome")
             {
                 gameOver();
                 showWelcomeWindow(evt);
+                document.getElementById("welcomeButton").className += " active";
             }
 
-            if(navButton == "Settings")
+            if(navButton === "Settings")
             {
                 gameOver();
                 showSettingsWindow(evt);
+                document.getElementById("settingsButton").className += " active";
             }
-
-            // evt.currentTarget.crrTrgt.className += " active";
-
+            if(navButton === "signup")
+            {
+                document.getElementById("signupButton").className += " active";
+            }
+            if(navButton === "login")
+            {
+                document.getElementById("loginButton").className += " active";
+            }
         }
     </script>
 
@@ -549,8 +559,8 @@
             clearAllContents();
             pageToShow = document.getElementById("Settings");
             pageToShow.style.display = "block";
+            document.getElementById("settingsButton").className += " active";
             window.scrollTo(0,pageToShow.offsetTop-90);
-            evt.currentTarget.className += " active";
         }
 
         function showWelcomeWindow(evt) {
@@ -569,11 +579,9 @@
                     document.getElementById("login-wlcm-Btn").style.display = "block";
                 }
             }
-
             pageToShow = document.getElementById("Welcome");
             pageToShow.style.display = "block";
             window.scrollTo(0,pageToShow.offsetTop-130);
-            evt.currentTarget.className += " active";
         }
 
         function clearButtonsForUser(toShow){

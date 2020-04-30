@@ -242,7 +242,7 @@ function Start() {
 
 	if(localStorage.getItem("should_begin") == "true") {
 		gameOver();
-		backgroundSound.play();
+		// backgroundSound.play();
 		var settingApples = food_remain;
 		var settingPacman = pacman_remain;
 		var settingPills = pill;
@@ -813,7 +813,17 @@ function UpdatePosition() {
 }
 
 function gameOver() {
-	backgroundSound.pause();
-	backgroundSound.currentTime = 0;
+	try{
+		backgroundSound.pause();
+	}
+	catch (e) {
+		console.error(e);
+	}
+	try{
+		backgroundSound.currentTime = 0;
+	}
+	catch (e) {
+		console.error(e);
+	}
 	window.clearInterval(interval);
 }
