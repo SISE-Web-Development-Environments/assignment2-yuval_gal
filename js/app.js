@@ -242,7 +242,7 @@ function Start() {
 
 	if(localStorage.getItem("should_begin") == "true") {
 		gameOver();
-		backgroundSound.play();
+		// backgroundSound.play();
 		var settingApples = food_remain;
 		var settingPacman = pacman_remain;
 		var settingPills = pill;
@@ -418,8 +418,6 @@ function GetKeyPressed() {
 
 function moveDaveRandomly() {
 	var movementDir = chooseRandomMovement(daveObject);
-	var rowLocation = daveObject.rowIndex * 60 + 30;
-	var colLocation = daveObject.colIndex * 60 + 30;
 	if(movementDir === "up")
 	{
 		//Draw Dave looking up?
@@ -541,101 +539,176 @@ function checkApplesOrPills(rowIndex, colIndex) {
 	}
 }
 
+function moveUp(character) {
+	if(board[character.rowIndex][character.colIndex - 1] === 4 || character.rowIndex < 0 || character.rowIndex > 11
+	|| character.colIndex < 0 || character.colIndex > 11)
+	{
+		return "fail";
+	}
+	if(board[character.rowIndex][character.colIndex - 1] === 2)
+	{
+		character.hitThePacman();
+		return "stay";
+	}
+	else {
+		board[character.rowIndex][character.colIndex - 1] = character.boardValue;
+		checkApplesOrPills(character.rowIndex, character.colIndex);
+		character.lastRow = character.colIndex;
+		character.colIndex -= 1;
+		return "up";
+	}
+}
+
+function moveDown(character) {
+	if(board[character.rowIndex][character.colIndex + 1] === 4 || character.rowIndex < 0 || character.rowIndex > 11
+		|| character.colIndex < 0 || character.colIndex > 11)
+	{
+		return "fail";
+	}
+	if(board[character.rowIndex][character.colIndex + 1] === 2)
+	{
+		character.hitThePacman();
+		return "stay";
+	}
+	else {
+		board[character.rowIndex][character.colIndex + 1] = character.boardValue;
+		checkApplesOrPills(character.rowIndex, character.colIndex);
+		character.lastRow = character.colIndex;
+		character.colIndex += 1;
+		return "down";
+	}
+}
+
+function moveLeft(character) {
+	if(board[character.rowIndex - 1][character.colIndex] === 4 || character.rowIndex < 0 || character.rowIndex > 11
+		|| character.colIndex < 0 || character.colIndex > 11)
+	{
+		return "fail";
+	}
+	if(board[character.rowIndex - 1][character.colIndex] === 2)
+	{
+		character.hitThePacman();
+		return "stay";
+	}
+	else {
+		board[character.rowIndex - 1][character.colIndex] = character.boardValue;
+		checkApplesOrPills(character.rowIndex, character.colIndex);
+		character.lastCol = character.rowIndex;
+		character.rowIndex -= 1;
+		return "left";
+	}
+}
+
+function moveRight(character) {
+	if(board[character.rowIndex + 1][character.colIndex ] === 4 || character.rowIndex < 0 || character.rowIndex > 11
+		|| character.colIndex < 0 || character.colIndex > 11)
+	{
+		return "fail";
+	}
+	if(board[character.rowIndex + 1][character.colIndex ] === 2)
+	{
+		character.hitThePacman();
+		return "stay";
+	}
+	else {
+		board[character.rowIndex + 1][character.colIndex ] = character.boardValue;
+		checkApplesOrPills(character.rowIndex, character.colIndex);
+		character.lastCol = character.rowIndex;
+		character.rowIndex += 1;
+		return "right";
+	}
+}
+
+
+
 function chooseRandomMovement(characterToMakeMove) {
 	var isLegal = false;
 	var rowIndex = characterToMakeMove.rowIndex;
 	var colIndex = characterToMakeMove.colIndex;
+	var nextRow;
+	var nextCol;
 	var randomGhostMove = 0;
 	var countTries = 5;
-	while (!isLegal) {
+	var resultMove = "fail";
+	while (!isLegal && resultMove === "fail") {
 		randomGhostMove = Math.random();
 		if(countTries === 0)
 		{
 			characterToMakeMove.lastRow = 0;
 			characterToMakeMove.lastCol = 0;
+			countTries = 5;
 
 		}
 
 		if (randomGhostMove < 0.25) {
-			if (rowIndex > 0 && board[rowIndex - 1][colIndex] !== 4 && characterToMakeMove.lastRow !== (rowIndex-1)) {//Up
-				if(board[rowIndex - 1][colIndex] === 2)
-				{
-					characterToMakeMove.hitThePacman();
-					return "stay";
-				}
-				else {
-					board[rowIndex - 1][colIndex] = characterToMakeMove.boardValue;
-					checkApplesOrPills(rowIndex, colIndex);
-					characterToMakeMove.lastRow = rowIndex;
-					characterToMakeMove.rowIndex -= 1;
-					return "up";
-				}
-
+			nextCol = colIndex-1;
+			if (colIndex > 0 && board[rowIndex][colIndex - 1] !== 4 && characterToMakeMove.lastCol !== nextCol) {//Up
+				resultMove = moveUp(characterToMakeMove);
 			}
-		} else if (rowIndex < 11 && randomGhostMove >= 0.25 && randomGhostMove < 0.5 && characterToMakeMove.lastRow !== (rowIndex+1)) {//Down
-			if (board[rowIndex + 1][colIndex] !== 4) {
-				if(board[rowIndex + 1][colIndex] === 2)
-				{
-					characterToMakeMove.hitThePacman();
-					return "stay";
-				}
-				else {
-					board[rowIndex + 1][colIndex] = characterToMakeMove.boardValue;
-					checkApplesOrPills(rowIndex, colIndex);
-					characterToMakeMove.lastRow = rowIndex;
-					characterToMakeMove.rowIndex += 1;
-					return "down";
-				}
+		} else if ( randomGhostMove >= 0.25 && randomGhostMove < 0.5) {//Down
+			nextCol = colIndex+1;
+			if (colIndex < 11 && board[rowIndex][colIndex + 1] !== 4 && characterToMakeMove.lastCol !== nextCol) {
+				resultMove = moveDown(characterToMakeMove);
 			}
-		} else if (colIndex > 0 && randomGhostMove >= 0.5 && randomGhostMove < 0.75 && characterToMakeMove.lastCol !== (colIndex-1)) {//Left
-			if (board[rowIndex][colIndex - 1] !== 4) {
-				if(board[rowIndex][colIndex - 1] === 2)
-				{
-					characterToMakeMove.hitThePacman();
-					return "stay";
-				}
-					else {
-					board[rowIndex][colIndex - 1] = characterToMakeMove.boardValue;
-					checkApplesOrPills(rowIndex, colIndex);
-					characterToMakeMove.lastCol = colIndex;
-					characterToMakeMove.colIndex -= 1;
-					return "left";
-				}
-
+		} else if ( randomGhostMove >= 0.5 && randomGhostMove < 0.75 ) {//Left
+			nextRow = rowIndex - 1;
+			if (rowIndex > 0 && board[rowIndex - 1][colIndex] !== 4 && characterToMakeMove.lastRow !== nextRow) {
+				resultMove = moveLeft(characterToMakeMove);
 			}
-		} else if (colIndex < 11 && randomGhostMove >= 0.75 && randomGhostMove < 1 && characterToMakeMove.lastCol !== (colIndex+1)) {//Right
-			if (board[rowIndex][colIndex + 1] !== 4) {
-				if(board[rowIndex][colIndex + 1] === 2)
-				{
-					characterToMakeMove.hitThePacman();
-					return "stay";
-				}
-					else {
-					board[rowIndex][colIndex + 1] = characterToMakeMove.boardValue;
-					checkApplesOrPills(rowIndex, colIndex);
-					characterToMakeMove.lastCol = colIndex;
-					characterToMakeMove.colIndex += 1;
-					return "right";
-				}
+		} else if (randomGhostMove >= 0.75 && randomGhostMove < 1) {//Right
+			nextRow = rowIndex + 1;
+			if (rowIndex < 11 && board[rowIndex + 1][colIndex] !== 4 && characterToMakeMove.lastRow !== nextRow) {
+				resultMove = moveRight(characterToMakeMove);
                 
 			}
 		}
 		countTries--;
 	}
+	characterToMakeMove.lastRow = rowIndex;
+	characterToMakeMove.lastCol = colIndex;
+}
+
+function makeSmartMoveForGhost(specificGhost) {
+	var rowDiffValue = specificGhost.rowIndex - pacmanObject.rowIndex;
+	var colDiffValue = specificGhost.colIndex - pacmanObject.colIndex;
+	var movementResult = "";
+	if(colDiffValue > 2)
+	{
+		movementResult = moveUp(specificGhost);
+	}
+	else if(colDiffValue < -2)
+	{
+		movementResult = moveDown(specificGhost);
+	}
+	else if(rowDiffValue > 2)
+	{
+		movementResult = moveLeft(specificGhost);
+	}
+	else if(rowDiffValue < -2)
+	{
+		movementResult = moveRight(specificGhost);
+	}
+	else
+	{
+		chooseRandomMovement(specificGhost);
+	}
+
+	if(movementResult === "fail")
+	{
+		chooseRandomMovement(specificGhost);
+	}
+
 }
 
 function moveGhostsRandomly() {
 	var countGhosts = 0;
 	while (countGhosts < numOfGhost)
 	{
-		// console.log("What the hell");
-		// var ghostIndexes = getGhostIndexes();
-		// if(ghostIndexes === 0)
-		// {
-		// 	console.error("Something Went Wrong finding the " + (countGhosts+1) + " ghost");
-		// 	return;
-		// }
-		chooseRandomMovement(ghostArray[countGhosts]);
+		//Make the ghost move toward the pacman every 3 moves
+		// and otherwise choose random movement
+
+		// chooseRandomMovement(ghostArray[countGhosts]);
+		makeSmartMoveForGhost(ghostArray[countGhosts]);
 		countGhosts++;
 	}
 }
@@ -813,7 +886,17 @@ function UpdatePosition() {
 }
 
 function gameOver() {
-	backgroundSound.pause();
-	backgroundSound.currentTime = 0;
+	try{
+		backgroundSound.pause();
+	}
+	catch (e) {
+		console.error(e);
+	}
+	try{
+		backgroundSound.currentTime = 0;
+	}
+	catch (e) {
+		console.error(e);
+	}
 	window.clearInterval(interval);
 }
