@@ -40,7 +40,7 @@ table{
     box-shadow: 0 0 3px 0 rgba(0,0,0,3);
     background: #fff;
     padding: 20px;
-    margin: 8% auto;
+    margin: 5% auto;
     text-align: center;
     /*transform: translate(-50%, -50%);*/
 }
@@ -221,12 +221,27 @@ form .error {
     float:left; /* add this */
     border-left: 3px solid black;
 }
+
 #game{
     overflow: auto;
 }
 
+#actual_game{
+    float:left; /* add this */
+}
 #gameValues{
     overflow: auto; /* will contain if #first is longer than #second */
+    width: 15%;
+    padding-left: 10px;
+
+}
+
+.gameValuesLables{
+    font : 1.1em "typewriter", sans-serif;
+    background-color: rgb(99, 255, 37);
+    border-radius: 10px;
+    color: rgb(0, 73, 255);
+    font-weight: bold;
 }
 
 .in-game{
