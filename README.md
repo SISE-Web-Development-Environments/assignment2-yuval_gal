@@ -1,11 +1,19 @@
 # Assignment2
+<a name="logo"></a>
 ![Pacman Logo](images/logo.png)
 # Created by:
 ## Yuval Ben Eliezer (313581381) and Gal Rosenthal (312585268)
 
+# Table Of Content
+1. [ Logo. ](#logo)
+2. [ Play The Game. ](#Playing_The_Game)
+3. [ Game Instructions. ](#instructions)
+
+<a name="Playing_The_Game"></a>
 ### For playing the game, Click the link below 
 ### [Start the Game](https://sise-web-development-environments.github.io/assignment2-yuval_gal/)
 
+<a name="instructions"></a>
 # Game Instructions
 ## Sign Up
 <p>In order to play the game, you <b>must</b> SignUp using the Signup 
@@ -28,7 +36,7 @@ Those are `default` values.
  * Key Left: `ArrowLeft`
  * Key Right: `ArrowRight`
  * Number of eatable balls: `50`
- * Max Time (in seconds): `50`
+ * Max Time (in seconds): `60`
  * Number of Ghosts: `4`
  * Color for the small balls: `blue`
  * Color for the medium balls: `red`
@@ -51,4 +59,7 @@ There are 3 ways to finish the game:
 <br>
 <p>In the game there is a another character besides the pacman and the ghosts,
 this is dave, if you eat dave you will earn 50 points.
+<br>
 </p>
+
+Also there is a clock floating in a random place in the game, eating it will increase the `Max Time` by 10 seconds.
