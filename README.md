@@ -6,15 +6,21 @@
 
 # Table Of Content
 1. [ Logo. ](#logo)
-2. [ Play The Game. ](#Playing_The_Game)
-3. [ Game Instructions. ](#instructions)
+1. [ Play The Game. ](#Playing_The_Game)
+1. [ Game Instructions. ](#instructions)
+    1. [ Sign Up. ](#sign-up)
+    1. [ Login. ](#login)
+1. [ Settings. ](#settings)
+1. [ In Game Instructions. ](#gameplay)
 
 <a name="Playing_The_Game"></a>
+# Link To the Game
 ### For playing the game, Click the link below 
 ### [Start the Game](https://sise-web-development-environments.github.io/assignment2-yuval_gal/)
 
 <a name="instructions"></a>
 # Game Instructions
+<a name="signup"></a>
 ## Sign Up
 <p>In order to play the game, you <b>must</b> SignUp using the Signup 
 page and form.</p>
@@ -22,10 +28,12 @@ page and form.</p>
 You can also use the default user,<br> Username: p <br> Password: p
 </p>
 
+<a name="login"></a>
 ## Login
 <p>After you signed up you can now login through the Login Page.</p>
  
-## Settings
+<a name="settings"></a>
+# Settings
 <p> There are a few Settings for the game that are customisable by the user:</p>
 
 Those are `default` values. 
@@ -48,7 +56,8 @@ also you can choose to randomize these parameters, <b>the keys will not be rando
 if you wish to change them again, logout from the game and relogin.</b>
 <br>
 
-## Game
+<a name="gameplay"></a>
+# Gameplay
 While playing the game, you use the Keys defined above in the Settings.
 <br>
 There are 3 ways to finish the game:
