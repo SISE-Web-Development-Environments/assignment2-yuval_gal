@@ -34,7 +34,7 @@ Those are `default` values.
  * Color for the medium balls: `red`
  * Color for the high balls: `black`
  
-also you can choose the randomize these parameters, <b>the keys will not be randomized</b>.
+also you can choose to randomize these parameters, <b>the keys will not be randomized</b>.
 <br>
 Once you pressed `Let's Start the Game!` you will not be able to change those settings, 
 if you wish to change them again, logout from the game and relogin.
