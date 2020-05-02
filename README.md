@@ -1,5 +1,6 @@
-# Assignment2
 <a name="logo"></a>
+# Assignment2
+
 ![Pacman Logo](images/logopacman.png)
 # Created by:
 ## Yuval Ben Eliezer (313581381) and Gal Rosenthal (312585268)
