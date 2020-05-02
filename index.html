@@ -95,7 +95,7 @@
                     <input class="form-control" name="bDay" id="bDay" placeholder="BDay" type="date" required>
                 </div>
                 <div>
-                    <input class="btn btn-primary" id="submit-button" type="submit" onclick="signUp()" value="Sign Up">
+                    <input class="btn btn-primary" id="submit-button" type="submit" value="Sign Up">
                 </div>
 
             </form>
@@ -283,7 +283,8 @@
                 <source src = "audio/Extra.mp3" type = "audio/mpeg"></audio>
             <audio id = "eatGhost" preload = "auto">
                 <source src = "audio/blocker_hit.mp3" type = "audio/mpeg"></audio>
-
+            <audio id = "eatClock" preload = "auto">
+                <source src = "audio/Pacman-death-sound.mp3" type = "audio/mpeg"></audio>
         </div>
     </div>
 
@@ -501,6 +502,7 @@
             if(userName === "" || password === "" || firstName === "" || secondName === "" || email === "" || bDay === "" ){
                 return;
             }
+
             for(i=0; i < userNameAndPassward.length; i++){
                 if(userName === userNameAndPassward[i].userName){
                     alert("userName: "+ userName + " is already taken");
