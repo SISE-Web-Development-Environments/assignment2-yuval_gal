@@ -125,18 +125,19 @@ table{
     outline: none;
     cursor: pointer;
     padding: 14px 16px;
-    transition: 0.3s;
+    transition: 1.5s;
     position: relative;
 }
 
 /* Change background color of buttons on hover */
 .nav button:hover {
-    background-color: #ddd;
+    background-color: rgba(133, 81, 255, 0.86);
+    transition: 1s;
 }
 
 /* Create an active/current tablink class */
 .nav button.active {
-    background-color: #cccccc;
+    background-color: rgba(133, 81, 255, 0.86);
 }
 
 /* Style the tab content */

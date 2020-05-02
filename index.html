@@ -36,7 +36,7 @@
 
     <!-- Tab links -->
     <div class="nav">
-        <button class="navbuttons" id="welcomeButton" onclick="openRelevantWindow(event, 'Welcome')">Welcome</button>
+        <button class="navbuttons active" id="welcomeButton" onclick="openRelevantWindow(event, 'Welcome')">Welcome</button>
         <button class="navbuttons" id="signupButton" onclick="openRelevantWindow(event, 'signup')">Sign Up</button>
         <button class="navbuttons" id="loginButton" onclick="openRelevantWindow(event, 'login')">Login</button>
         <button class="navbuttons" id="settingsButton" onclick="openRelevantWindow(event, 'Settings')">Settings</button>
@@ -448,14 +448,12 @@
             {
                 gameOver();
                 showWelcomeWindow(evt);
-                document.getElementById("welcomeButton").className += " active";
             }
 
             if(navButton === "Settings")
             {
                 gameOver();
                 showSettingsWindow(evt);
-                document.getElementById("settingsButton").className += " active";
             }
             if(navButton === "signup")
             {
@@ -573,6 +571,7 @@
                     document.getElementById("login-wlcm-Btn").style.display = "block";
                 }
             }
+            document.getElementById("welcomeButton").className += " active";
             pageToShow = document.getElementById("Welcome");
             pageToShow.style.display = "block";
             window.scrollTo(0,pageToShow.offsetTop-130);
