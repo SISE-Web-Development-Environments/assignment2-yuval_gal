@@ -3,6 +3,8 @@ body{
     padding: 0;
     height: 100%;
     width: 100%;
+    min-height: 1366px;
+    min-width: 768px;
     background-color: #f1f1f1;
 
     /*background-color: #d1eff8;*/
@@ -227,12 +229,14 @@ form .error {
 }
 
 #actual_game{
-    float:left; /* add this */
+     /* add this */
+    padding-left: 10px;
 }
 #gameValues{
-    overflow: auto; /* will contain if #first is longer than #second */
+    /* will contain if #first is longer than #second */
     width: 15%;
-    padding-left: 10px;
+    float:left;
+    margin-left: 0px;
 
 }
 

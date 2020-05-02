@@ -160,7 +160,7 @@ function initializeParameters() {
 	Lives = 5; // initial number of Killed
 	pill=3;
 	clock=1;
-	moreWalls=9;
+	moreWalls=Math.floor((Math.random()*25)+10);
 	score = 0;
 	pointsHeavyBalls = 25;
 	pointsLightBalls = 5;

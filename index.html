@@ -253,30 +253,24 @@
 
         <div id="game" class="window_content">
 
-            <div id="actual_game">
-                <canvas id="canvas" height="720" width="720" tabindex="1"></canvas>
-            </div>
-
             <div id="gameValues">
                 <div id="in-game-score" class="in-game">
-                    <label class="gameValuesLables" for="lblScore">Score</label>
-                    <input id="lblScore" class="form-control" type="text" />
-<!--                </div>-->
-
-<!--                <div id="in-game-time" class="in-game">-->
-                    <label class="gameValuesLables" for="lblTime">Time</label>
-                    <input id="lblTime" class="form-control" type="text" />
-<!--                </div>-->
-                    <br>
-<!--                <div id="in-game-Killed" class="in-game">-->
-                    <label class="gameValuesLables" for="lblLives">Lives</label>
-                    <input id="lblLives" class="form-control" type="text" />
-<!--                </div>-->
-
-<!--                <div id="in-game-user" class="in-game">-->
                     <label class="gameValuesLables" for="userN">Username</label>
                     <input id="userN" class="form-control" type="text" />
+                    <br>
+                    <label class="gameValuesLables" for="lblScore">Score</label>
+                    <input id="lblScore" class="form-control" type="text" />
+                    <br>
+                    <label class="gameValuesLables" for="lblTime">Time</label>
+                    <input id="lblTime" class="form-control" type="text" />
+                    <br>
+                    <label class="gameValuesLables" for="lblLives">Lives</label>
+                    <input id="lblLives" class="form-control" type="text" />
                 </div>
+            </div>
+
+            <div id="actual_game">
+                <canvas id="canvas" height="720" width="720" tabindex="1"></canvas>
             </div>
 
             <audio id = "backroundSound" preload = "auto">
