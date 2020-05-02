@@ -55,6 +55,11 @@ var pointsLightBalls;
 var pointsMedBalls;
 var pointsHeavyBalls;
 
+var board_row_size;
+var board_col_size;
+var draw_size_x;
+var draw_size_y;
+
 
 const ghost = {
 	rowIndex: 0,
@@ -160,17 +165,23 @@ function initializeParameters() {
 	Lives = 5; // initial number of Killed
 	pill=3;
 	clock=1;
-	moreWalls=Math.floor((Math.random()*25)+10);
 	score = 0;
 	pointsHeavyBalls = 25;
 	pointsLightBalls = 5;
 	pointsMedBalls = 15;
 	board = [];
+	board_row_size = 15;
+	board_col_size = 15;
+	moreWalls=Math.floor((Math.random()*(board_row_size+board_col_size))+10);
+	cnt = board_row_size * board_col_size;
+	canvas.width = 600;
+	canvas.height = 600;
+	draw_size_x = board_row_size*canvas.height/cnt;
+	draw_size_y = board_col_size*canvas.width/cnt;
 	clockArray = [];
 	applesArray = [];
 	pillsArray = [];
 	ghostArray = new Array(numOfGhost);
-	cnt = 144;
 	food_remain = maxFood;
 	pacman_remain = 1;
 	// restart = document.getElementById("restartBtn");
@@ -249,13 +260,13 @@ function Start() {
 		var settingClock = clock;
 		var settingWalls = moreWalls;
 		pacmanObject = Object.create(pacman);
-		for (var i = 0; i < 12; i++) {
+		for (var i = 0; i < board_row_size; i++) {
 			board[i] = new Array();
 			applesArray[i] = new Array();
 			clockArray[i]=new Array();
 			pillsArray[i] = new Array();
 			//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-			for (var j = 0; j < 12; j++) {
+			for (var j = 0; j < board_col_size; j++) {
 				if (
 					(i == 3 && j == 3) ||
 					(i == 3 && j == 4) ||
@@ -388,11 +399,11 @@ function Start() {
 }
 
 function findRandomEmptyCell() {
-	var i = Math.floor(Math.random() * 9 + 1);
-	var j = Math.floor(Math.random() * 9 + 1);
+	var i = Math.floor(Math.random() * (board_row_size-1) + 1);
+	var j = Math.floor(Math.random() * (board_row_size-1) + 1);
 	while (board[i][j] != 0) {
-		i = Math.floor(Math.random() * 9 + 1);
-		j = Math.floor(Math.random() * 9 + 1);
+		i = Math.floor(Math.random() * (board_row_size-1) + 1);
+		j = Math.floor(Math.random() * (board_row_size-1) + 1);
 	}
 	return [i, j];
 }
@@ -452,57 +463,57 @@ function Draw() {
 	lblTime.value = time_elapsed;
 	lblLives.value = Lives;
 	userN.value = currentUser;
-	for (var i = 0; i < 12; i++) {
-		for (var j = 0; j < 12; j++) {
+	for (var i = 0; i < board_row_size; i++) {
+		for (var j = 0; j < board_col_size; j++) {
 			var center = new Object();
-			center.x = i * 60 + 30;
-			center.y = j * 60 + 30;
-			if (board[i][j] == 2) { //Draw pacman
-				if (lastKeyPressed == "UP") { //WHERE TO PUT THE EYE OF PACMAN
-					context.drawImage(pacmangirlup,center.x -30,center.y-30,60,60);
-				} else if (lastKeyPressed == "LEFT") {
-					context.drawImage(pacmangirl,center.x -30,center.y-30,60,60);
-				} else if (lastKeyPressed == "DOWN") {
-					context.drawImage(pacmangirldown,center.x -30,center.y-30,60,60);
-				} else if(lastKeyPressed =="RIGHT"){
-					context.drawImage(pacmangirlright,center.x -30,center.y-30,60,60);
+			center.x = i * draw_size_x + draw_size_x / 2;
+			center.y = j * draw_size_y + draw_size_y / 2;
+			if (board[i][j] === 2) { //Draw pacman
+				if (lastKeyPressed === "UP") { //WHERE TO PUT THE EYE OF PACMAN
+					context.drawImage(pacmangirlup,center.x - draw_size_x/2,center.y - draw_size_y/2,draw_size_x,draw_size_y);
+				} else if (lastKeyPressed === "LEFT") {
+					context.drawImage(pacmangirl,center.x - draw_size_x/2,center.y - draw_size_y/2,draw_size_x,draw_size_y);
+				} else if (lastKeyPressed === "DOWN") {
+					context.drawImage(pacmangirldown,center.x - draw_size_x/2,center.y - draw_size_y/2,draw_size_x,draw_size_y);
+				} else if(lastKeyPressed ==="RIGHT"){
+					context.drawImage(pacmangirlright,center.x - draw_size_x/2,center.y - draw_size_y/2,draw_size_x,draw_size_y);
 				}
-				else if(lastKeyPressed =="NOKEY"){
-					context.drawImage(pacmangirl,center.x -30,center.y-30,60,60);
+				else if(lastKeyPressed ==="NOKEY"){
+					context.drawImage(pacmangirl,center.x - draw_size_x/2,center.y - draw_size_y/2,draw_size_x,draw_size_y);
 				}
 
-			} else if (board[i][j] == 1 || board[i][j] == 14 || board[i][j] == 13) { //Draw food
+			} else if (board[i][j] === 1 || board[i][j] === 14 || board[i][j] === 13) { //Draw food
 				context.beginPath();
-				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
+				context.arc(center.x, center.y, draw_size_x/4, 0, 2 * Math.PI); // circle
 				//context.fillStyle = "black"; //color
-				if(board[i][j] == 1 ){
+				if(board[i][j] === 1 ){
 					context.fillStyle = cLightBalls;
 				}
-				else if(board[i][j] == 14){
+				else if(board[i][j] === 14){
 					context.fillStyle = cHeavyBalls;
 				}
 				else {
 					context.fillStyle = cMedBalls;
 				}
 				context.fill();
-			} else if (board[i][j] == 4) {
-				context.drawImage(wallImage,center.x - 30,center.y - 30,60,60);
+			} else if (board[i][j] === 4) {
+				context.drawImage(wallImage,center.x - draw_size_x/2,center.y - draw_size_y/2,draw_size_x,draw_size_y);
 			}
-			else if(board[i][j] == 7){
-				context.drawImage(pillImage,center.x - 30,center.y - 30,60,60);
+			else if(board[i][j] === 7){
+				context.drawImage(pillImage,center.x - draw_size_x/2,center.y - draw_size_y/2,draw_size_x,draw_size_y);
 			}
-			else if(board[i][j] == 8){
-				context.drawImage(ghostImage,center.x - 30,center.y - 30,60,60);
+			else if(board[i][j] === 8){
+				context.drawImage(ghostImage,center.x - draw_size_x/2,center.y - draw_size_y/2,draw_size_x,draw_size_y);
 			}
-			else if (board[i][j] == 11)
+			else if (board[i][j] === 11)
 			{
 				if(shouldDrawDave)
 				{
-					context.drawImage(daveToDraw,center.x - 30,center.y - 30,60,60);
+					context.drawImage(daveToDraw,center.x - draw_size_x/2,center.y - draw_size_y/2,draw_size_x,draw_size_y);
 				}
 			}
-			else if(board[i][j] == 10){
-				context.drawImage(clockImage,center.x - 30,center.y - 30,60,60);
+			else if(board[i][j] === 10){
+				context.drawImage(clockImage,center.x - draw_size_x/2,center.y - draw_size_y/2,draw_size_x,draw_size_y);
 			}
 		}
 	}
@@ -540,8 +551,8 @@ function checkApplesOrPills(rowIndex, colIndex) {
 }
 
 function moveUp(character) {
-	if(board[character.rowIndex][character.colIndex - 1] === 4 || character.rowIndex < 0 || character.rowIndex > 11
-	|| character.colIndex < 0 || character.colIndex > 11)
+	if(board[character.rowIndex][character.colIndex - 1] === 4 || character.rowIndex < 0 || character.rowIndex > board_row_size-1
+	|| character.colIndex < 0 || character.colIndex > board_col_size-1)
 	{
 		return "fail";
 	}
@@ -560,8 +571,8 @@ function moveUp(character) {
 }
 
 function moveDown(character) {
-	if(board[character.rowIndex][character.colIndex + 1] === 4 || character.rowIndex < 0 || character.rowIndex > 11
-		|| character.colIndex < 0 || character.colIndex > 11)
+	if(board[character.rowIndex][character.colIndex + 1] === 4 || character.rowIndex < 0 || character.rowIndex > board_row_size-1
+		|| character.colIndex < 0 || character.colIndex > board_col_size-1)
 	{
 		return "fail";
 	}
@@ -580,8 +591,8 @@ function moveDown(character) {
 }
 
 function moveLeft(character) {
-	if(board[character.rowIndex - 1][character.colIndex] === 4 || character.rowIndex < 0 || character.rowIndex > 11
-		|| character.colIndex < 0 || character.colIndex > 11)
+	if(board[character.rowIndex - 1][character.colIndex] === 4 || character.rowIndex < 0 || character.rowIndex > board_row_size-1
+		|| character.colIndex < 0 || character.colIndex > board_col_size-1)
 	{
 		return "fail";
 	}
@@ -600,8 +611,8 @@ function moveLeft(character) {
 }
 
 function moveRight(character) {
-	if(board[character.rowIndex + 1][character.colIndex ] === 4 || character.rowIndex < 0 || character.rowIndex > 11
-		|| character.colIndex < 0 || character.colIndex > 11)
+	if(board[character.rowIndex + 1][character.colIndex ] === 4 || character.rowIndex < 0 || character.rowIndex > board_row_size-1
+		|| character.colIndex < 0 || character.colIndex > board_col_size-1)
 	{
 		return "fail";
 	}
@@ -647,7 +658,7 @@ function chooseRandomMovement(characterToMakeMove) {
 			}
 		} else if ( randomGhostMove >= 0.25 && randomGhostMove < 0.5) {//Down
 			nextCol = colIndex+1;
-			if (colIndex < 11 && board[rowIndex][colIndex + 1] !== 4 && characterToMakeMove.lastCol !== nextCol) {
+			if (colIndex < board_col_size-1 && board[rowIndex][colIndex + 1] !== 4 && characterToMakeMove.lastCol !== nextCol) {
 				resultMove = moveDown(characterToMakeMove);
 			}
 		} else if ( randomGhostMove >= 0.5 && randomGhostMove < 0.75 ) {//Left
@@ -657,7 +668,7 @@ function chooseRandomMovement(characterToMakeMove) {
 			}
 		} else if (randomGhostMove >= 0.75 && randomGhostMove < 1) {//Right
 			nextRow = rowIndex + 1;
-			if (rowIndex < 11 && board[rowIndex + 1][colIndex] !== 4 && characterToMakeMove.lastRow !== nextRow) {
+			if (rowIndex < board_row_size-1 && board[rowIndex + 1][colIndex] !== 4 && characterToMakeMove.lastRow !== nextRow) {
 				resultMove = moveRight(characterToMakeMove);
                 
 			}
@@ -672,19 +683,20 @@ function makeSmartMoveForGhost(specificGhost) {
 	var rowDiffValue = specificGhost.rowIndex - pacmanObject.rowIndex;
 	var colDiffValue = specificGhost.colIndex - pacmanObject.colIndex;
 	var movementResult = "";
-	if(colDiffValue > 2)
+	var pacmanMaxDistance = 0;
+	if(colDiffValue > pacmanMaxDistance)
 	{
 		movementResult = moveUp(specificGhost);
 	}
-	else if(colDiffValue < -2)
+	else if(colDiffValue < -pacmanMaxDistance)
 	{
 		movementResult = moveDown(specificGhost);
 	}
-	else if(rowDiffValue > 2)
+	else if(rowDiffValue > pacmanMaxDistance)
 	{
 		movementResult = moveLeft(specificGhost);
 	}
-	else if(rowDiffValue < -2)
+	else if(rowDiffValue < -pacmanMaxDistance)
 	{
 		movementResult = moveRight(specificGhost);
 	}
@@ -750,7 +762,7 @@ function UpdatePosition() {
 			}
 		}
 		if (x == 2) {
-			if (pacmanObject.colIndex < 11 && board[pacmanObject.rowIndex][pacmanObject.colIndex+1] !== 4) {
+			if (pacmanObject.colIndex < board_col_size-1 && board[pacmanObject.rowIndex][pacmanObject.colIndex+1] !== 4) {
 				if(board[pacmanObject.rowIndex][pacmanObject.colIndex+1] === 7){
 					Lives = Lives+1;
 					pillSound.play();
@@ -790,7 +802,7 @@ function UpdatePosition() {
 			}
 		}
 		if (x == 4) {
-			if (pacmanObject.rowIndex < 11 && board[pacmanObject.rowIndex+1][pacmanObject.colIndex] !== 4) {
+			if (pacmanObject.rowIndex < board_row_size-1 && board[pacmanObject.rowIndex+1][pacmanObject.colIndex] !== 4) {
 				if(board[pacmanObject.rowIndex+1][pacmanObject.colIndex] === 7){
 					Lives = Lives+1;
 					pillSound.play();
