@@ -684,19 +684,19 @@ function makeSmartMoveForGhost(specificGhost) {
 	var colDiffValue = specificGhost.colIndex - pacmanObject.colIndex;
 	var movementResult = "";
 	var pacmanMaxDistance = 0;
-	if(colDiffValue > pacmanMaxDistance)
+	if(colDiffValue > pacmanMaxDistance && specificGhost.lastCol !== specificGhost.colIndex-1)
 	{
 		movementResult = moveUp(specificGhost);
 	}
-	else if(colDiffValue < -pacmanMaxDistance)
+	else if(colDiffValue < -pacmanMaxDistance && specificGhost.lastCol !== specificGhost.colIndex+1)
 	{
 		movementResult = moveDown(specificGhost);
 	}
-	else if(rowDiffValue > pacmanMaxDistance)
+	else if(rowDiffValue > pacmanMaxDistance && specificGhost.lastRow !== specificGhost.rowIndex-1)
 	{
 		movementResult = moveLeft(specificGhost);
 	}
-	else if(rowDiffValue < -pacmanMaxDistance)
+	else if(rowDiffValue < -pacmanMaxDistance && specificGhost.lastRow !== specificGhost.rowIndex+1)
 	{
 		movementResult = moveRight(specificGhost);
 	}
