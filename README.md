@@ -71,5 +71,9 @@ There are 3 ways to finish the game:
 this is dave, if you eat dave you will earn 50 points.
 <br>
 </p>
-
-Also there is a clock floating in a random place in the game, eating it will increase the `Max Time` by 10 seconds.
+<br>
+The functionality we added to the game:
+<br>
+1. There is a clock floating in a random place in the game, eating it will increase the `Max Time` by 10 seconds.
+<br>
+2. There is a 3 pills floating in a random place in the game, eating pill will increase the Lives by 1.
