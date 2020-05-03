@@ -75,7 +75,7 @@ this is dave, if you eat dave you will earn 50 points.
 <br>
 </p>
 <br>
-<a name="The functionality we added to the game"></a>
+<a name="The_functionality_we_added_to_the_game"></a>
 #The_functionality_we_added_to_the_game
 The functionality we added to the game:
 <br>
