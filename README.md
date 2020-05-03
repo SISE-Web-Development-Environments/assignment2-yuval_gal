@@ -18,6 +18,9 @@
 # Link To the Game
 ### For playing the game, Click the link below 
 ### [Start the Game](https://sise-web-development-environments.github.io/assignment2-yuval_gal/)
+you can also try the link:
+<br>
+https://sise-web-development-environments.github.io/assignment2-yuval_gal/
 
 <a name="instructions"></a>
 # Game Instructions
