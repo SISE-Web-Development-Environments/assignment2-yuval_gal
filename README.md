@@ -13,7 +13,7 @@
     1. [ Login. ](#login)
 1. [ Settings. ](#settings)
 1. [ In Game Instructions. ](#gameplay)
-
+1. [ The functionality we added to the game. ](#The_functionality_we_added_to_the_game)
 <a name="Playing_The_Game"></a>
 # Link To the Game
 ### For playing the game, Click the link below 
@@ -75,6 +75,8 @@ this is dave, if you eat dave you will earn 50 points.
 <br>
 </p>
 <br>
+<a name="The functionality we added to the game"></a>
+#The_functionality_we_added_to_the_game
 The functionality we added to the game:
 <br>
 1. There is a clock floating in a random place in the game, eating it will increase the `Max Time` by 10 seconds.
