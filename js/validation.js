@@ -39,6 +39,9 @@ $(function() {
                 required: true,
                 strongPassword: true
             },
+            confirmpassword: {
+                equalTo: "#signup-password"
+            },
             userName: {
                 required: true,
                 nowhitespace: true,
