@@ -54,7 +54,7 @@ var cHeavyBalls;
 var pointsLightBalls;
 var pointsMedBalls;
 var pointsHeavyBalls;
-
+var eatClock;
 var board_row_size;
 var board_col_size;
 var draw_size_x;
@@ -159,6 +159,7 @@ function initializeAudio() {
 	eatSound = document.getElementById("eatSound");
 	pillSound = document.getElementById("pillSound");
 	eatGhost = document.getElementById("eatGhost");
+	eatClock = document.getElementById("eatClock");
 }
 function initializeParameters() {
 	lastKeyPressed ="NOKEY"; // Note-start game no key pressed
@@ -268,11 +269,12 @@ function Start() {
 			//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
 			for (var j = 0; j < board_col_size; j++) {
 				if (
-					(i == 3 && j == 3) ||
-					(i == 3 && j == 4) ||
-					(i == 3 && j == 5) ||
-					(i == 6 && j == 1) ||
-					(i == 6 && j == 2)
+					(i== 2 && (1<=j && j<=4)) || (i == 2 && (10<=j && j<=13)) ||
+					(i== 12 && (1<=j && j<=4)) || (i == 12 && (10<=j && j<=13)) ||
+					(j== 2 && (1<=i && i<=4)) || (j == 2 && (10<=i && i<=13)) ||
+					(j== 12 && (1<=i && i<=4)) || (j == 12 && (10<=i && i<=13)) ||
+					(j== 6 && (5<=i && i<=9)) || (j == 8 && (5<=i && i<=9))
+
 				) {
 					board[i][j] = 4; ////Walls
 					applesArray[i][j] = 0;
@@ -367,15 +369,6 @@ function Start() {
 			clockArray[emptycellforClock[0]][emptycellforClock[1]] = 1;
 			settingClock--;
 		}
-		while (settingWalls>0){
-			var emptycellformoreWalls = findRandomEmptyCell(board);
-			board[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 4;
-			applesArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
-			pillsArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
-			clockArray[emptycellformoreWalls[0]][emptycellformoreWalls[1]] = 0;
-			settingWalls--;
-		}
-
 		keysDown = {};
 		addEventListener(
 			"keydown",
@@ -457,7 +450,7 @@ function moveDaveRandomly() {
 }
 
 function Draw() {
-	// backgroundSound.play();
+	backgroundSound.play();
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
@@ -653,22 +646,22 @@ function chooseRandomMovement(characterToMakeMove) {
 
 		if (randomGhostMove < 0.25) {
 			nextCol = colIndex-1;
-			if (colIndex > 0 && board[rowIndex][colIndex - 1] !== 4 && characterToMakeMove.lastCol !== nextCol) {//Up
+			if (colIndex > 0 && board[rowIndex][colIndex - 1] !== 4 ) {//Up
 				resultMove = moveUp(characterToMakeMove);
 			}
 		} else if ( randomGhostMove >= 0.25 && randomGhostMove < 0.5) {//Down
 			nextCol = colIndex+1;
-			if (colIndex < board_col_size-1 && board[rowIndex][colIndex + 1] !== 4 && characterToMakeMove.lastCol !== nextCol) {
+			if (colIndex < board_col_size-1 && board[rowIndex][colIndex + 1] !== 4 ) {
 				resultMove = moveDown(characterToMakeMove);
 			}
 		} else if ( randomGhostMove >= 0.5 && randomGhostMove < 0.75 ) {//Left
 			nextRow = rowIndex - 1;
-			if (rowIndex > 0 && board[rowIndex - 1][colIndex] !== 4 && characterToMakeMove.lastRow !== nextRow) {
+			if (rowIndex > 0 && board[rowIndex - 1][colIndex] !== 4 ) {
 				resultMove = moveLeft(characterToMakeMove);
 			}
 		} else if (randomGhostMove >= 0.75 && randomGhostMove < 1) {//Right
 			nextRow = rowIndex + 1;
-			if (rowIndex < board_row_size-1 && board[rowIndex + 1][colIndex] !== 4 && characterToMakeMove.lastRow !== nextRow) {
+			if (rowIndex < board_row_size-1 && board[rowIndex + 1][colIndex] !== 4 ) {
 				resultMove = moveRight(characterToMakeMove);
                 
 			}
@@ -753,6 +746,7 @@ function UpdatePosition() {
 					board[pacmanObject.rowIndex][pacmanObject.colIndex-1] = 0;
 					clockArray[pacmanObject.rowIndex][pacmanObject.colIndex-1] = 0;
 					console.log(maximumTime);
+					eatClock.play();
 					maximumTime +=10;
 					console.log(maximumTime);
 
@@ -773,6 +767,7 @@ function UpdatePosition() {
 					clockArray[pacmanObject.rowIndex][pacmanObject.colIndex+1] = 0;
 					board[pacmanObject.rowIndex][pacmanObject.colIndex+1] = 0;
 					console.log(maximumTime);
+					eatClock.play();
 					maximumTime +=10;
 					console.log(maximumTime);
 
@@ -794,6 +789,7 @@ function UpdatePosition() {
 					board[pacmanObject.rowIndex-1][pacmanObject.colIndex] = 0;
 					clockArray[pacmanObject.rowIndex-1][pacmanObject.colIndex] = 0;
 					console.log(maximumTime);
+					eatClock.play();
 					maximumTime +=10;
 					console.log(maximumTime);
 				}
@@ -813,6 +809,7 @@ function UpdatePosition() {
 					board[pacmanObject.rowIndex+1][pacmanObject.colIndex] = 0;
 					clockArray[pacmanObject.rowIndex+1][pacmanObject.colIndex] = 0;
 					console.log(maximumTime);
+					eatClock.play();
 					maximumTime +=10;
 					console.log(maximumTime);
 

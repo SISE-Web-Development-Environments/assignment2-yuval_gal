@@ -42,7 +42,6 @@ $(function() {
             userName: {
                 required: true,
                 nowhitespace: true,
-                lettersonly: true
             },
             firstName: {
                 required: true,
@@ -58,9 +57,6 @@ $(function() {
                 required: true,
                 date: true
             },
-            terms: {
-                required: true
-            }
         },
         messages: {
             email: {
@@ -68,6 +64,15 @@ $(function() {
                 email: 'Please enter a <em>valid</em> email address.',
                 remote: $.validator.format("{0} is already associated with an account.")
             }
+        }
+    });
+
+
+    $('#submit-button').on('click', function() {
+        if ($("#register-form").valid())
+            signUp();
+        else{
+            alert("Please insert valid values!")
         }
     });
 

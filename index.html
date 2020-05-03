@@ -95,7 +95,7 @@
                     <input class="form-control" name="bDay" id="bDay" placeholder="BDay" type="date" required>
                 </div>
                 <div>
-                    <input class="btn btn-primary" id="submit-button" type="submit" onclick="signUp()" value="Sign Up">
+                    <input class="btn btn-primary" id="submit-button" type="submit" value="Sign Up">
                 </div>
 
             </form>
@@ -283,7 +283,8 @@
                 <source src = "audio/Extra.mp3" type = "audio/mpeg"></audio>
             <audio id = "eatGhost" preload = "auto">
                 <source src = "audio/blocker_hit.mp3" type = "audio/mpeg"></audio>
-
+            <audio id = "eatClock" preload = "auto">
+                <source src = "audio/Pacman-death-sound.mp3" type = "audio/mpeg"></audio>
         </div>
     </div>
 
@@ -501,6 +502,7 @@
             if(userName === "" || password === "" || firstName === "" || secondName === "" || email === "" || bDay === "" ){
                 return;
             }
+
             for(i=0; i < userNameAndPassward.length; i++){
                 if(userName === userNameAndPassward[i].userName){
                     alert("userName: "+ userName + " is already taken");
@@ -639,6 +641,8 @@
 <!--Footer-->
     <footer>
         <h3> This game was created by Gal & Yuval </h3>
+        If you want to read about the game: <a href="https://en.wikipedia.org/wiki/Pac-Man">Pacman in Wikipedia</a>
+        <br>
         Contact information: <a href="mailto:ybene@post.bgu.ac.il">ybene@post.bgu.ac.il</a>.
         <a href="mailto:rosengal@post.bgu.ac.il">rosengal@post.bgu.ac.il</a>.
     </footer>
