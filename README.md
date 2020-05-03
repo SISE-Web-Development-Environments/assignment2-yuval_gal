@@ -76,8 +76,7 @@ this is dave, if you eat dave you will earn 50 points.
 </p>
 <br>
 <a name="The_functionality_we_added_to_the_game"></a>
-#The_functionality_we_added_to_the_game
-The functionality we added to the game:
+# The functionality we added to the game:
 <br>
 1. There is a clock floating in a random place in the game, eating it will increase the `Max Time` by 10 seconds.
 <br>
